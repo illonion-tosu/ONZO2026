@@ -1,0 +1,37 @@
+avatar size: 96x96
+
+100
+afff7a
+50
+7ab9ff
+miss
+ff7a8a
+
+hit-times
+aeaeae
+
+song-panel font size
+19px
+15px
+
+score-number
+20x23
+
+graident-graph
+4150b1
+8766ac
+d77185
+f6bf75
+with glow respectively to the colours above
+0017af
+5100ac
+d7002a
+f58d00
+
+score-gap-fill
+ffa330
+with glow
+c55422
+
+score-gap-empty
+black with 122 alpha value
