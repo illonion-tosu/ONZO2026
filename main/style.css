@@ -1,0 +1,42 @@
+@font-face {
+    font-family: Caldstone;
+    font-weight: 600;
+    src: url("../fonts/caldstone.semibold.otf")
+}
+
+/* ----- Whole Page ----- */
+.main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    background-image: url("static/background.png")
+}
+
+/* ----- Top Area ----- */
+.logo {
+    position: absolute;
+    left: 780px;
+    top: 11px;
+}
+
+.round-area {
+    position: absolute;
+    top: 35px;
+    left: 949px;
+}
+
+.round-name {
+    --height: 45px;
+
+    top: 39px;
+    width: 171px;
+    height: var(--height);
+    line-height: var(--height);
+    color: #EEEEEE;
+    text-align: center;
+    font-family: Caldstone;
+    font-size: 1.5rem;
+    text-shadow: 0 0 13px rgb( 255 255 255 / 0.39 );
+}
