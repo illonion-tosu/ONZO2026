@@ -49,8 +49,7 @@
 
 .round-name {
     position: absolute;
-    top: 39px;
-    left: 949px;
+    transform: translate(-50%, -50%)
 }
 
 /* ----- Player Area ----- */

@@ -6,13 +6,15 @@
     <title>Gameplay</title>
 
     <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.16.0/dist/axios.min.js"></script>
 </head>
 <body>
     <div class="main">
         <!-- Top Area -->
         <img class="logo" src="static/logo.png">
-        <img class="round-area" src="static/bracket-title/f-border.png">
-        <img class="round-name" src="static/bracket-title/f.png">
+        <img class="round-area" id="round-area" src="static/bracket-title/f-border.png">
+        <img class="round-name" id="round-name" src="static/bracket-title/f.png">
         
         <!-- Player Left -->
         <div class="player-container player-left-container">
@@ -150,6 +152,6 @@
             </div>
         </div>
     </div>
-    <script src="index.js"></script>
+    <script type="module" src="index.js"></script>
 </body>
 </html>
