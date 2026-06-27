@@ -12,7 +12,7 @@
 }
 
 @font-face {
-    font-family: "Vinique Antique";
+    font-family: "Vinque Antique";
     src: url("../fonts/vinque-antique.bold.otf");
 }
 
@@ -85,7 +85,7 @@
     position: absolute;
     top: 21px;
     background-color: white;
-    font-family: "Vinique Antique", sans-serif;
+    font-family: "Vinque Antique", sans-serif;
     font-size: 1.75rem;
     padding: 0 2px;
     height: var(--height);
@@ -302,8 +302,8 @@
     transform: translateX(-50%);
     width: 760px;
     height: 103px;
+    border: 2px solid rgb(255 255 255 / 50%);
     box-shadow:
-        0 0 6px rgb(255 255 255 / 50%),
         0 0 6px rgb(var(--box-shadow-color) / 90%),
         0 0 12px rgb(var(--box-shadow-color) / 70%),
         0 0 18px rgb(var(--box-shadow-color) / 50%),
@@ -320,4 +320,48 @@
     height: 100%;
     background-color: black;
     opacity: 65%;
+}
+
+/* Now Playing Metadata */
+.now-playing-metadata {
+    position: absolute;
+    left: 4px;
+    color: white;
+    font-family: "Vinque Antique", sans-serif;
+    width: 530px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 0 8px rgb(229 229 229);
+}
+
+.now-playing-song-title {
+    top: 14px;
+    font-size: 19px;
+}
+
+.now-playing-artist {
+    top: 36px;
+    font-size: 15px;
+}
+
+/* Now Playing Mapper Difficulty */
+.now-playing-mapper-difficulty {
+    position: absolute;
+    bottom: 12px;
+    left: 4px;
+    font-size: 15px;
+    display: flex;
+    gap: 7px;
+}
+
+.now-playing-mapper {
+    color: white;
+    font-family: "Vinque Antique", sans-serif;
+}
+
+.now-playing-difficulty {
+    font-weight: 700;
+    color: #b4b4b4;
+    font-family: "Alan Sans", sans-serif;
 }
