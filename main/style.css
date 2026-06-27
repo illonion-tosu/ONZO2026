@@ -202,3 +202,21 @@
         0 0 29px rgb(255 38 64 / 15%);
 }
 
+/* ----- Score Number ----- */
+.score-number {
+    position: absolute;
+    top: 834px;
+    transform: translateX(-50%);
+}
+
+.score-left-number {
+    left: 25%;
+    transform: translateX(-50%);
+}
+
+.score-right-number {
+    right: 25%;
+    transform: translateX(50%);
+}
+
+.score-number > * { margin: 0 -2px; }
