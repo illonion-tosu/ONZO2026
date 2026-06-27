@@ -365,3 +365,40 @@
     color: #b4b4b4;
     font-family: "Alan Sans", sans-serif;
 }
+
+/* Now Playing Stats */
+.now-playing-stats {
+    position: absolute;
+    top: 13px;
+    right: 12px;
+    font-size: 19px;
+    font-family: "Vinque Antique", sans-serif;
+    display: flex;
+    text-align: center;
+    gap: 18px;
+}
+
+.now-playing-stat-text {
+    --color: white;
+    --text-shadow-color: white;
+
+    color: var(--color);
+    text-shadow: 0 0 8px var(--text-shadow-color);
+}
+
+.now-playing-stat-text-cs {
+    --color: #63f7e7;
+    --text-shadow-color: #5193ff;
+}
+.now-playing-stat-text-ar {
+    --color: #ffa2d4;
+    --text-shadow-color: #ff2074;
+}
+.now-playing-stat-text-od {
+    --color: #ff9b91;
+    --text-shadow-color: #ff3c28;
+}
+.now-playing-stat-text-sr {
+    --color: #fdff65;
+    --text-shadow-color: #faff69;
+}
