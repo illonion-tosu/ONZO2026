@@ -30,7 +30,8 @@
     left: 0;
     width: 1920px;
     height: 1080px;
-    background-image: url("static/background.png")
+    background-image: url("static/background.png");
+    overflow: hidden;
 }
 
 /* ----- Top Area ----- */
@@ -290,3 +291,33 @@
 
 .score-left-difference span { margin-left: var(--score-difference-span-margin); }
 .score-right-difference span { margin-right: var(--score-difference-span-margin); }
+
+/* ----- Now Playing Panel ----- */
+.now-playing-panel {
+    --box-shadow-color: 255 255 255;
+
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 760px;
+    height: 103px;
+    box-shadow:
+        0 0 6px rgb(255 255 255 / 50%),
+        0 0 6px rgb(var(--box-shadow-color) / 90%),
+        0 0 12px rgb(var(--box-shadow-color) / 70%),
+        0 0 18px rgb(var(--box-shadow-color) / 50%),
+        0 0 24px rgb(var(--box-shadow-color) / 30%);
+}
+.now-playing-panel-left-pick { --box-shadow-color: 197 84 34; }
+.now-playing-panel-right-pick { --box-shadow-color: 153 34 197; }
+
+.now-playing-panel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 65%;
+}
