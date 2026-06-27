@@ -2,6 +2,8 @@
     --player-container-x: 25px;
     --player-inside-x: 112px;
     --player-hit-count-container: 77px;
+    --score-difference-x: 981px;
+    --score-difference-span-margin: 10px;
 }
 
 @font-face {
@@ -240,23 +242,59 @@
 }
 
 .score-bar-overlay {
+    --box-shadow-color: white;
+
     position: absolute;
     top: 0;
     height: 100%;
+    box-shadow: 0 0 8px 2px var(--box-shadow-color);
 }
 
-.score-bar-left {
+.score-left-bar {
+    --box-shadow-color: rgb(197 84 34);
+
     right: 50%;
     width: 210px;
     background-color: #ffa330;
-    box-shadow: 0 0 8px 2px rgb(197 84 34);
     border-radius: 4px 0 0 4px;
 }
 
-.score-bar-right {
+.score-right-bar {
+    --box-shadow-color: rgb(153 34 197);
+
     left: 50%;
     width: 210px;
     background-color: #c990ff;
-    box-shadow: 0 0 8px 2px rgb(153 34 197);
     border-radius: 0 4px 4px 0;
 }
+
+/* ----- Score Difference ----- */
+.score-difference {
+    --text-shadow-color: 255 255 255;
+
+    position: absolute;
+    top: 868px;
+    font-size: 28px;
+    color: white;
+    font-weight: 700;
+    font-family: "Alan Sans";
+    text-shadow:
+        0 0 2px rgb(var(--text-shadow-color) / 100%),
+        0 0 4px rgb(var(--text-shadow-color) / 95%),
+        0 0 8px rgb(var(--text-shadow-color) / 80%);
+}
+
+.score-left-difference {
+    --text-shadow-color: 197 84 34
+
+    right: var(--score-difference-x);
+}
+
+.score-right-difference {
+    --text-shadow-color: 153 34 197;
+
+    left: var(--score-difference-x);
+}
+
+.score-left-difference span { margin-left: var(--score-difference-span-margin); }
+.score-right-difference span { margin-right: var(--score-difference-span-margin); }
