@@ -47,17 +47,9 @@
 }
 
 .round-name {
-    --height: 45px;
-
+    position: absolute;
     top: 39px;
-    width: 171px;
-    height: var(--height);
-    line-height: var(--height);
-    color: #EEEEEE;
-    text-align: center;
-    font-family: Caldstone, serif;
-    font-size: 1.5rem;
-    text-shadow: 0 0 13px rgb( 255 255 255 / 0.39 );
+    left: 949px;
 }
 
 /* ----- Player Area ----- */
@@ -285,7 +277,7 @@
 }
 
 .score-left-difference {
-    --text-shadow-color: 197 84 34
+    --text-shadow-color: 197 84 34;
 
     right: var(--score-difference-x);
 }
