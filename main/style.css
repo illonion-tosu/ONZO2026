@@ -1,6 +1,7 @@
 :root {
     --player-container-x: 25px;
     --player-inside-x: 112px;
+    --player-hit-count-container: 77px;
 }
 
 @font-face {
@@ -11,6 +12,12 @@
 @font-face {
     font-family: "Vinique Antique";
     src: url("../fonts/vinque-antique.bold.otf");
+}
+
+@font-face {
+    font-family: "Alan Sans";
+    font-weight: 700;
+    src: url("../fonts/AlanSans-Bold.ttf");
 }
 
 
@@ -125,3 +132,73 @@
     align-items: center;
     margin: -15px;
 }
+
+/* Player Line */
+.player-line {
+    position: absolute;
+    top: 103px;
+    width: 212px;
+    height: 1px;
+    background-color: white;
+}
+.player-left-line { left: var(--player-inside-x); }
+.player-right-line { right: var(--player-inside-x); }
+
+/* Player Hits */
+.player-hits {
+    position: absolute;
+    top: 121px;
+    display: flex;
+}
+.player-left-hits { left: var(--player-inside-x); }
+.player-right-hits {
+    right: var(--player-inside-x);
+    text-align: right;
+}
+
+/* Player Hit Containers */
+.player-hit-number-container {
+    font-size: 21px;
+    font-weight: 700;
+    font-family: "Alan Sans", sans-serif;
+}
+
+.player-hit-count-container {
+    position: absolute;
+    font-size: 21px;
+    font-weight: 700;
+    font-family: "Alan Sans", sans-serif;
+    color: #aeaeae;
+    text-shadow:
+        0 0 8px rgb(255 255 255 / 31%),
+        0 0 16px rgb(255 255 255 / 23%),
+        0 0 29px rgb(255 255 255 / 15%);
+}
+.player-left-hit-count-container { left: var(--player-hit-count-container); }
+.player-right-hit-count-container { right: var(--player-hit-count-container); }
+
+/* Player Hit Texts */
+.player-hit-number-100 {
+    color: #afff7a;
+    text-shadow:
+        0 0 8px rgb(58 255 25 / 31%),
+        0 0 16px rgb(58 255 25 / 23%),
+        0 0 29px rgb(58 255 25 / 15%);
+}
+
+.player-hit-number-50 {
+    color: #7ab9ff;
+    text-shadow:
+        0 0 8px rgb(38 110 255 / 31%),
+        0 0 16px rgb(38 110 255 / 23%),
+        0 0 29px rgb(38 110 255 / 15%);
+}
+
+.player-hit-number-miss {
+    color: #ff7a8a;
+    text-shadow:
+        0 0 8px rgb(255 38 64 / 31%),
+        0 0 16px rgb(255 38 64 / 23%),
+        0 0 29px rgb(255 38 64 / 15%);
+}
+
