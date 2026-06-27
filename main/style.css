@@ -402,3 +402,37 @@
     --color: #fdff65;
     --text-shadow-color: #faff69;
 }
+
+/* Now Playing Bottom Stats */
+.now-playing-bottom-stats {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    font-size: 15px;
+    color: white;
+    font-weight: 700;
+    font-family: "Alan Sans", sans-serif;
+    display: flex;
+    justify-content: space-between;
+    width: 180px;
+}
+
+.now-playing-bottom-bpm {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.now-playing-bottom-bpm-text {
+    --dimension: 16px;
+
+    font-size: 12px;
+    color: black;
+    background-color: white;
+    height: var(--dimension);
+    line-height: var(--dimension);
+    font-weight: 700;
+    font-family: "Alan Sans";
+    text-align: center;
+    padding: 0 3px;
+}
