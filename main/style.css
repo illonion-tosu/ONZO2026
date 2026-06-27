@@ -1,12 +1,18 @@
 :root {
     --player-container-x: 25px;
+    --player-name-x: 112px;
 }
 
 @font-face {
     font-family: Caldstone;
-    font-weight: 600;
     src: url("../fonts/caldstone.semibold.otf")
 }
+
+@font-face {
+    font-family: "Vinique Antique";
+    src: url("../fonts/vinque-antique.bold.otf");
+}
+
 
 /* ----- Whole Page ----- */
 .main {
@@ -53,6 +59,7 @@
 .player-left-container { left: var(--player-container-x); }
 .player-right-container { right: var(--player-container-x); }
 
+/* Player Profile Picture */
 .player-profile-picture {
     --dimension: 96px;
 
@@ -68,3 +75,19 @@
     top: 0;
     left: 0;
 }
+
+/* Player Name */
+.player-name {
+    --height: 26px;
+
+    position: absolute;
+    top: 21px;
+    background-color: white;
+    font-family: "Vinique Antique";
+    font-size: 1.75rem;
+    padding: 0 2px;
+    height: var(--height);
+    line-height: var(--height);
+}
+.player-left-name { left: var(--player-name-x); }
+.player-right-name { right: var(--player-name-x); }
