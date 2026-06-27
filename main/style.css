@@ -1,3 +1,7 @@
+:root {
+    --player-container-x: 25px;
+}
+
 @font-face {
     font-family: Caldstone;
     font-weight: 600;
@@ -39,4 +43,28 @@
     font-family: Caldstone;
     font-size: 1.5rem;
     text-shadow: 0 0 13px rgb( 255 255 255 / 0.39 );
+}
+
+/* ----- Player Area ----- */
+.player-container {
+    position: absolute;
+    top: 857px;
+}
+.player-left-container { left: var(--player-container-x); }
+.player-right-container { right: var(--player-container-x); }
+
+.player-profile-picture {
+    --dimension: 96px;
+
+    width: var(--dimension);
+    height: var(--dimension);
+    border-radius: 15px;
+    background: center / cover;
+    background-image: url("https://a.ppy.sh/9803745")
+}
+
+.player-profile-picture > * {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
