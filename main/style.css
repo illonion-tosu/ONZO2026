@@ -1,6 +1,6 @@
 :root {
     --player-container-x: 25px;
-    --player-name-x: 112px;
+    --player-inside-x: 112px;
 }
 
 @font-face {
@@ -46,7 +46,7 @@
     line-height: var(--height);
     color: #EEEEEE;
     text-align: center;
-    font-family: Caldstone;
+    font-family: Caldstone, serif;
     font-size: 1.5rem;
     text-shadow: 0 0 13px rgb( 255 255 255 / 0.39 );
 }
@@ -83,11 +83,45 @@
     position: absolute;
     top: 21px;
     background-color: white;
-    font-family: "Vinique Antique";
+    font-family: "Vinique Antique", sans-serif;
     font-size: 1.75rem;
     padding: 0 2px;
     height: var(--height);
     line-height: var(--height);
 }
-.player-left-name { left: var(--player-name-x); }
-.player-right-name { right: var(--player-name-x); }
+.player-left-name { left: var(--player-inside-x); }
+.player-right-name { right: var(--player-inside-x); }
+
+/* Player Line 2 */
+.player-line-2 {
+    position: absolute;
+    top: 55px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.player-left-line-2 { left: var(--player-inside-x); }
+.player-right-line-2 {
+    right: var(--player-inside-x);
+    flex-direction: row-reverse;
+}
+
+.player-seed {
+    font-size: 22px;
+    color: white;
+    font-family: Caldstone, serif;
+}
+
+.player-star-container { display: flex; }
+.player-right-star-container { flex-direction: row-reverse; }
+
+.player-star {
+    --dimension: 63px;
+
+    width: var(--dimension);
+    height: var(--dimension);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: -15px;
+}
