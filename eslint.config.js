@@ -30,6 +30,7 @@ module.exports = [
                 requestAnimationFrame: "readonly",
                 axios: "readonly",
                 CountUp: "readonly",
+                CountUpImage: "readonly",
                 ComfyJS: "readonly",
                 MouseEvent: "readonly",
                 Chart: "readonly",
