@@ -72,7 +72,7 @@ socket.onmessage = async event => {
         playerRightProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player2Id}")`
         playerRightNameEl.innerText = clients[1].user.name
         const player = findPlayer(player2Id)
-        if (player) playerLeftSeedEl.innerText = `#${player.player_seed}`
+        if (player) playerRightSeedEl.innerText = `#${player.player_seed}`
     }
 
     // Hits 
@@ -140,5 +140,10 @@ socket.onmessage = async event => {
             scoreRightDifferenceEl.style.opacity = 0
             scoreRightNumberEl.style.opacity = 0
         }
+    }
+
+    // Display scores
+    if (scoreVisible) {
+
     }
 }

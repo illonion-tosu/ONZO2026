@@ -19,3 +19,7 @@ async function submit() {
     link.download = "players.json"
     link.click()
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("button").addEventListener("click", submit)
+})
