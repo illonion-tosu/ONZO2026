@@ -298,8 +298,7 @@
     left: var(--score-difference-x);
 }
 
-.score-left-difference span { margin-left: var(--score-difference-span-margin); }
-.score-right-difference span { margin-right: var(--score-difference-span-margin); }
+.score-difference span { margin-left: var(--score-difference-span-margin); }
 
 /* ----- Now Playing Panel ----- */
 .now-playing-panel {

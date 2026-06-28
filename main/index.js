@@ -47,8 +47,17 @@ const scoreLeftNumberEl = document.getElementById("score-left-number")
 const scoreBarEl = document.getElementById("score-bar")
 const scoreLeftDifferenceEl = document.getElementById("score-left-difference")
 const scoreRightDifferenceEl = document.getElementById("score-right-difference")
+const scoreLeftDifferenceNumberEl = document.getElementById("score-left-difference-number")
+const scoreRightDifferenceNumberEl = document.getElementById("score-right-difference-number")
 const scoreRightNumberEl = document.getElementById("score-right-number")
 let scoreVisible
+
+const animations = {
+    scoreLeftNumber: new CountUpImage(scoreLeftNumberEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: ".", suffix: ""}),
+    scoreRightNumber: new CountUpImage(scoreRightNumberEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: ".", suffix: ""}),
+    scoreLeftDifferenceNumber: new CountUp(scoreLeftDifferenceNumberEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: ".", suffix: ""}),
+    scoreRightDifferenceNumber: new CountUp(scoreRightDifferenceNumberEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: ".", suffix: ""}),
+}
 
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
@@ -125,7 +134,7 @@ socket.onmessage = async event => {
 
     // Score visibility
     if (scoreVisible !== data.tourney.scoreVisible) {
-        scoreVisible = data.tourney.scorevisible
+        scoreVisible = data.tourney.scoreVisible
         
         if (scoreVisible) {
             scoreLeftNumberEl.style.opacity = 1
@@ -144,6 +153,13 @@ socket.onmessage = async event => {
 
     // Display scores
     if (scoreVisible) {
+        animations.scoreLeftNumber.update(data.tourney.totalScore.left)
+        animations.scoreRightNumber.update(data.tourney.totalScore.right)
 
+        const scoreDifference = Math.abs(data.tourney.totalScore.left - data.tourney.totalScore.right)
+        animations.scoreLeftDifferenceNumber.update(scoreDifference)
+        animations.scoreRightDifferenceNumber.update(scoreDifference)
+
+        console.log(scoreDifference)
     }
 }

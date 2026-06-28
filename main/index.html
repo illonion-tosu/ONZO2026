@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios@1.16.0/dist/axios.min.js"></script>
     <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
     <script src="../_shared/deps/countUp.js"></script>
+    <script src="../_shared/deps/countUpImage.js"></script>
 </head>
 <body>
     <div class="main">
@@ -69,8 +70,8 @@
         </div>
 
         <!-- Score Difference -->
-        <div class="score-difference score-left-difference" id="score-left-difference">+<span>34,567</span></div>
-        <div class="score-difference score-right-difference" id="score-right-difference">+<span>34,567</span></div>
+        <div class="score-difference score-left-difference" id="score-left-difference">+<span id="score-left-difference-number">34,567</span></div>
+        <div class="score-difference score-right-difference" id="score-right-difference">+<span id="score-right-difference-number">34,567</span></div>
 
         <!-- Score Number Right -->
         <div class="score-number score-right-number" id="score-right-number">
