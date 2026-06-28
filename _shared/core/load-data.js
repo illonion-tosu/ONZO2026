@@ -7,6 +7,10 @@ export async function getBeatmaps() {
     return allBeatmaps
 }
 
+export function findBeatmap(beatmap_id) {
+    return allBeatmaps.find(beatmap => Number(beatmap.beatmap_id) === Number(beatmap_id))
+}
+
 export async function getPlayers() {
     const response = await axios.get("../_data/players.json")
     allBeatmaps = response.data

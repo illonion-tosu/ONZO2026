@@ -1,11 +1,15 @@
-import { getBeatmaps, getPlayers, findPlayer } from "../_shared/core/load-data.js"
-import { delay } from "../_shared/core/utils.js"
+import { getBeatmaps, findBeatmap, getPlayers, findPlayer } from "../_shared/core/load-data.js"
+import { delay, setLengthDisplay } from "../_shared/core/utils.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
 const roundAreaEl = document.getElementById("round-area")
 const roundNameEl = document.getElementById("round-name")
 
+let allBeatmaps
 getBeatmaps().then(async beatmaps => {
+    // Load beatmaps
+    allBeatmaps = beatmaps
+
     // Set round images
     roundAreaEl.setAttribute("src", `static/bracket-title/${beatmaps.roundName}-border.png`)
     roundNameEl.setAttribute("src", `static/bracket-title/${beatmaps.roundName}.png`)
@@ -66,6 +70,24 @@ const scoreLeftPointEndEl = document.getElementById("score-left-point-end")
 const scoreRightPointEndEl = document.getElementById("score-right-point-end")
 const scoreMiddlePointEndEl = document.getElementById("score-middle-point-end")
 const scoreBarMaxWidth = 705 / 2
+
+// Now Playing Metadata
+const nowPlayingSongTitleEl = document.getElementById("now-playing-song-title")
+const nowPlayingArtistNameEl = document.getElementById("now-playing-artist-name")
+const nowPlayingMapperNameEl = document.getElementById("now-playing-mapper-name")
+const nowPlayingDifficultyEl = document.getElementById("now-playing-difficulty")
+let currentId, currentChecksum, currentMappoolBeatmap
+
+// Now Playing Stats
+const nowPlayingStatNumberCsEl = document.getElementById("now-playing-stat-number-cs")
+const nowPlayingStatNumberArEl = document.getElementById("now-playing-stat-number-ar")
+const nowPlayingStatNumberOdEl = document.getElementById("now-playing-stat-number-od")
+const nowPlayingStatNumberSrEl = document.getElementById("now-playing-stat-number-sr")
+const nowPlayingBottomBpmNumberEl = document.getElementById("now-playing-bottom-bpm-number")
+const nowPlayingBottomTimeCurrentEl = document.getElementById("now-playing-bottom-time-current")
+const nowPlayingBottomTimeEndEl = document.getElementById("now-playing-bottom-time-end")
+const nowPlayingStatsEl = document.getElementById("now-playing-stats")
+const nowPlayingBottomStatsEl = document.getElementById("now-playing-bottom-stats")
 
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
@@ -130,7 +152,7 @@ socket.onmessage = async event => {
             pointImg.setAttribute("src", `static/point/point-${status}.png`)
 
             playerStar.append(pointImg)
-            return pointImg
+            return playerStar
         }
 
         await delay(250)
@@ -219,4 +241,79 @@ socket.onmessage = async event => {
             scoreRightPointEndEl.style.left = `${scoreBarMaxWidth + scoreBarRectangleWidth}px`
         }
     }
+
+    // Now Playing
+    if ((currentId !== data.beatmap.id || currentChecksum !== data.beatmap.checksum) && allBeatmaps) {
+        currentId = data.beatmap.id
+        currentChecksum = data.beatmap.checksum
+
+        nowPlayingSongTitleEl.textContent = data.beatmap.title.toUpperCase()
+        nowPlayingArtistNameEl.textContent = data.beatmap.artist.toUpperCase()
+        nowPlayingMapperNameEl.textContent = data.beatmap.mapper.toUpperCase()
+        nowPlayingDifficultyEl.textContent = `[${data.beatmap.version}]`
+
+        currentMappoolBeatmap = findBeatmap(currentId)
+        if (currentMappoolBeatmap) {
+            let currentSr = Math.round(Number(currentMappoolBeatmap.difficultyrating) * 100) / 100
+            let currentCs = Math.round(Number(currentMappoolBeatmap.diff_size) * 10) / 10
+            let currentAr = Math.round(Number(currentMappoolBeatmap.diff_approach) * 10) / 10
+            let currentOd = Math.round(Number(currentMappoolBeatmap.diff_overall) * 10) / 10
+            let currentBpm = Number(currentMappoolBeatmap.bpm)
+            // let currentLength = Number(currentMappoolBeatmap.hit_length)
+
+            switch (currentMappoolBeatmap.mod) {
+                case "HR":
+                    currentCs = Math.min(Math.round(Number(currentMappoolBeatmap.diff_size) * 1.3 * 10) / 10, 10)
+                    currentAr = Math.min(Math.round(Number(currentMappoolBeatmap.diff_approach) * 1.4 * 10) / 10, 10)
+                    currentOd = Math.min(Math.round(Number(currentMappoolBeatmap.diff_overall) * 1.4 * 10) / 10, 10)
+                    break
+                case "DT":
+                    if (currentAr > 5) currentAr = Math.round((((1200 - (( 1200 - (currentAr - 5) * 150) * 2 / 3)) / 150) + 5) * 10) / 10
+                    else currentAr = Math.round((1800 - ((1800 - currentAr * 120) * 2 / 3)) / 120 * 10) / 10
+                    currentOd = Math.round((79.5 - (( 79.5 - 6 * currentOd) * 2 / 3)) / 6 * 10) / 10
+                    currentBpm = Math.round(currentBpm * 1.5)
+                    // currentLength = Math.round(currentLength / 1.5)
+                    break
+                case "EZ":
+                    currentCs /= 2
+                    currentAr /= 2
+                    currentOd /= 2
+            }
+
+            nowPlayingStatNumberCsEl.textContent = currentCs
+            nowPlayingStatNumberArEl.textContent = currentAr
+            nowPlayingStatNumberOdEl.textContent = currentOd
+            nowPlayingStatNumberSrEl.textContent = currentSr
+            nowPlayingBottomBpmNumberEl.textCotnent = currentBpm
+            setBottomStatsElWidth()
+        }
+
+        if (!currentMappoolBeatmap) {
+            const beatmapStats = data.beatmap.stats
+            nowPlayingStatNumberCsEl.textContent = beatmapStats.cs.converted
+            nowPlayingStatNumberArEl.textContent = beatmapStats.ar.converted
+            nowPlayingStatNumberOdEl.textContent = beatmapStats.od.converted
+            nowPlayingStatNumberSrEl.textContent = beatmapStats.stars.total
+            nowPlayingBottomBpmNumberEl.textContent = Math.round(beatmapStats.bpm.common)
+            setBottomStatsElWidth()
+        }
+    }
+
+    // Timing
+    let liveTime = data.beatmap.time.live
+    const lastObjectTime = data.beatmap.time.lastObject
+    if (liveTime > lastObjectTime) liveTime = lastObjectTime
+
+    if (currentMappoolBeatmap && currentMappoolBeatmap.mod === "DT") {
+        nowPlayingBottomTimeCurrentEl.textContent = setLengthDisplay(Math.round(liveTime * 3 / 2 / 1000))
+        nowPlayingBottomTimeEndEl.textContent = setLengthDisplay(Math.round(lastObjectTime * 3 / 2 / 1000))
+    } else {
+        nowPlayingBottomTimeCurrentEl.textContent = setLengthDisplay(Math.round(liveTime / 1000))
+        nowPlayingBottomTimeEndEl.textContent = setLengthDisplay(Math.round(lastObjectTime / 1000))
+    }
+}
+
+async function setBottomStatsElWidth() {
+    await delay(50)
+    nowPlayingBottomStatsEl.style.width = `${nowPlayingStatsEl.getBoundingClientRect().width}px`
 }
