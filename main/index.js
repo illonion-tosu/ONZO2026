@@ -79,6 +79,7 @@ const nowPlayingDifficultyEl = document.getElementById("now-playing-difficulty")
 let currentId, currentChecksum, currentMappoolBeatmap
 
 // Now Playing Stats
+const nowPlayingPanelEl = document.getElementById("now-playing-panel")
 const nowPlayingStatNumberCsEl = document.getElementById("now-playing-stat-number-cs")
 const nowPlayingStatNumberArEl = document.getElementById("now-playing-stat-number-ar")
 const nowPlayingStatNumberOdEl = document.getElementById("now-playing-stat-number-od")
@@ -247,6 +248,7 @@ socket.onmessage = async event => {
         currentId = data.beatmap.id
         currentChecksum = data.beatmap.checksum
 
+        nowPlayingPanelEl.style.backgroundImage = `url("${location.origin}/Songs/${data.folders.beatmap}/${data.files.background}")`
         nowPlayingSongTitleEl.textContent = data.beatmap.title.toUpperCase()
         nowPlayingArtistNameEl.textContent = data.beatmap.artist.toUpperCase()
         nowPlayingMapperNameEl.textContent = data.beatmap.mapper.toUpperCase()
