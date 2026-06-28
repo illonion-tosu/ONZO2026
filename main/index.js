@@ -42,6 +42,14 @@ const playerRightHitNumberMissEl = document.getElementById("player-right-hit-num
 let player1Id, player2Id
 let currentBestOf, currentLeftStars, currentRightStars
 
+// Score Visibility
+const scoreLeftNumberEl = document.getElementById("score-left-number")
+const scoreBarEl = document.getElementById("score-bar")
+const scoreLeftDifferenceEl = document.getElementById("score-left-difference")
+const scoreRightDifferenceEl = document.getElementById("score-right-difference")
+const scoreRightNumberEl = document.getElementById("score-right-number")
+let scoreVisible
+
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
     const data = JSON.parse(event.data)
@@ -57,14 +65,14 @@ socket.onmessage = async event => {
         playerLeftProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player1Id}")`
         playerLeftNameEl.innerText = clients[0].user.name
         const player = findPlayer(player1Id)
-        if (player) playerLeftSeedEl.innerText = player.player_seed
+        if (player) playerLeftSeedEl.innerText = `#${player.player_seed}`
     }
     if (player2Id !== clients[1].user.id) {
         player2Id = clients[1].user.id
         playerRightProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player2Id}")`
         playerRightNameEl.innerText = clients[1].user.name
         const player = findPlayer(player2Id)
-        if (player) playerLeftSeedEl.innerText = player.player_seed
+        if (player) playerLeftSeedEl.innerText = `#${player.player_seed}`
     }
 
     // Hits 
@@ -113,5 +121,24 @@ socket.onmessage = async event => {
         // Adjust width of line
         playerLeftLineEl.style.width = `${playerLeftLine2El.getBoundingClientRect().width}px`
         playerRightLineEl.style.width = `${playerRightLine2El.getBoundingClientRect().width}px`
+    }
+
+    // Score visibility
+    if (scoreVisible !== data.tourney.scoreVisible) {
+        scoreVisible = data.tourney.scorevisible
+        
+        if (scoreVisible) {
+            scoreLeftNumberEl.style.opacity = 1
+            scoreBarEl.style.opacity = 1
+            scoreLeftDifferenceEl.style.opacity = 1
+            scoreRightDifferenceEl.style.opacity = 1
+            scoreRightNumberEl.style.opacity = 1
+        } else {
+            scoreLeftNumberEl.style.opacity = 0
+            scoreBarEl.style.opacity = 0
+            scoreLeftDifferenceEl.style.opacity = 0
+            scoreRightDifferenceEl.style.opacity = 0
+            scoreRightNumberEl.style.opacity = 0
+        }
     }
 }

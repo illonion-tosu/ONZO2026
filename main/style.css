@@ -201,6 +201,8 @@
     position: absolute;
     top: 834px;
     transform: translateX(-50%);
+    opacity: 1;
+    transition: 500ms ease-in-out;
 }
 
 .score-left-number {
@@ -223,6 +225,8 @@
     transform: translateX(-50%);
     width: 705px;
     height: 8px;
+    opacity: 1;
+    transition: 500ms ease-in-out;
 }
 
 .score-bar-background {
@@ -274,6 +278,8 @@
         0 0 2px rgb(var(--text-shadow-color) / 100%),
         0 0 4px rgb(var(--text-shadow-color) / 95%),
         0 0 8px rgb(var(--text-shadow-color) / 80%);
+    opacity: 1;
+    transition: 500ms ease-in-out;
 }
 
 .score-left-difference {
