@@ -5,13 +5,13 @@
   } else if (typeof exports === 'object') {
     module.exports = factory(require, exports, module);
   } else {
-    root.CountUp = factory();
+    root.CountUpImage = factory();
   }
 }(this, function(require, exports, module) {
 
 /*
 
-	countUp.js
+	CountUpImage.js
 	by @inorganik
 
 */
@@ -125,7 +125,7 @@ var CountUpImage = function(target, startVal, endVal, decimals, duration, option
 		self.error = '';
 		self.d = (typeof target === 'string') ? document.getElementById(target) : target;
 		if (!self.d) { 
-			self.error = '[CountUp] target is null or undefined'
+			self.error = '[CountUpImage] target is null or undefined'
 			return false;
 		}
 		self.startVal = Number(startVal);
@@ -141,7 +141,7 @@ var CountUpImage = function(target, startVal, endVal, decimals, duration, option
 			return true;
 		}
 		else {
-			self.error = '[CountUp] startVal ('+startVal+') or endVal ('+endVal+') is not a number';
+			self.error = '[CountUpImage] startVal ('+startVal+') or endVal ('+endVal+') is not a number';
 			return false;
 		}
 	};
@@ -158,7 +158,13 @@ var CountUpImage = function(target, startVal, endVal, decimals, duration, option
 			this.d.textContent = result;
 		}
 		else {
-			this.d.innerHTML = result;
+			result = result.toString()
+			this.d.innerHTML = ""
+			for (let i = 0; i < result.length; i++) {
+				const image = document.createElement("img")
+				image.setAttribute("src", `static/score-numbers/score-${result[i] === "," ? "comma" : result[i]}.png`)
+				this.d.append(image)
+			}
 		}
 	};
 
@@ -239,7 +245,7 @@ var CountUpImage = function(target, startVal, endVal, decimals, duration, option
 		if (!self.initialize()) return;
 		newEndVal = Number(newEndVal);
 		if (!ensureNumber(newEndVal)) {
-			self.error = '[CountUp] update() - new endVal is not a number: '+newEndVal;
+			self.error = '[CountUpImage] update() - new endVal is not a number: '+newEndVal;
 			return;
 		}
 		self.error = '';
@@ -257,6 +263,6 @@ var CountUpImage = function(target, startVal, endVal, decimals, duration, option
 	if (self.initialize()) self.printValue(self.startVal);
 };
 
-return CountUp;
+return CountUpImage;
 
 }));

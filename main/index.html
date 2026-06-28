@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/axios@1.16.0/dist/axios.min.js"></script>
     <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
     <script src="../_shared/deps/countUp.js"></script>
+    <script src="../_shared/deps/countUpImage.js"></script>
 </head>
 <body>
     <div class="main">
@@ -27,13 +28,7 @@
             <div class="player-name player-left-name" id="player-left-name">rumii</div>
             <div class="player-line-2 player-left-line-2" id="player-left-line-2">
                 <div class="player-seed" id="player-left-seed">#32</div>
-                <div class="player-star-container player-left-star-container" id="player-left-star-container">
-                    <div class="player-star"><img src="static/point/point-fill.png"></div>
-                    <div class="player-star"><img src="static/point/point-fill.png"></div>
-                    <div class="player-star"><img src="static/point/point-fill.png"></div>
-                    <div class="player-star"><img src="static/point/point-empty.png"></div>
-                    <div class="player-star"><img src="static/point/point-empty.png"></div>
-                </div>
+                <div class="player-star-container player-left-star-container" id="player-left-star-container"></div>
             </div>
             <div class="player-line player-left-line" id="player-left-line"></div>
             <div class="player-hits player-left-hits">
@@ -43,34 +38,29 @@
                     <div class="player-hit-number-miss">MISS</div>
                 </div>
                 <div class="player-hit-count-container player-left-hit-count-container">
-                    <div id="player-left-hit-number-100">10</div>
-                    <div id="player-left-hit-number-50">4</div>
-                    <div id="player-left-hit-number-miss">1</div>
+                    <div id="player-left-hit-number-100"></div>
+                    <div id="player-left-hit-number-50"></div>
+                    <div id="player-left-hit-number-miss"></div>
                 </div>
             </div>
         </div>
 
         <!-- Score Number Left -->
-        <div class="score-number score-left-number" id="score-left-number">
-            <img src="static/score-numbers/score-1.png">
-            <img src="static/score-numbers/score-2.png">
-            <img src="static/score-numbers/score-3.png">
-            <img src="static/score-numbers/score-comma.png">
-            <img src="static/score-numbers/score-4.png">
-            <img src="static/score-numbers/score-5.png">
-            <img src="static/score-numbers/score-6.png">
-        </div>
+        <div class="score-number score-left-number" id="score-left-number"></div>
 
         <!-- Score Bar -->
         <div class="score-bar" id="score-bar">
             <div class="score-bar-background"></div>
-            <div class="score-bar-overlay score-left-bar"></div>
-            <div class="score-bar-overlay score-right-bar"></div>
+            <div class="score-bar-overlay score-left-bar" id="score-left-bar"></div>
+            <div class="score-bar-overlay score-right-bar" id="score-right-bar"></div>
+            <img class="score-bar-end-point score-left-point-end" id="score-left-point-end" src="static/score-point-end.png">
+            <img class="score-bar-end-point score-right-point-end" id="score-right-point-end" src="static/score-point-end.png">
+            <img class="score-bar-end-point score-middle-point-end" id="score-middle-point-end" src="static/score-point-end.png">
         </div>
 
         <!-- Score Difference -->
-        <div class="score-difference score-left-difference" id="score-left-difference">+<span>34,567</span></div>
-        <div class="score-difference score-right-difference" id="score-right-difference">+<span>34,567</span></div>
+        <div class="score-difference score-left-difference" id="score-left-difference">+<span id="score-left-difference-number">34,567</span></div>
+        <div class="score-difference score-right-difference" id="score-right-difference">+<span id="score-right-difference-number">34,567</span></div>
 
         <!-- Score Number Right -->
         <div class="score-number score-right-number" id="score-right-number">
@@ -88,35 +78,35 @@
         <!-- Now Playing Panel -->
         <div class="now-playing-panel now-playing-panel-left-pick" id="now-playing-panel">
             <div class="now-playing-panel-overlay"></div>
-            <div class="now-playing-metadata now-playing-song-title">SONG-TITLESONG-TITLESONG-TITLESONG-TITLE</div>
-            <div class="now-playing-metadata now-playing-artist">ARTIST</div>
+            <div class="now-playing-metadata now-playing-song-title" id="now-playing-song-title">SONG-TITLESONG-TITLESONG-TITLESONG-TITLE</div>
+            <div class="now-playing-metadata now-playing-artist" id="now-playing-artist-name">ARTIST</div>
             <div class="now-playing-mapper-difficulty">
-                <div class="now-playing-mapper">mapped by <span>MAPPER</span></div>
-                <div class="now-playing-difficulty">[a very long difficulty name that cannot be named]</div>
+                <div class="now-playing-mapper">mapped by <span id="now-playing-mapper-name">MAPPER</span></div>
+                <div class="now-playing-difficulty" id="now-playing-difficulty">[a very long difficulty name that cannot be named]</div>
             </div>
-            <div class="now-playing-stats">
+            <div class="now-playing-stats" id="now-playing-stats">
                 <div class="now-playing-individual-stat">
                     <div class="now-playing-stat-text now-playing-stat-text-cs">CS</div>
-                    <div class="now-playing-stat-text now-playing-stat-number">5.0</div>
+                    <div class="now-playing-stat-text now-playing-stat-number" id="now-playing-stat-number-cs">5.0</div>
                 </div>
                 <div class="now-playing-individual-stat">
                     <div class="now-playing-stat-text now-playing-stat-text-ar">AR</div>
-                    <div class="now-playing-stat-text now-playing-stat-number">9.3</div>
+                    <div class="now-playing-stat-text now-playing-stat-number" id="now-playing-stat-number-ar">9.3</div>
                 </div>
                 <div class="now-playing-individual-stat">
                     <div class="now-playing-stat-text now-playing-stat-text-od">OD</div>
-                    <div class="now-playing-stat-text now-playing-stat-number">8.5</div>
+                    <div class="now-playing-stat-text now-playing-stat-number" id="now-playing-stat-number-od">8.5</div>
                 </div>
                 <div class="now-playing-individual-stat">
                     <div class="now-playing-stat-text now-playing-stat-text-sr">SR</div>
-                    <div class="now-playing-stat-text now-playing-stat-number">6.21</div>
+                    <div class="now-playing-stat-text now-playing-stat-number" id="now-playing-stat-number-sr">6.21</div>
                 </div>
             </div>
-            <div class="now-playing-bottom-stats">
-                <div class="now-playing-bottom-time">2:34 / 5:43</div>
+            <div class="now-playing-bottom-stats" id="now-playing-bottom-stats">
+                <div class="now-playing-bottom-time"><span id="now-playing-bottom-time-current">2:34</span> / <span id="now-playing-bottom-time-end">5:43</span></div>
                 <div class="now-playing-bottom-pipe">|</div>
                 <div class="now-playing-bottom-bpm">
-                    <div class="now-playing-bottom-bpm-number">138</div>
+                    <div class="now-playing-bottom-bpm-number" id="now-playing-bottom-bpm-number">138</div>
                     <div class="now-playing-bottom-bpm-text">BPM</div>
                 </div>
             </div>
