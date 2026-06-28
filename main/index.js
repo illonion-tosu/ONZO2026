@@ -171,7 +171,7 @@ socket.onmessage = async event => {
         animations.scoreRightDifferenceNumber.update(scoreDifference)
 
         // Set score bar width
-        const scoreBarDifferencePercent = Math.min(scoreDifference / (300000 * multiplier), 1)
+        const scoreBarDifferencePercent = Math.min(scoreDifference / 300000, 1)
         const scoreBarRectangleWidth = Math.min(Math.pow(scoreBarDifferencePercent, 0.5) * scoreBarMaxWidth, scoreBarMaxWidth)
 
         // Score bar
@@ -186,9 +186,9 @@ socket.onmessage = async event => {
             scoreRightPointEndEl.style.display = "none"
             scoreMiddlePointEndEl.style.display = "none"
 
-            scoreLeftPointEndEl.style.right = `${scoreBarMaxWidth / 2 + scoreBarRectangleWidth}px`
-            scoreMiddlePointEndEl.style.left = `${scoreBarMaxWidth / 2}px`
-            scoreRightPointEndEl.style.left = `${scoreBarMaxWidth / 2}px`
+            scoreLeftPointEndEl.style.right = `${scoreBarMaxWidth + scoreBarRectangleWidth}px`
+            scoreMiddlePointEndEl.style.left = `${scoreBarMaxWidth}px`
+            scoreRightPointEndEl.style.left = `${scoreBarMaxWidth}px`
         } else if (currentLeftScore === currentRightScore) {
             scoreLeftDifferenceEl.style.display = "none"
             scoreRightDifferenceEl.style.display = "none"
@@ -200,9 +200,9 @@ socket.onmessage = async event => {
             scoreRightPointEndEl.style.display = "block"
             scoreMiddlePointEndEl.style.display = "none"
 
-            scoreLeftPointEndEl.style.right = `${scoreBarMaxWidth / 2}px`
-            scoreMiddlePointEndEl.style.left = `${scoreBarMaxWidth / 2}px`
-            scoreRightPointEndEl.style.left = `${scoreBarMaxWidth / 2}px`
+            scoreLeftPointEndEl.style.right = `${scoreBarMaxWidth}px`
+            scoreMiddlePointEndEl.style.left = `${scoreBarMaxWidth}px`
+            scoreRightPointEndEl.style.left = `${scoreBarMaxWidth}px`
         } else if (currentLeftScore < currentRightScore) {
             scoreLeftDifferenceEl.style.display = "none"
             scoreRightDifferenceEl.style.display = "block"
@@ -214,9 +214,9 @@ socket.onmessage = async event => {
             scoreRightPointEndEl.style.display = "none"
             scoreMiddlePointEndEl.style.display = "none"
 
-            scoreLeftPointEndEl.style.right = `${scoreBarMaxWidth / 2}px`
-            scoreMiddlePointEndEl.style.left = `${scoreBarMaxWidth / 2}px`
-            scoreRightPointEndEl.style.left = `${scoreBarMaxWidth / 2 + scoreBarRectangleWidth}px`
+            scoreLeftPointEndEl.style.right = `${scoreBarMaxWidth}px`
+            scoreMiddlePointEndEl.style.left = `${scoreBarMaxWidth}px`
+            scoreRightPointEndEl.style.left = `${scoreBarMaxWidth + scoreBarRectangleWidth}px`
         }
     }
 }
