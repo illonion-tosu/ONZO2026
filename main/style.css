@@ -4,6 +4,7 @@
     --player-hit-count-container: 77px;
     --score-difference-x: 981px;
     --score-difference-span-margin: 10px;
+    --score-bar-width: 705px;
 }
 
 @font-face {
@@ -227,7 +228,7 @@
     top: 853px;
     left: 50%;
     transform: translateX(-50%);
-    width: 705px;
+    width: var(--score-bar-width);
     height: 8px;
     opacity: 1;
     transition: 500ms ease-in-out;
@@ -246,15 +247,16 @@
 
     position: absolute;
     top: 0;
+    width: 210px;
     height: 100%;
     box-shadow: 0 0 8px 2px var(--box-shadow-color);
+    transition: 500ms ease-in-out;
 }
 
 .score-left-bar {
     --box-shadow-color: rgb(197 84 34);
 
     right: 50%;
-    width: 210px;
     background-color: #ffa330;
     border-radius: 4px 0 0 4px;
 }
@@ -263,9 +265,24 @@
     --box-shadow-color: rgb(153 34 197);
 
     left: 50%;
-    width: 210px;
     background-color: #c990ff;
     border-radius: 0 4px 4px 0;
+}
+
+.score-bar-end-point {
+    position: absolute;
+    top: 50%;
+    transition: 500ms ease-in-out;
+}
+
+.score-left-point-end {
+    right: calc(var(--score-bar-width) / 2);
+    transform: translate(50%, -50%);
+}
+
+.score-right-point-end, .score-middle-point-end {
+    left: calc(var(--score-bar-width) / 2);
+    transform: translate(-50%, -50%);
 }
 
 /* ----- Score Difference ----- */

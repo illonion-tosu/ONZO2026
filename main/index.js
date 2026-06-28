@@ -59,6 +59,14 @@ const animations = {
     scoreRightDifferenceNumber: new CountUp(scoreRightDifferenceNumberEl, 0, 0, 0, 0.2, { useEasing: true, useGrouping: true, separator: ",", decimal: ".", suffix: ""}),
 }
 
+// Score Bar
+const scoreLeftBarEl = document.getElementById("score-left-bar")
+const scoreRightBarEl = document.getElementById("score-right-bar")
+const scoreLeftPointEndEl = document.getElementById("score-left-point-end")
+const scoreRightPointEndEl = document.getElementById("score-right-point-end")
+const scoreMiddlePointEndEl = document.getElementById("score-middle-point-end")
+const scoreBarMaxWidth = 705 / 2
+
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
     const data = JSON.parse(event.data)
@@ -153,13 +161,62 @@ socket.onmessage = async event => {
 
     // Display scores
     if (scoreVisible) {
-        animations.scoreLeftNumber.update(data.tourney.totalScore.left)
-        animations.scoreRightNumber.update(data.tourney.totalScore.right)
+        let currentLeftScore = data.tourney.totalScore.left
+        let currentRightScore = data.tourney.totalScore.right
+        animations.scoreLeftNumber.update(currentLeftScore)
+        animations.scoreRightNumber.update(currentRightScore)
 
-        const scoreDifference = Math.abs(data.tourney.totalScore.left - data.tourney.totalScore.right)
+        const scoreDifference = Math.abs(currentLeftScore - currentRightScore)
         animations.scoreLeftDifferenceNumber.update(scoreDifference)
         animations.scoreRightDifferenceNumber.update(scoreDifference)
 
-        console.log(scoreDifference)
+        // Set score bar width
+        const scoreBarDifferencePercent = Math.min(scoreDifference / (300000 * multiplier), 1)
+        const scoreBarRectangleWidth = Math.min(Math.pow(scoreBarDifferencePercent, 0.5) * scoreBarMaxWidth, scoreBarMaxWidth)
+
+        // Score bar
+        if (currentLeftScore > currentRightScore) {
+            scoreLeftDifferenceEl.style.display = "block"
+            scoreRightDifferenceEl.style.display = "none"
+
+            scoreLeftBarEl.style.width = `${scoreBarRectangleWidth}px`
+            scoreRightBarEl.style.width = "0px"
+
+            scoreLeftPointEndEl.style.display = "block"
+            scoreRightPointEndEl.style.display = "none"
+            scoreMiddlePointEndEl.style.display = "none"
+
+            scoreLeftPointEndEl.style.right = `${scoreBarMaxWidth / 2 + scoreBarRectangleWidth}px`
+            scoreMiddlePointEndEl.style.left = `${scoreBarMaxWidth / 2}px`
+            scoreRightPointEndEl.style.left = `${scoreBarMaxWidth / 2}px`
+        } else if (currentLeftScore === currentRightScore) {
+            scoreLeftDifferenceEl.style.display = "none"
+            scoreRightDifferenceEl.style.display = "none"
+
+            scoreLeftBarEl.style.width = "0px"
+            scoreRightBarEl.style.width = "0px"
+
+            scoreLeftPointEndEl.style.display = "none"
+            scoreRightPointEndEl.style.display = "block"
+            scoreMiddlePointEndEl.style.display = "none"
+
+            scoreLeftPointEndEl.style.right = `${scoreBarMaxWidth / 2}px`
+            scoreMiddlePointEndEl.style.left = `${scoreBarMaxWidth / 2}px`
+            scoreRightPointEndEl.style.left = `${scoreBarMaxWidth / 2}px`
+        } else if (currentLeftScore < currentRightScore) {
+            scoreLeftDifferenceEl.style.display = "none"
+            scoreRightDifferenceEl.style.display = "block"
+
+            scoreLeftBarEl.style.width = "0px"
+            scoreRightBarEl.style.width = `${scoreBarRectangleWidth}px`
+
+            scoreLeftPointEndEl.style.display = "none"
+            scoreRightPointEndEl.style.display = "none"
+            scoreMiddlePointEndEl.style.display = "none"
+
+            scoreLeftPointEndEl.style.right = `${scoreBarMaxWidth / 2}px`
+            scoreMiddlePointEndEl.style.left = `${scoreBarMaxWidth / 2}px`
+            scoreRightPointEndEl.style.left = `${scoreBarMaxWidth / 2 + scoreBarRectangleWidth}px`
+        }
     }
 }
