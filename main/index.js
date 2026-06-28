@@ -1,4 +1,4 @@
-import { getBeatmaps } from "../_shared/core/beatmaps.js"
+import { getBeatmaps, getPlayers, findPlayer } from "../_shared/core/load-data.js"
 import { delay } from "../_shared/core/utils.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
@@ -17,6 +17,8 @@ getBeatmaps().then(async beatmaps => {
     roundNameEl.style.top = `${35 + roundAreaElHeight / 2}px`
     roundNameEl.style.left = `${949 + roundAreaElWidth / 2}px`
 })
+
+getPlayers()
 
 /* Player Details */
 const playerLeftProfilePictureEl = document.getElementById("player-left-profile-picture")
@@ -54,11 +56,15 @@ socket.onmessage = async event => {
         player1Id = clients[0].user.id
         playerLeftProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player1Id}")`
         playerLeftNameEl.innerText = clients[0].user.name
+        const player = findPlayer(player1Id)
+        if (player) playerLeftSeedEl.innerText = player.player_seed
     }
     if (player2Id !== clients[1].user.id) {
         player2Id = clients[1].user.id
         playerRightProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player2Id}")`
         playerRightNameEl.innerText = clients[1].user.name
+        const player = findPlayer(player2Id)
+        if (player) playerLeftSeedEl.innerText = player.player_seed
     }
 
     // Hits 

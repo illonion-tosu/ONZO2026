@@ -4,9 +4,9 @@ async function submit() {
     const textareaElValue = textareaEl.value
     const textAreaElValueSplit = textareaElValue.split("\n")
     for (let i = 0; i < textAreaElValueSplit.length; i++) {
-        const textAreaElValueSplitSplit = textAreaElValueSplit[i].split("\t")
+        const textAreaElValueSplitSplit = textAreaElValueSplit[i].split(",")
         const teamStat = {
-            "player_name": textAreaElValueSplitSplit[0],
+            "player_id": Number(textAreaElValueSplitSplit[0]),
             "player_seed": Number(textAreaElValueSplitSplit[1]),
         }
         teamStats.push(teamStat)
