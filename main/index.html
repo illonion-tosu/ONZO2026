@@ -8,24 +8,26 @@
     <link rel="stylesheet" href="style.css">
 
     <script src="https://cdn.jsdelivr.net/npm/axios@1.16.0/dist/axios.min.js"></script>
+    <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
+    <script src="../_shared/deps/countUp.js"></script>
 </head>
 <body>
     <div class="main">
         <!-- Top Area -->
         <img class="logo" src="static/logo.png">
-        <img class="round-area" id="round-area" src="static/bracket-title/f-border.png">
-        <img class="round-name" id="round-name" src="static/bracket-title/f.png">
+        <img class="round-area" id="round-area">
+        <img class="round-name" id="round-name">
         
         <!-- Player Left -->
         <div class="player-container player-left-container">
-            <div class="player-profile-picture">
+            <div class="player-profile-picture" id="player-left-profile-picture">
                 <img src="static/profile-picture/avatar-glass-layer-1.png">
                 <img src="static/profile-picture/avatar-glass-layer-2.png">
             </div>
-            <div class="player-name player-left-name">rumii</div>
-            <div class="player-line-2 player-left-line-2">
-                <div class="player-seed">#32</div>
-                <div class="player-star-container player-left-star-container">
+            <div class="player-name player-left-name" id="player-left-name">rumii</div>
+            <div class="player-line-2 player-left-line-2" id="player-left-line-2">
+                <div class="player-seed" id="player-left-seed">#32</div>
+                <div class="player-star-container player-left-star-container" id="player-left-star-container">
                     <div class="player-star"><img src="static/point/point-fill.png"></div>
                     <div class="player-star"><img src="static/point/point-fill.png"></div>
                     <div class="player-star"><img src="static/point/point-fill.png"></div>
@@ -33,7 +35,7 @@
                     <div class="player-star"><img src="static/point/point-empty.png"></div>
                 </div>
             </div>
-            <div class="player-line player-left-line"></div>
+            <div class="player-line player-left-line" id="player-left-line"></div>
             <div class="player-hits player-left-hits">
                 <div class="player-hit-number-container">
                     <div class="player-hit-number-100">100</div>
@@ -41,9 +43,9 @@
                     <div class="player-hit-number-miss">MISS</div>
                 </div>
                 <div class="player-hit-count-container player-left-hit-count-container">
-                    <div>10</div>
-                    <div>4</div>
-                    <div>1</div>
+                    <div id="player-left-hit-number-100">10</div>
+                    <div id="player-left-hit-number-50">4</div>
+                    <div id="player-left-hit-number-miss">1</div>
                 </div>
             </div>
         </div>
@@ -122,14 +124,14 @@
 
         <!-- Player Right -->
         <div class="player-container player-right-container">
-            <div class="player-profile-picture">
+            <div class="player-profile-picture" id="player-right-profile-picture">
                 <img src="static/profile-picture/avatar-glass-layer-1.png">
                 <img src="static/profile-picture/avatar-glass-layer-2.png">
             </div>
-            <div class="player-name player-right-name">rumii</div>
-            <div class="player-line-2 player-right-line-2">
-                <div class="player-seed">#32</div>
-                <div class="player-star-container player-right-star-container">
+            <div class="player-name player-right-name" id="player-right-name">rumii</div>
+            <div class="player-line-2 player-right-line-2" id="player-right-line-2">
+                <div class="player-seed" id="player-right-seed">#32</div>
+                <div class="player-star-container player-right-star-container" id="player-right-star-container">
                     <div class="player-star"><img src="static/point/point-fill.png"></div>
                     <div class="player-star"><img src="static/point/point-fill.png"></div>
                     <div class="player-star"><img src="static/point/point-fill.png"></div>
@@ -137,7 +139,7 @@
                     <div class="player-star"><img src="static/point/point-empty.png"></div>
                 </div>
             </div>
-            <div class="player-line player-right-line"></div>
+            <div class="player-line player-right-line" id="player-right-line"></div>
             <div class="player-hits player-right-hits">
                 <div class="player-hit-number-container">
                     <div class="player-hit-number-100">100</div>
@@ -145,9 +147,9 @@
                     <div class="player-hit-number-miss">MISS</div>
                 </div>
                 <div class="player-hit-count-container player-right-hit-count-container">
-                    <div>10</div>
-                    <div>4</div>
-                    <div>1</div>
+                    <div id="player-right-hit-number-100">10</div>
+                    <div id="player-right-hit-number-50">4</div>
+                    <div id="player-right-hit-number-miss">1</div>
                 </div>
             </div>
         </div>
