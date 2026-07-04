@@ -117,7 +117,7 @@
     display: flex;
     gap: 20px;
     color: white;
-    line-height: 52px;
+    line-height: 60px;
     font-family: Caldstone;
 }
 .now-playing-left-final-score, .now-playing-right-final-score { width: 304px; }
@@ -155,4 +155,44 @@
     top: 228px;
     left: 50%;
     transform: translateX(-50%);
+}
+
+.now-playing-pick-tb {
+    display: none;
+    position: absolute;
+    top: 400px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* ----- Mappool Area ----- */
+
+.mappool-area {
+    position: absolute;
+    top: 621px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.mappool-area-line-1 {
+    display: flex;
+    gap: 19px;
+}
+
+.mappool-area-line-2 {
+    position: absolute;
+    top: 61px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 19px;
+}
+
+.mappool-pick-container {
+    width: 76px;
+    height: 76px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    clip-path: polygon(40% 0%, 60% 0%, 100% 40%, 100% 60%, 60% 100%, 40% 100%, 0% 60%, 0% 40%);
 }
