@@ -98,3 +98,48 @@ socket.onmessage = async event => {
         chatLen = updateChat(chatLen, chatData, chatDisplayContainerEl)
     }
 }
+
+// Next Picker
+const nextPickerEl = document.getElementById("next-picker")
+const waitingForPickEl = document.getElementById("waiting-for-pick")
+let currentNextPicker = "none"
+function setNextPicker(pickerTeam) {
+    currentNextPicker = pickerTeam
+    nextPickerEl.textContent = pickerTeam === "left" ? "ORAGNE" : pickerTeam === "right" ? "PURPLE" : "NONE"
+    if (currentNextPicker === "none") {
+        waitingForPickEl.textContent = ""
+    } else {
+        waitingForPickEl.textContent = `waiting for ${pickerTeam === "left"? "orange": "purple"}'s pick...`
+        waitingForPickEl.classList.remove("wait-for-pick-left")
+        waitingForPickEl.classList.remove("wait-for-pick-right")
+        waitingForPickEl.classList.add(`wait-for-pick-${pickerTeam}`)
+    }
+    
+}
+
+// Toggle Autopick
+const toggleAutopickEl = document.getElementById("toggle-autopick")
+let isAutopickToggled = false
+function toggleAutopick() {
+    isAutopickToggled = !isAutopickToggled
+    toggleAutopickEl.textContent = `TOGGLE AUTOPICK: ${isAutopickToggled? "ON": "OFF"}`
+    if (isAutopickToggled) {
+        toggleAutopickEl.classList.remove("toggle-inactive")
+        toggleAutopickEl.classList.add("toggle-active")
+    } else {
+        toggleAutopickEl.classList.add("toggle-inactive")
+        toggleAutopickEl.classList.remove("toggle-active")
+    }
+}
+
+const setNextPickerLeftEl = document.getElementById("set-next-picker-left")
+const setNextPickerRightEl = document.getElementById("set-next-picker-right")
+const nextPickerNoneEl = document.getElementById("next-picker-none")
+
+// Loading buttons\
+window.onload = () => {
+    setNextPickerLeftEl.addEventListener("click", () => setNextPicker("left"))
+    setNextPickerRightEl.addEventListener("click", () => setNextPicker("right"))
+    nextPickerNoneEl.addEventListener("click", () => setNextPicker("none"))
+    toggleAutopickEl.addEventListener("click", () => toggleAutopick())
+}
