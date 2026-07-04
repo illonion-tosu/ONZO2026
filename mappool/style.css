@@ -66,7 +66,7 @@
     height: 346px;
     border-radius: 20px;
     background: center / cover;
-    /* background-image: url("https://assets.ppy.sh/beatmaps/1088336/covers/cover.jpg") */
+    background-image: url("https://assets.ppy.sh/beatmaps/1088336/covers/cover.jpg")
 }
 
 .now-playing-metadata {
@@ -287,7 +287,6 @@
 .team-history-map {
     position: relative;
     height: 85px;
-    display: flex;
     margin-bottom: 24px;
     display: none;
 }
@@ -297,6 +296,8 @@
     background: center / cover;
     background-image: url("https://assets.ppy.sh/beatmaps/1088336/covers/cover.jpg");
     border-radius: 11px;
+    width: 286px;
+    height: 84px;
 }
 
 .team-history-mod {
@@ -315,6 +316,7 @@
     font-size: 24px;
     font-family: Caldstone;
     color: white;
+    display: none;
 }
 .team-history-right-area .team-history-map .team-history-scores { right: var(--team-history-scores-x); }
 .team-history-left-area .team-history-map .team-history-scores { left: var(--team-history-scores-x); }
@@ -322,6 +324,11 @@
 .team-history-scores-lose {
     font-size: 19px;
     color: #c3c3c3;
+}
+
+.team-history-crown {
+    width: 76px;
+    height: 75px;
 }
 
 /* ===========================
@@ -427,7 +434,7 @@ button {
     Full Width Button
 =========================== */
 #toggle-autopick, #toggle-stars, #next-picker-none, #apply-changes, .full-width-button { width: 220px; }
-#next-picker { color: white; }
+#next-picker, #current-picker { color: white; }
 
 /* ===========================
     Mappool Override Select

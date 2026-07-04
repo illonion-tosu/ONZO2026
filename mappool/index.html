@@ -45,10 +45,10 @@
 
         <!-- Now Playing -->
         <div class="now-playing-area">
-            <div class="now-playing-background"></div>
-            <!-- <img class="now-playing-panel" src="static/song-now-panel.png"> -->
-            <div class="now-playing-metadata now-playing-artist">Demetori</div>
-            <div class="now-playing-metadata now-playing-title">Rigid Parasise ~ Dawn of the Dead</div>
+            <div class="now-playing-background" id="now-playing-background"></div>
+            <img class="now-playing-panel" src="static/song-now-panel.png">
+            <div class="now-playing-metadata now-playing-artist" id="now-playing-artist">Demetori</div>
+            <div class="now-playing-metadata now-playing-title" id="now-playing-title">Rigid Parasise ~ Dawn of the Dead</div>
             <div class="now-playing-metadata now-playing-mapper-difficulty">// <span id="now-playing-mapper">mapper</span> <span id="now-playing-difficulty">[diffname]</span></div>
             <div class="now-playing-stats" id="now-playing-stats">
                 <div class="now-playing-individual-stat">
@@ -68,14 +68,14 @@
                     <div class="now-playing-stat-text now-playing-stat-number" id="now-playing-stat-number-sr">6.21</div>
                 </div>
             </div>
-            <div class="now-playing-final-score">
+            <div class="now-playing-final-score" id="now-playing-final-score">
                 <div class="now-playing-left-final-score now-playing-win-final-score">923,567</div>
                 <div class="now-playing-final-score-dash">-</div>
                 <div class="now-playing-right-final-score now-playing-lose-final-score">654,234</div>
             </div>
-            <img class="now-playing-mod-id" src="static/mods/DT1.png">
-            <img class="now-playing-pick" src="static/picks/tb-pick.png">
-            <img class="now-playing-pick-tb" src="static/picks/tiebreaker-text.png">
+            <img class="now-playing-mod-id" id="now-playing-mod-id" src="static/mods/DT1.png">
+            <img class="now-playing-pick" id="now-playing-pick" src="static/picks/tb-pick.png">
+            <img class="now-playing-pick-tb" id="now-playing-pick-tb" src="static/picks/tiebreaker-text.png">
         </div>
 
         <!-- Picks -->
@@ -152,6 +152,15 @@
                     <button id="set-next-picker-right">PURPLE</button>
                     <button class="full-width-button" id="next-picker-none">NO ONE</button>
                     <button class="full-width-button toggle-inactive" id="toggle-autopick">TOGGLE AUTOPICK: OFF</button>
+                </div>
+            </section>
+            <section class="sidebar-section">
+                <h1 class="sidebar-section-text">Current Picker</h1>
+                <p id="current-picker" style="font-size: 1.2em;"></p>
+                <div class="sidebar-button-container">
+                    <button id="set-current-picker-left">ORANGE</button>
+                    <button id="set-current-picker-right">PURPLE</button>
+                    <button class="full-width-button" id="current-picker-none">NO ONE</button>
                 </div>
             </section>
         </div>

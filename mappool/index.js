@@ -48,7 +48,7 @@ getBeatmaps().then((beatmaps) => {
     }
 
     // Set pick containers
-    for (let i = 0; i < currentFirstTo - 1; i++) {
+    for (let i = 0; i < currentFirstTo; i++) {
         teamHistoryLeftAreaEl.append(createPickContainer())
         teamHistoryRightAreaEl.append(createPickContainer())
     }
@@ -84,6 +84,7 @@ getBeatmaps().then((beatmaps) => {
         // Team history crown
         const teamHistoryCrown = document.createElement("img")
         teamHistoryCrown.classList.add("team-history-crown")
+        teamHistoryCrown.setAttribute("src", "static/match-history/crown-none.png")
         teamHistoryMap.append(teamHistoryMapSide, teamHistoryCrown)
         
         return teamHistoryMap
@@ -113,7 +114,26 @@ getBeatmaps().then((beatmaps) => {
 const mappoolAreaLine1El = document.getElementById("mappool-area-line-1")
 const mappoolAreaLine2El = document.getElementById("mappool-area-line-2")
 
+// Now playing metadata
+const nowPlayingBackgroundEl = document.getElementById("now-playing-background")
+const nowPlayingArtistEl = document.getElementById("now-playing-artist")
+const nowPlayingTitleEl = document.getElementById("now-playing-title")
+const nowPlayingMapperEl = document.getElementById("now-playing-mapper")
+const nowPlayingDifficultyEl = document.getElementById("now-playing-difficulty")
+// Now playing stats
+const nowPlayingStatNumberCsEl = document.getElementById("now-playing-stat-number-cs")
+const nowPlayingStatNumberArEl = document.getElementById("now-playing-stat-number-ar")
+const nowPlayingStatNumberOdEl = document.getElementById("now-playing-stat-number-od")
+const nowPlayingStatNumberSrEl = document.getElementById("now-playing-stat-number-sr")
+// Now playing final score
+const nowPlayingFinalScoreEl = document.getElementById("now-playing-final-score")
+// Now playing bottom
+const nowPlayingModIdEl = document.getElementById("now-playing-mod-id")
+const nowPlayingPickEl = document.getElementById("now-playing-pick")
+const nowPlayingPickTbEl = document.getElementById("now-playing-pick-tb")
+
 // Map click Event
+let currentTile
 function mapClickEvent(event) {
     // Figure out whether it is a pick or ban
     const currentMapId = this.dataset.id
@@ -162,6 +182,82 @@ function mapClickEvent(event) {
             // Mark as picked
             const modId = document.getElementById(`${currentMap.mod.toLowerCase()}${currentMap.order}`)
             modId.firstElementChild.setAttribute("src", modId.firstElementChild.getAttribute("src").replace("unpicked", "picked"))
+            break
+        }
+    }
+
+    // Picks
+    if (action === "pick") {
+        const currentContainer = team === "left" ? teamHistoryLeftAreaEl : teamHistoryRightAreaEl
+        for (let i = 0; i < currentContainer.childElementCount; i++) {
+            const child  = currentContainer.children[i]
+
+            // Set pick info
+            if (child.dataset.id !== undefined) continue
+            currentTile = child
+            child.dataset.id = currentMapId
+            child.style.display = "flex"
+            child.children[0].children[1].setAttribute("src", `static/mods/${currentMap.mod.toUpperCase()}${currentMap.order}.png`)
+            child.children[0].style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
+
+            // Mark as picked
+            const modId = document.getElementById(`${currentMap.mod.toLowerCase()}${currentMap.order}`)
+            modId.firstElementChild.setAttribute("src", modId.firstElementChild.getAttribute("src").replace("unpicked", "picked"))
+            
+            // Set now playing information
+            nowPlayingBackgroundEl.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
+            nowPlayingArtistEl.textContent = currentMap.artist
+            nowPlayingTitleEl.textContent = currentMap.title
+            nowPlayingMapperEl.textContent = currentMap.creator
+            nowPlayingDifficultyEl.textContent = `[${currentMap.version}]`
+
+            // Set now playing stats
+            let currentSr = Math.round(Number(currentMap.difficultyrating) * 100) / 100
+            let currentCs = Math.round(Number(currentMap.diff_size) * 10) / 10
+            let currentAr = Math.round(Number(currentMap.diff_approach) * 10) / 10
+            let currentOd = Math.round(Number(currentMap.diff_overall) * 10) / 10
+
+            switch (currentMap.mod) {
+                case "HR":
+                    currentCs = Math.min(Math.round(Number(currentMap.diff_size) * 1.3 * 10) / 10, 10)
+                    currentAr = Math.min(Math.round(Number(currentMap.diff_approach) * 1.4 * 10) / 10, 10)
+                    currentOd = Math.min(Math.round(Number(currentMap.diff_overall) * 1.4 * 10) / 10, 10)
+                    break
+                case "DT":
+                    if (currentAr > 5) currentAr = Math.round((((1200 - (( 1200 - (currentAr - 5) * 150) * 2 / 3)) / 150) + 5) * 10) / 10
+                    else currentAr = Math.round((1800 - ((1800 - currentAr * 120) * 2 / 3)) / 120 * 10) / 10
+                    currentOd = Math.round((79.5 - (( 79.5 - 6 * currentOd) * 2 / 3)) / 6 * 10) / 10
+                    // currentBpm = Math.round(currentBpm * 1.5)
+                    // currentLength = Math.round(currentLength / 1.5)
+                    break
+                case "EZ":
+                    currentCs /= 2
+                    currentAr /= 2
+                    currentOd /= 2
+            }
+
+            nowPlayingStatNumberCsEl.textContent = currentCs.toFixed(1)
+            nowPlayingStatNumberArEl.textContent = currentAr.toFixed(1)
+            nowPlayingStatNumberOdEl.textContent = currentOd.toFixed(1)
+            nowPlayingStatNumberSrEl.textContent = currentSr.toFixed(2)
+
+            // Final score
+            nowPlayingFinalScoreEl.style.display = "none"
+
+            // Bottom area
+            nowPlayingModIdEl.setAttribute("src", `static/mods/${currentMap.mod.toUpperCase()}${currentMap.order}.png`)
+
+            if (currentMap.mod === "TB") {
+                nowPlayingPickEl.setAttribute("src", `static/picks/tb-pick.png`)
+                nowPlayingPickTbEl.style.display = "block"
+            } else {
+                nowPlayingPickEl.setAttribute("src", `static/picks/${team}-pick.png`)
+                nowPlayingPickTbEl.style.display = "none"
+            }
+
+            currentPicker = team
+            setCurrentPicker()
+
             break
         }
     }
@@ -263,7 +359,6 @@ function setNextPicker(pickerTeam) {
         waitingForPickEl.classList.remove("wait-for-pick-right")
         waitingForPickEl.classList.add(`wait-for-pick-${pickerTeam}`)
     }
-    
 }
 
 // Toggle Autopick
@@ -281,6 +376,17 @@ function toggleAutopick() {
     }
 }
 
+// Current Picker
+const currentPickerEl = document.getElementById("current-picker")
+let currentPicker = "none"
+function setCurrentPicker(pickerTeam) {
+    currentPicker = pickerTeam
+    currentPickerEl.textContent = pickerTeam === "left" ? "ORAGNE" : pickerTeam === "right" ? "PURPLE" : "NONE"
+}
+
+const setCurrentPickerLeftEl = document.getElementById("set-current-picker-left")
+const setCurrentPickerRightEl = document.getElementById("set-current-picker-right")
+const currentPickerNoneEl = document.getElementById("current-picker-none")
 const setNextPickerLeftEl = document.getElementById("set-next-picker-left")
 const setNextPickerRightEl = document.getElementById("set-next-picker-right")
 const nextPickerNoneEl = document.getElementById("next-picker-none")
@@ -291,4 +397,7 @@ window.onload = () => {
     setNextPickerRightEl.addEventListener("click", () => setNextPicker("right"))
     nextPickerNoneEl.addEventListener("click", () => setNextPicker("none"))
     toggleAutopickEl.addEventListener("click", () => toggleAutopick())
+    setCurrentPickerLeftEl.addEventListener("click", () => setCurrentPicker("left"))
+    setCurrentPickerRightEl.addEventListener("click", () => setCurrentPicker("right"))
+    currentPickerNoneEl.addEventListener("click", () => setCurrentPicker("none"))
 }
