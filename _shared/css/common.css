@@ -1,0 +1,102 @@
+:root {
+    --player-inside-x: 112px;
+}
+
+@font-face {
+    font-family: Caldstone;
+    src: url("../../fonts/caldstone.semibold.otf")
+}
+
+@font-face {
+    font-family: "Vinque Antique";
+    src: url("../../fonts/vinque-antique.bold.otf");
+}
+
+@font-face {
+    font-family: "Alan Sans";
+    font-weight: 700;
+    src: url("../../fonts/AlanSans-Bold.ttf");
+}
+
+/* ----- Whole Page ----- */
+.main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+}
+
+/* ----- Player Area ----- */
+.player-left-container { left: var(--player-container-x); }
+.player-right-container { right: var(--player-container-x); }
+
+/* Player Profile Picture */
+.player-profile-picture {
+    --dimension: 96px;
+
+    width: var(--dimension);
+    height: var(--dimension);
+    border-radius: 15px;
+    background: center / cover;
+    background-image: url("https://a.ppy.sh/9803745")
+}
+
+.player-profile-picture > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Player Name */
+.player-name {
+    --height: 26px;
+
+    position: absolute;
+    top: 21px;
+    background-color: white;
+    font-family: "Vinque Antique", sans-serif;
+    font-size: 1.75rem;
+    padding: 0 2px;
+    height: var(--height);
+    line-height: var(--height);
+}
+.player-left-name { left: var(--player-inside-x); }
+.player-right-name { right: var(--player-inside-x); }
+
+/* Player Line 2 */
+.player-line-2 {
+    position: absolute;
+    top: 55px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-left-line-2 { left: var(--player-inside-x); }
+
+.player-right-line-2 {
+    right: var(--player-inside-x);
+    flex-direction: row-reverse;
+}
+
+.player-seed {
+    font-size: 22px;
+    color: white;
+    font-family: Caldstone, serif;
+}
+
+.player-star-container { display: flex; }
+.player-right-star-container { flex-direction: row-reverse; }
+
+.player-star {
+    --dimension: 63px;
+
+    width: var(--dimension);
+    height: var(--dimension);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: -15px;
+}

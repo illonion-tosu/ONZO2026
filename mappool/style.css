@@ -1,0 +1,12 @@
+:root {
+    --player-container-x: 189px;
+}
+
+/* ----- Whole Page ----- */
+.main { background-image: url("static/background.png"); }
+
+/* ----- Player Area ----- */
+.player-container {
+    position: absolute;
+    top: 87px;
+}
