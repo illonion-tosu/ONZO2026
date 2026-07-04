@@ -321,3 +321,166 @@
     font-size: 19px;
     color: #c3c3c3;
 }
+
+/* ===========================
+    Sidebar
+=========================== */
+.sidebar {
+    position: absolute;
+    top: 0;
+    left: 1920px;
+    width: 1000px;
+    height: 1080px;
+    background-color: var(--sidebar-background-colour);
+    font-family: "Alan Sans", sans-serif;
+}
+
+/* ===========================
+    Column
+=========================== */
+.column {
+    position: absolute;
+    width: 250px;
+}
+.column-2 { left: 250px; }
+.column-3 { left: 500px; }
+.column-4 { left: 750px; }
+
+/* ===========================
+    Divider
+=========================== */
+.divider {
+    position: absolute;
+    width: 2px;
+    height: 1080px;
+    background-color: white;
+}
+.divider-1 { left: 249px; }
+.divider-2 { left: 499px; }
+.divider-3 { left: 749px; }
+
+/* ===========================
+    Sidebar Section
+=========================== */
+.sidebar-section {
+    border-bottom: 2px solid white;
+    padding-bottom: 20px;
+    
+}
+
+/* ===========================
+    Texts
+=========================== */
+.sidebar-section-text {
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+
+.sidebar-section h1 {
+    font-weight: 700;
+    line-height: 30px;
+    font-size: 1.4em;
+}
+
+.sidebar-section h2 {
+    font-weight: 700;
+    font-size: 1em;
+}
+
+.sidebar-section p {
+    text-align: center;
+    line-height: 20px;
+    font-size: 0.8rem;
+}
+
+/* ===========================
+    Button Container
+=========================== */
+.sidebar-button-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* ===========================
+    Button
+=========================== */
+button {
+    width: 105px;
+    height: 30px;
+    font-weight: 400;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.sidebar-button-container button:active {
+    background-color: white;
+    color: var(--sidebar-background-colour);
+}
+
+/* ===========================
+    Full Width Button
+=========================== */
+#toggle-autopick, #toggle-stars, #next-picker-none, #apply-changes, .full-width-button { width: 220px; }
+#next-picker { color: white; }
+
+/* ===========================
+    Mappool Override Select
+=========================== */
+.mappool-override-select {
+    color: white;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    line-height: 25px;
+    font-size: 1rem;
+}
+
+.mappool-override-select > * {
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mappool-override-select::-webkit-scrollbar { display: none; }
+
+/* ===========================
+    Mappool Override Beatmaps Container
+=========================== */
+.mappool-override-beatmaps-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.mappool-override-beatmaps {
+    width: 80px;
+    height: 30px;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+}
+
+/* ===========================
+    Toggle Stars
+=========================== */
+.toggle-active { background-color: rgb(32 121 44); }
+.toggle-inactive { background-color: rgb(121 32 32); }
+
+/* ===========================
+    Scene Switching
+=========================== */
+#scene-collection button {
+    height: 60px;
+    font-size: 0.8em;
+    line-height: 15px;
+}
