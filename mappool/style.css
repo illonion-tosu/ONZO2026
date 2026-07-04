@@ -1,5 +1,8 @@
 :root {
     --player-container-x: 189px;
+    --team-history-area-x: 115px;
+    --team-history-mod-x: 6px;
+    --team-history-scores-x: 105px;
 }
 
 /* ----- Whole Page ----- */
@@ -62,7 +65,7 @@
     height: 346px;
     border-radius: 20px;
     background: center / cover;
-    /* background-image: url("https://assets.ppy.sh/beatmaps/1088336/covers/cover.jpg?1622178368") */
+    /* background-image: url("https://assets.ppy.sh/beatmaps/1088336/covers/cover.jpg") */
 }
 
 .now-playing-metadata {
@@ -269,4 +272,52 @@
 .banned-maps img {
     width: 86px;
     margin: 0 -10px;
+}
+
+/* ----- Team History Area ----- */
+.team-history-area {
+    position: absolute;
+    top: 272px;
+    width: 362px;
+}
+.team-history-right-area { right: var(--team-history-area-x); }
+.team-history-left-area { left: var(--team-history-area-x); }
+
+.team-history-map {
+    position: relative;
+    height: 85px;
+    display: flex;
+    margin-bottom: 24px;
+}
+.team-history-left-area .team-history-map { flex-direction: row-reverse; }
+
+.team-history-map-left {
+    background: center / cover;
+    background-image: url("https://assets.ppy.sh/beatmaps/1088336/covers/cover.jpg");
+    border-radius: 11px;
+}
+
+.team-history-mod {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 58px;
+}
+.team-history-right-area .team-history-map .team-history-mod { left: var(--team-history-mod-x); }
+.team-history-left-area .team-history-map .team-history-mod { right: var(--team-history-mod-x); }
+
+.team-history-scores {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    font-family: Caldstone;
+    color: white;
+}
+.team-history-right-area .team-history-map .team-history-scores { right: var(--team-history-scores-x); }
+.team-history-left-area .team-history-map .team-history-scores { left: var(--team-history-scores-x); }
+
+.team-history-scores-lose {
+    font-size: 19px;
+    color: #c3c3c3;
 }
