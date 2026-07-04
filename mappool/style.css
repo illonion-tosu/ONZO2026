@@ -13,6 +13,30 @@
     transform: translateX(-50%);
 }
 
+.waiting-for-pick {
+    --text-shadow-color: 149 24 255;
+
+    position: absolute;
+    top: 130px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: transparent;
+    background: linear-gradient( to bottom, white 0%, white 50%, #DEDEDE 50%, #DEDEDE 100% );
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-family: "Alan Sans";
+    font-weight: 600;
+    font-size: 20px;
+    text-shadow:
+        0 0 1px rgb(var(--text-shadow-color) / 0.18),
+        0 0 3px rgb(var(--text-shadow-color) / 0.16),
+        0 0 8px rgb(var(--text-shadow-color) / 0.14),
+        0 0 16px rgb(var(--text-shadow-color) / 0.11),
+        0 0 27px rgb(var(--text-shadow-color) / 0.09);
+}
+.wait-for-pick-left { --text-shadow-color: 255 154 61; }
+.wait-for-pick-right { --text-shadow-color: 149 24 255; }
+
 /* ----- Player Area ----- */
 .player-container {
     position: absolute;
