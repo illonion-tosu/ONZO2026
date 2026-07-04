@@ -6,9 +6,13 @@ import { createTosuWsSocket } from "../_shared/core/websocket.js"
 const bannedLeftMapsEl = document.getElementById("banned-left-maps")
 const bannedRightMapsEl = document.getElementById("banned-right-maps")
 
+// Team history
+const teamHistoryLeftAreaEl = document.getElementById("team-history-left-area")
+const teamHistoryRightAreaEl = document.getElementById("team-history-right-area")
+
 const mappoolManagementMapsEl = document.getElementById("mappool-management-maps")
 let roundName, allBeatmaps
-let currentBestOf, currentBanCount
+let currentBestOf, currentBanCount, currentFirstTo
 getPlayers()
 getBeatmaps().then((beatmaps) => {
     roundName = beatmaps.roundName
@@ -29,6 +33,7 @@ getBeatmaps().then((beatmaps) => {
             currentBanCount = 2
             break
     }
+    currentFirstTo = Math.ceil(currentBestOf / 2)
 
     // Set ban images
     for (let i = 0; i < currentBanCount; i++) {
@@ -40,6 +45,48 @@ getBeatmaps().then((beatmaps) => {
     function createImage() {
         const image = document.createElement("img")
         return image
+    }
+
+    // Set pick containers
+    for (let i = 0; i < currentFirstTo - 1; i++) {
+        teamHistoryLeftAreaEl.append(createPickContainer())
+        teamHistoryRightAreaEl.append(createPickContainer())
+    }
+
+    // Create pick contianer
+    function createPickContainer() {
+        // Team history map
+        const teamHistoryMap = document.createElement("div")
+        teamHistoryMap.classList.add("team-history-map")
+
+        // Team history map side
+        const teamHistoryMapSide = document.createElement("div")
+        teamHistoryMapSide.classList.add(`team-history-map-left`)
+
+        // Song history panel
+        const songHistoryPanel = document.createElement("img")
+        songHistoryPanel.setAttribute("src", "static/match-history/song-history-panel.png")
+
+        // Team history mod
+        const teamHistoryMod = document.createElement("img")
+        teamHistoryMod.classList.add("team-history-mod")
+
+        // Team history scores
+        const teamHistoryScores = document.createElement("div")
+        teamHistoryScores.classList.add("team-history-scores")
+
+        // Team history score left
+        const teamHistoryScoreLeft = document.createElement("span")
+        const teamHistoryScoreRight = document.createElement("span")
+        teamHistoryScores.append(teamHistoryScoreLeft, " - ", teamHistoryScoreRight)
+        teamHistoryMapSide.append(songHistoryPanel, teamHistoryMod, teamHistoryScores)
+
+        // Team history crown
+        const teamHistoryCrown = document.createElement("img")
+        teamHistoryCrown.classList.add("team-history-crown")
+        teamHistoryMap.append(teamHistoryMapSide, teamHistoryCrown)
+        
+        return teamHistoryMap
     }
 
     for (let i = 0; i < allBeatmaps.length; i++) {
