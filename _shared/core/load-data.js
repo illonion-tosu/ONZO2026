@@ -8,7 +8,7 @@ export async function getBeatmaps() {
 }
 
 export function findBeatmap(beatmap_id) {
-    return allBeatmaps.find(beatmap => Number(beatmap.beatmap_id) === Number(beatmap_id))
+    return allBeatmaps.beatmaps.find(beatmap => Number(beatmap.beatmap_id) === Number(beatmap_id))
 }
 
 export async function getPlayers() {

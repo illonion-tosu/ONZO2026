@@ -2,21 +2,123 @@ import { updateChat } from "../_shared/core/chat.js"
 import { getBeatmaps, findBeatmap, getPlayers, findPlayer } from "../_shared/core/load-data.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
-let currentRound
-let allBeatmaps
+// Banned Maps
+const bannedLeftMapsEl = document.getElementById("banned-left-maps")
+const bannedRightMapsEl = document.getElementById("banned-right-maps")
+
+const mappoolManagementMapsEl = document.getElementById("mappool-management-maps")
+let roundName, allBeatmaps
+let currentBestOf, currentBanCount
 getPlayers()
 getBeatmaps().then((beatmaps) => {
-    currentRound = beatmaps.roundName
+    roundName = beatmaps.roundName
     allBeatmaps = beatmaps.beatmaps
 
+    // Set best of / first to information
+    switch (roundName) {
+        case "ROUND OF 32": case "ROUND OF 16":
+            currentBestOf = 9
+            currentBanCount = 1
+            break
+        case "QUARTERFINALS": case "SEMIFINALS":
+            currentBestOf = 11
+            currentBanCount = 2
+            break
+        case "FINALS": case "GRAND FINALS":
+            currentBestOf = 13
+            currentBanCount = 2
+            break
+    }
+
+    // Set ban images
+    for (let i = 0; i < currentBanCount; i++) {
+        bannedLeftMapsEl.append(createImage())
+        bannedRightMapsEl.append(createImage())
+    }
+
+    // Create image
+    function createImage() {
+        const image = document.createElement("img")
+        return image
+    }
+
     for (let i = 0; i < allBeatmaps.length; i++) {
+        // Set mod images
         const mod = document.getElementById(`${allBeatmaps[i].mod.toLowerCase()}${allBeatmaps[i].order}`)
+        mod.dataset.id = allBeatmaps[i].beatmap_id
         const image = mod.children[0]
         if (image.getAttribute("src").includes("locked")) {
             image.setAttribute("src", `static/mappool-picks/unpicked/${allBeatmaps[i].mod.toUpperCase()}.png`)
         }
+
+        // Create buttons
+        const button = document.createElement("button")
+        button.textContent = `${allBeatmaps[i].mod}${allBeatmaps[i].order}`
+        button.addEventListener("mousedown", mapClickEvent)
+        button.addEventListener("contextmenu", event => event.preventDefault())
+        button.setAttribute("id", allBeatmaps[i].beatmap_id)
+        button.dataset.id = allBeatmaps[i].beatmap_id
+        mappoolManagementMapsEl.append(button)
     }
 })
+
+// Mappool Area Lines
+const mappoolAreaLine1El = document.getElementById("mappool-area-line-1")
+const mappoolAreaLine2El = document.getElementById("mappool-area-line-2")
+
+// Map click Event
+function mapClickEvent(event) {
+    // Figure out whether it is a pick or ban
+    const currentMapId = this.dataset.id
+    const currentMap = findBeatmap(currentMapId)
+    if (!currentMap) return
+
+    // Team
+    let team
+    if (event.button === 0) team = "left"
+    else if (event.button === 2) team = "right"
+    if (!team) return
+
+    // Action
+    let action = "pick"
+    if (event.ctrlKey) action = "ban"
+
+    console.log("map check 2")
+
+    // Check if map exists in bans and picks
+    const mapCheck = !!(
+        mappoolAreaLine1El.querySelector(`[data-id="${currentMapId}"]`)
+            ?.firstElementChild
+            ?.getAttribute("src")
+            ?.includes("/picked/") ||
+        mappoolAreaLine2El.querySelector(`[data-id="${currentMapId}"]`)
+            ?.firstElementChild
+            ?.getAttribute("src")
+            ?.includes("/picked/")
+    )
+    if (mapCheck) return
+
+    console.log("map check")
+    
+    // Bans
+    if (action === "ban") {
+        const currentContainer = team === "left" ? bannedLeftMapsEl : bannedRightMapsEl
+
+        for (let i = 0; i < currentContainer.childElementCount; i++) {
+            const child = currentContainer.children[i]
+
+            // Set ban image
+            if (child.dataset.id !== undefined) continue
+            child.dataset.id = currentMapId
+            child.setAttribute("src", `static/banned-mods/${currentMap.mod.toUpperCase()}${currentMap.order}.png`)
+
+            // Mark as picked
+            const modId = document.getElementById(`${currentMap.mod.toLowerCase()}${currentMap.order}`)
+            modId.firstElementChild.setAttribute("src", modId.firstElementChild.getAttribute("src").replace("unpicked", "picked"))
+            break
+        }
+    }
+}
 
 /* Player Details */
 const playerLeftProfilePictureEl = document.getElementById("player-left-profile-picture")
@@ -28,7 +130,7 @@ const playerRightNameEl = document.getElementById("player-right-name")
 const playerRightSeedEl = document.getElementById("player-right-seed")
 const playerRightStarContainerEl = document.getElementById("player-right-star-container")
 let player1Id, player2Id
-let currentBestOf, currentLeftStars, currentRightStars
+let currentStarBestOf, currentLeftStars, currentRightStars
 
 /* Chat */
 const chatDisplayContainerEl = document.getElementById("chat-display-container")
@@ -59,15 +161,15 @@ socket.onmessage = async event => {
     }
 
     // Stars
-    if (currentBestOf !== data.tourney.bestOF ||
+    if (currentStarBestOf !== data.tourney.bestOF ||
         currentLeftStars !== data.tourney.points.left ||
         currentRightStars !== data.tourney.points.right
     ) {
         // Set new values
-        currentBestOf = data.tourney.bestOF
+        currentStarBestOf = data.tourney.bestOF
         currentLeftStars = data.tourney.points.left
         currentRightStars = data.tourney.points.right
-        const currentFirstTo = Math.ceil(currentBestOf / 2)
+        const currentFirstTo = Math.ceil(currentStarBestOf / 2)
 
         // Reset stars
         playerLeftStarContainerEl.innerHTML = ""
