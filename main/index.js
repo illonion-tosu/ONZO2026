@@ -150,7 +150,7 @@ socket.onmessage = async event => {
             playerStar.classList.add("player-star")
 
             const pointImg = document.createElement("img")
-            pointImg.setAttribute("src", `static/point/point-${status}.png`)
+            pointImg.setAttribute("src", `../_shared/assets/point/point-${status}.png`)
 
             playerStar.append(pointImg)
             return playerStar
