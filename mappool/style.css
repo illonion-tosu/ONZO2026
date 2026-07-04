@@ -5,6 +5,14 @@
 /* ----- Whole Page ----- */
 .main { background-image: url("static/background.png"); }
 
+/* ----- Mappool Text ----- */
+.mappool-text {
+    position: absolute;
+    top: 65px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 /* ----- Player Area ----- */
 .player-container {
     position: absolute;
