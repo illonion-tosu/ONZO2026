@@ -1,3 +1,4 @@
+import { updateChat } from "../_shared/core/chat.js"
 import { getBeatmaps, findBeatmap, getPlayers, findPlayer } from "../_shared/core/load-data.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
@@ -29,6 +30,10 @@ const playerRightStarContainerEl = document.getElementById("player-right-star-co
 let player1Id, player2Id
 let currentBestOf, currentLeftStars, currentRightStars
 
+/* Chat */
+const chatDisplayContainerEl = document.getElementById("chat-display-container")
+let chatLen
+
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
     const data = JSON.parse(event.data)
@@ -36,6 +41,7 @@ socket.onmessage = async event => {
 
     // Save data
     const clients = data.tourney.clients
+    const chatData = data.tourney.chat
 
     if (player1Id !== clients[0].user.id) {
         player1Id = clients[0].user.id
@@ -84,5 +90,11 @@ socket.onmessage = async event => {
             playerStar.append(pointImg)
             return playerStar
         }
+    }
+
+    // Chat
+
+    if (chatLen !== chatData.length) {
+        chatLen = updateChat(chatLen, chatData, chatDisplayContainerEl)
     }
 }
