@@ -1,7 +1,21 @@
 import { getBeatmaps, findBeatmap, getPlayers, findPlayer } from "../_shared/core/load-data.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
+let currentRound
+let allBeatmaps
 getPlayers()
+getBeatmaps().then((beatmaps) => {
+    currentRound = beatmaps.roundName
+    allBeatmaps = beatmaps.beatmaps
+
+    for (let i = 0; i < allBeatmaps.length; i++) {
+        const mod = document.getElementById(`${allBeatmaps[i].mod.toLowerCase()}${allBeatmaps[i].order}`)
+        const image = mod.children[0]
+        if (image.getAttribute("src").includes("locked")) {
+            image.setAttribute("src", `static/mappool-picks/unpicked/${allBeatmaps[i].mod.toUpperCase()}.png`)
+        }
+    }
+})
 
 /* Player Details */
 const playerLeftProfilePictureEl = document.getElementById("player-left-profile-picture")
