@@ -194,16 +194,6 @@
     <div class="sidebar">
         <div class="column">
             <section class="sidebar-section">
-                <h1 class="sidebar-section-text">Star Control</h1>
-                <div class="sidebar-button-container">
-                    <button id="update-star-count-left-minus">RED --</button>
-                    <button id="update-star-count-left-plus">RED ++</button>
-                    <button id="update-star-count-right-minus">BLUE --</button>
-                    <button id="update-star-count-right-plus">BLUE ++</button>
-                    <button class="full-width-button toggle-active" id="toggle-stars">TOGGLE STARS: ON</button>
-                </div>
-            </section>
-            <section class="sidebar-section">
                 <h1 class="sidebar-section-text">Next Picker</h1>
                 <p id="next-picker" style="font-size: 1.2em;"></p>
                 <div class="sidebar-button-container">
@@ -211,13 +201,6 @@
                     <button id="set-next-picker-right">BLUE</button>
                     <button class="full-width-button" id="next-picker-none">NO ONE</button>
                     <button class="full-width-button toggle-inactive" id="toggle-autopick">TOGGLE AUTOPICK: OFF</button>
-                </div>
-            </section>
-            <section class="sidebar-section">
-                <h1 class="sidebar-section-text">League Select</h1>
-                <div class="sidebar-button-container">
-                    <button id="major-league-button" class="toggle-active">MAJOR</button>
-                    <button id="minor-league-button">MINOR</button>
                 </div>
             </section>
         </div>
@@ -247,21 +230,6 @@
                     <option value="setWinner">Set Winner</option>
                     <option value="removeWinner">Remove Winner</option>
                 </select>
-            </section>
-        </div>
-        <div class="divider divider-3"></div>
-        <div class="column column-4">
-            <section class="sidebar-section">
-                <h1 class="sidebar-section-text">Scene<br>Management</h1>
-                <div class="sidebar-button-container">
-                    <button id="auto-advance-button" class="toggle-inactive full-width-button">AUTO ADVANCE: OFF</button>
-                </div>
-                <h2 class="sidebar-section-text">Scenes (click<br>to override)</h2>
-                <div class="sidebar-button-container" id="scene-collection">
-                    <template id="sceneButtonTemplate">
-                        <button class="full-width-button">SWITCH TO __SCENE_NAME__</button>
-                    </template>
-                </div>
             </section>
         </div>
     </div>

@@ -3,6 +3,7 @@
     --team-history-area-x: 115px;
     --team-history-mod-x: 6px;
     --team-history-scores-x: 105px;
+    --sidebar-background-colour: black;
 }
 
 /* ----- Whole Page ----- */
@@ -329,7 +330,7 @@
     position: absolute;
     top: 0;
     left: 1920px;
-    width: 1000px;
+    width: 750px;
     height: 1080px;
     background-color: var(--sidebar-background-colour);
     font-family: "Alan Sans", sans-serif;
@@ -344,7 +345,6 @@
 }
 .column-2 { left: 250px; }
 .column-3 { left: 500px; }
-.column-4 { left: 750px; }
 
 /* ===========================
     Divider
@@ -357,7 +357,6 @@
 }
 .divider-1 { left: 249px; }
 .divider-2 { left: 499px; }
-.divider-3 { left: 749px; }
 
 /* ===========================
     Sidebar Section
@@ -365,7 +364,6 @@
 .sidebar-section {
     border-bottom: 2px solid white;
     padding-bottom: 20px;
-    
 }
 
 /* ===========================
