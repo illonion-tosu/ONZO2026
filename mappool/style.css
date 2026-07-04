@@ -257,3 +257,16 @@
     font-weight: 800;
     font-family: "Alan Sans", sans-serif;
 }
+
+/* Banned Maps  */
+.banned-maps {
+    position: absolute;
+    top: 185px;
+}
+.banned-left-maps { left: var(--player-container-x); }
+.banned-right-maps { right: var(--player-container-x); }
+
+.banned-maps img {
+    width: 86px;
+    margin: 0 -10px;
+}
