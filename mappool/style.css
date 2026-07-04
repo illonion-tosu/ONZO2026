@@ -42,3 +42,117 @@
     position: absolute;
     top: 87px;
 }
+
+/* ----- Now Playing Area ----- */
+.now-playing-area {
+    position: absolute;
+    top: 161px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 706px;
+    height: 392px;
+}
+
+.now-playing-background {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 660px;
+    height: 346px;
+    border-radius: 20px;
+    background: center / cover;
+    /* background-image: url("https://assets.ppy.sh/beatmaps/1088336/covers/cover.jpg?1622178368") */
+}
+
+.now-playing-metadata {
+    position: absolute;
+    left: 39px;
+    font-size: 19px;
+    font-family: "Vinque Antique", sans-serif;
+}
+
+.now-playing-artist {
+    top: 19px;
+    color: #d6d6d6;
+    text-shadow:
+        0 0 2px rgba(255 255 255 / 0.35),
+        0 0 8px rgba(255 255 255 / 0.30),
+        0 0 16px rgba(255 255 255 / 0.24),
+        0 0 24px rgba(255 255 255 / 0.18),
+        0 0 33px rgba(255 255 255 / 0.14);
+}
+
+.now-playing-title {
+    top: 41px;
+    color: white;
+    text-shadow:
+        0 0 2px rgba(255 255 255 / 0.35),
+        0 0 8px rgba(255 255 255 / 0.30),
+        0 0 16px rgba(255 255 255 / 0.24),
+        0 0 24px rgba(255 255 255 / 0.18),
+        0 0 33px rgba(255 255 255 / 0.14);
+}
+
+.now-playing-mapper-difficulty {
+    top: 66px;
+    color: #c5c5c5;
+}
+
+/* Now Playing Stats */
+.now-playing-stats {
+    top: 20px;
+    right: 44px;
+}
+
+/* Now Playing Final Score */
+.now-playing-final-score {
+    position: absolute;
+    top: 242px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 658px;
+    height: 52px;
+    background-color: #23232380;
+    display: flex;
+    gap: 20px;
+    color: white;
+    line-height: 52px;
+    font-family: Caldstone;
+}
+.now-playing-left-final-score, .now-playing-right-final-score { width: 304px; }
+.now-playing-left-final-score { text-align: right; }
+
+.now-playing-win-final-score, .now-playing-final-score-dash {
+    font-size: 32px;
+    text-shadow:
+        0 0 1px rgb(255 255 255 / 0.60),
+        0 0 2px rgb(255 255 255 / 0.45),
+        0 0 5px rgb(255 255 255 / 0.25),
+        0 0 8px rgb(255 255 255 / 0.10);
+}
+
+.now-playing-lose-final-score {
+    font-size: 24px;
+    color: #c3c3c3;
+    text-shadow:
+        0 0 1px rgb(255 255 255 / 0.60),
+        0 0 2px rgb(255 255 255 / 0.45),
+        0 0 5px rgb(255 255 255 / 0.25),
+        0 0 8px rgb(255 255 255 / 0.10);
+}
+
+/* Now Playing Mod ID */
+.now-playing-mod-id {
+    position: absolute;
+    top: 300px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.now-playing-pick {
+    position: absolute;
+    top: 228px;
+    left: 50%;
+    transform: translateX(-50%);
+}
