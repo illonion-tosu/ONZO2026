@@ -93,7 +93,6 @@ const nowPlayingBottomStatsEl = document.getElementById("now-playing-bottom-stat
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
     const data = JSON.parse(event.data)
-    console.log(data)
 
     // Save data
     const clients = data.tourney.clients

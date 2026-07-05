@@ -291,7 +291,6 @@ let ipcState
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
     const data = JSON.parse(event.data)
-    console.log(data)
 
     // Save data
     const clients = data.tourney.clients
@@ -504,7 +503,6 @@ async function setMatchHistoryDetails() {
         const teamHistoryLeftEl = teamHistoryLeftAreaEl.querySelector(`[data-id="${games[i].beatmap_id}"]`)
         if (teamHistoryLeftEl) {
             setTeamHistoryScore(teamHistoryLeftEl, scoreLeft, scoreRight)
-            console.log("team history set")
         }
 
         // Right Area
@@ -572,8 +570,6 @@ function setTeamHistoryScore(element, scoreLeft, scoreRight) {
         scoresRightEl.classList.add("team-history-scores-win")
 
         crownEl.setAttribute("src", `static/match-history/crown-purple.png`)
-
-        console.log("hello 2")
     } else {
         scoresLeftEl.classList.add("team-history-scores-lose")
         scoresLeftEl.classList.remove("team-history-scores-win")
