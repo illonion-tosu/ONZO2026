@@ -13,20 +13,25 @@ export function updateChat(chatLen, chatData, chatContainerEl) {
 
             // Chat message container
             const chatMessageContainer = document.createElement("div")
-            chatMessageContainer.classList.add("chat-display-message")
+            chatMessageContainer.classList.add("message-wrapper")
+
+            // Time
+            const chatDisplayTime = document.createElement("div")
+            chatDisplayTime.classList.add("message-time")
+            chatDisplayTime.textContent = chatData[i].timestamp
 
             // Name
             const chatDisplayName = document.createElement("div")
-            chatDisplayName.classList.add("chat-display-name")
+            chatDisplayName.classList.add("message-name")
             chatDisplayName.classList.add(chatColour)
-            chatDisplayName.innerText = chatData[i].name + ": ";
+            chatDisplayName.innerText = chatData[i].name + ":";
 
             // Message
             const chatDisplayMessage = document.createElement("div")
-            chatDisplayMessage.classList.add("chat-display-content")
+            chatDisplayMessage.classList.add("message-content")
             chatDisplayMessage.innerText = chatData[i].message
 
-            chatMessageContainer.append(chatDisplayName, chatDisplayMessage)
+            chatMessageContainer.append(chatDisplayTime, chatDisplayName, chatDisplayMessage)
             fragment.append(chatMessageContainer)
         }
 

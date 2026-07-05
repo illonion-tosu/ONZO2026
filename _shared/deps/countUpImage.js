@@ -149,7 +149,6 @@ var CountUpImage = function(target, startVal, endVal, decimals, duration, option
 	// Print value to target
 	self.printValue = function(value) {
 		var result = self.options.formattingFn(value);
-		console.log(result)
 
 		if (self.d.tagName === 'INPUT') {
 			this.d.value = result;

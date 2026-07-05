@@ -1,0 +1,511 @@
+:root {
+    --player-container-x: 189px;
+    --team-history-area-x: 115px;
+    --team-history-mod-x: 6px;
+    --team-history-scores-x: 105px;
+    --sidebar-background-colour: black;
+}
+
+/* ----- Mappool Text ----- */
+.mappool-text {
+    position: absolute;
+    top: 65px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.waiting-for-pick {
+    --text-shadow-color: 149 24 255;
+
+    position: absolute;
+    top: 130px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background: linear-gradient( to bottom, white 0%, white 55%, #DEDEDE 55%, #DEDEDE 100% );
+    -webkit-background-clip: text;
+    background-clip: text;
+    font-family: "Alan Sans";
+    font-weight: 600;
+    font-size: 20px;
+    filter:
+        drop-shadow(0 0 4px rgb(var(--text-shadow-color) / 1))
+        drop-shadow(0 0 12px rgb(var(--text-shadow-color) / .8))
+        drop-shadow(0 0 24px rgb(var(--text-shadow-color) / .5));
+}
+.wait-for-pick-left { --text-shadow-color: 255 154 61; }
+.wait-for-pick-right { --text-shadow-color: 149 24 255; }
+
+/* ----- Player Area ----- */
+.player-container {
+    position: absolute;
+    top: 87px;
+}
+
+/* ----- Now Playing Area ----- */
+.now-playing-area {
+    position: absolute;
+    top: 161px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 706px;
+    height: 392px;
+}
+
+.now-playing-background {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 660px;
+    height: 346px;
+    border-radius: 20px;
+    background: center / cover;
+    background-image: url("https://assets.ppy.sh/beatmaps/1088336/covers/cover.jpg")
+}
+
+.now-playing-metadata {
+    position: absolute;
+    left: 39px;
+    font-size: 19px;
+    font-family: "Vinque Antique", sans-serif;
+}
+
+.now-playing-artist {
+    top: 19px;
+    color: #d6d6d6;
+    text-shadow:
+        0 0 2px rgba(255 255 255 / 0.35),
+        0 0 8px rgba(255 255 255 / 0.30),
+        0 0 16px rgba(255 255 255 / 0.24),
+        0 0 24px rgba(255 255 255 / 0.18),
+        0 0 33px rgba(255 255 255 / 0.14);
+}
+
+.now-playing-title {
+    top: 41px;
+    color: white;
+    text-shadow:
+        0 0 2px rgba(255 255 255 / 0.35),
+        0 0 8px rgba(255 255 255 / 0.30),
+        0 0 16px rgba(255 255 255 / 0.24),
+        0 0 24px rgba(255 255 255 / 0.18),
+        0 0 33px rgba(255 255 255 / 0.14);
+}
+
+.now-playing-mapper-difficulty {
+    top: 66px;
+    color: #c5c5c5;
+}
+
+/* Now Playing Stats */
+.now-playing-stats {
+    top: 20px;
+    right: 44px;
+}
+
+/* Now Playing Final Score */
+.now-playing-final-score {
+    position: absolute;
+    top: 242px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 658px;
+    height: 52px;
+    background-color: #23232380;
+    display: flex;
+    gap: 20px;
+    color: white;
+    line-height: 60px;
+    font-family: Caldstone;
+}
+.now-playing-left-final-score, .now-playing-right-final-score { width: 304px; }
+.now-playing-left-final-score { text-align: right; }
+
+.now-playing-win-final-score, .now-playing-final-score-dash {
+    font-size: 32px;
+    text-shadow:
+        0 0 1px rgb(255 255 255 / 0.60),
+        0 0 2px rgb(255 255 255 / 0.45),
+        0 0 5px rgb(255 255 255 / 0.25),
+        0 0 8px rgb(255 255 255 / 0.10);
+}
+
+.now-playing-lose-final-score {
+    font-size: 24px;
+    color: #c3c3c3;
+    text-shadow:
+        0 0 1px rgb(255 255 255 / 0.60),
+        0 0 2px rgb(255 255 255 / 0.45),
+        0 0 5px rgb(255 255 255 / 0.25),
+        0 0 8px rgb(255 255 255 / 0.10);
+}
+
+/* Now Playing Mod ID */
+.now-playing-mod-id {
+    position: absolute;
+    top: 300px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.now-playing-pick {
+    position: absolute;
+    top: 228px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.now-playing-pick-tb {
+    display: none;
+    position: absolute;
+    top: 400px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* ----- Mappool Area ----- */
+.mappool-area {
+    position: absolute;
+    top: 621px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.mappool-area-line-1 {
+    display: flex;
+    gap: 19px;
+}
+
+.mappool-area-line-2 {
+    position: absolute;
+    top: 61px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 19px;
+}
+
+.mappool-pick-container {
+    width: 76px;
+    height: 76px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    clip-path: polygon(40% 0%, 60% 0%, 100% 40%, 100% 60%, 60% 100%, 40% 100%, 0% 60%, 0% 40%);
+}
+
+/* ----- Chat Area ----- */
+.chat-display {
+    position: absolute;
+    top: 772px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 794px;
+    height: 223px;
+}
+
+.chat-display-container {
+    --x-margin: 27px;
+    --y-margin: 22px;
+
+    position: absolute;
+    top: var(--y-margin);
+    left: var(--x-margin);
+    width: calc(100% - var(--x-margin) * 2);
+    height: calc(100% - var(--y-margin) * 2);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.message-wrapper {
+    margin: -0.5px 0;
+    display: flex;
+}
+
+.message-time {
+    opacity: 0.341;
+    font-size: 15px;
+    color: white;
+    font-weight: 800;
+    font-family: "Alan Sans", sans-serif;
+    filter: drop-shadow(0px 2px 0.5px rgb(0 0 0 / 0.75));
+    margin-right: 24px;
+}
+
+.message-name {
+    font-size: 15px;
+    font-weight: 800;
+    font-family: "Alan Sans", sans-serif;
+    filter: drop-shadow(0px 2px 0.5px rgb(0 0 0 / 0.75));
+    /* width: 170px; */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+}
+.left { color: #FFC468; }
+.right { color: #AF8AE0; }
+.bot { color: #E44444; }
+.unknown { color: #6DE06A; }
+
+.message-content {
+    font-size: 15px;
+    font-weight: 800;
+    font-family: "Alan Sans", sans-serif;
+}
+
+/* Banned Maps  */
+.banned-maps {
+    position: absolute;
+    top: 185px;
+}
+.banned-left-maps { left: var(--player-container-x); }
+.banned-right-maps { right: var(--player-container-x); }
+
+.banned-maps img {
+    width: 86px;
+    margin: 0 -10px;
+}
+
+/* ----- Team History Area ----- */
+.team-history-area {
+    position: absolute;
+    top: 272px;
+    width: 362px;
+}
+.team-history-right-area { right: var(--team-history-area-x); }
+.team-history-left-area { left: var(--team-history-area-x); }
+
+.team-history-map {
+    position: relative;
+    height: 85px;
+    margin-bottom: 24px;
+    display: none;
+}
+.team-history-left-area .team-history-map { flex-direction: row-reverse; }
+
+.team-history-map-left {
+    background: center / cover;
+    background-image: url("https://assets.ppy.sh/beatmaps/1088336/covers/cover.jpg");
+    border-radius: 11px;
+    width: 286px;
+    height: 84px;
+}
+
+.team-history-mod {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 58px;
+}
+.team-history-right-area .team-history-map .team-history-mod { left: var(--team-history-mod-x); }
+.team-history-left-area .team-history-map .team-history-mod { right: var(--team-history-mod-x); }
+
+.team-history-scores {
+    position: absolute;
+    top: 52%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    font-family: Caldstone;
+    color: white;
+    display: none;
+    gap: 5px;
+    align-items: center;
+}
+.team-history-right-area .team-history-map .team-history-scores { right: var(--team-history-scores-x); }
+.team-history-left-area .team-history-map .team-history-scores { left: var(--team-history-scores-x); }
+
+.team-history-scores-lose {
+    font-size: 19px;
+    color: #c3c3c3;
+}
+
+.team-history-crown {
+    width: 76px;
+    height: 75px;
+}
+
+/* ===========================
+    Sidebar
+=========================== */
+.sidebar {
+    position: absolute;
+    top: 0;
+    left: 1920px;
+    width: 750px;
+    height: 1080px;
+    background-color: var(--sidebar-background-colour);
+    font-family: "Alan Sans", sans-serif;
+}
+
+/* ===========================
+    Column
+=========================== */
+.column {
+    position: absolute;
+    width: 250px;
+}
+.column-2 { left: 250px; }
+.column-3 { left: 500px; }
+
+/* ===========================
+    Divider
+=========================== */
+.divider {
+    position: absolute;
+    width: 2px;
+    height: 1080px;
+    background-color: white;
+}
+.divider-1 { left: 249px; }
+.divider-2 { left: 499px; }
+
+/* ===========================
+    Sidebar Section
+=========================== */
+.sidebar-section {
+    border-bottom: 2px solid white;
+    padding-bottom: 20px;
+}
+
+/* ===========================
+    Texts
+=========================== */
+.sidebar-section-text {
+    width: 100%;
+    color: white;
+    text-align: center;
+}
+
+.sidebar-section h1 {
+    font-weight: 700;
+    line-height: 30px;
+    font-size: 1.4em;
+}
+
+.sidebar-section h2 {
+    font-weight: 700;
+    font-size: 1em;
+}
+
+.sidebar-section p {
+    text-align: center;
+    line-height: 20px;
+    font-size: 1em;
+}
+
+/* ===========================
+    Button Container
+=========================== */
+.sidebar-button-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* ===========================
+    Button
+=========================== */
+button {
+    width: 105px;
+    height: 30px;
+    font-weight: 400;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+.sidebar-button-container button:active {
+    background-color: white;
+    color: var(--sidebar-background-colour);
+}
+
+/* ===========================
+    Full Width Button
+=========================== */
+#toggle-autopick, #toggle-stars, #next-picker-none, #apply-changes, .full-width-button { width: 220px; }
+#next-picker, #current-picker { color: white; }
+
+/* ===========================
+    Mappool Override Select
+=========================== */
+.mappool-override-select {
+    color: white;
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    line-height: 25px;
+    font-size: 1rem;
+}
+
+.mappool-override-select > * {
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mappool-override-select::-webkit-scrollbar { display: none; }
+
+/* ===========================
+    Mappool Override Beatmaps Container
+=========================== */
+.mappool-override-beatmaps-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.mappool-override-beatmaps {
+    width: 80px;
+    height: 30px;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+}
+
+/* ===========================
+    Input
+=========================== */
+input[type=number] {
+    width: 200px;
+    margin-left: 25px;
+    border: none;
+    background-color: transparent;
+    color: white;
+    font-family: "Alan Sans", sans-serif;
+    font-size: 1.25rem;
+    border-bottom: 2px solid white;
+    text-align: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* ===========================
+    Toggle Stars
+=========================== */
+.toggle-active { background-color: rgb(32 121 44); }
+.toggle-inactive { background-color: rgb(121 32 32); }
+
+/* ===========================
+    Scene Switching
+=========================== */
+#scene-collection button {
+    height: 60px;
+    font-size: 0.8em;
+    line-height: 15px;
+}

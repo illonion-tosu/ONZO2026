@@ -93,7 +93,6 @@ const nowPlayingBottomStatsEl = document.getElementById("now-playing-bottom-stat
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
     const data = JSON.parse(event.data)
-    console.log(data)
 
     // Save data
     const clients = data.tourney.clients
@@ -104,14 +103,14 @@ socket.onmessage = async event => {
         player1Id = clients[0].user.id
         playerLeftProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player1Id}")`
         playerLeftNameEl.innerText = clients[0].user.name
-        const player = findPlayer(player1Id)
+        const player = findPlayer(clients[0].user.name)
         if (player) playerLeftSeedEl.innerText = `#${player.player_seed}`
     }
     if (player2Id !== clients[1].user.id) {
         player2Id = clients[1].user.id
         playerRightProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player2Id}")`
         playerRightNameEl.innerText = clients[1].user.name
-        const player = findPlayer(player2Id)
+        const player = findPlayer(clients[1].user.name)
         if (player) playerRightSeedEl.innerText = `#${player.player_seed}`
     }
 
@@ -150,7 +149,7 @@ socket.onmessage = async event => {
             playerStar.classList.add("player-star")
 
             const pointImg = document.createElement("img")
-            pointImg.setAttribute("src", `static/point/point-${status}.png`)
+            pointImg.setAttribute("src", `../_shared/assets/point/point-${status}.png`)
 
             playerStar.append(pointImg)
             return playerStar
