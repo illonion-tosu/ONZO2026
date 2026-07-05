@@ -150,8 +150,6 @@ function mapClickEvent(event) {
     let action = "pick"
     if (event.ctrlKey) action = "ban"
 
-    console.log("map check 2")
-
     // Check if map exists in bans and picks
     const mapCheck = !!(
         mappoolAreaLine1El.querySelector(`[data-id="${currentMapId}"]`)
@@ -164,8 +162,6 @@ function mapClickEvent(event) {
             ?.includes("/picked/")
     )
     if (mapCheck) return
-
-    console.log("map check")
     
     // Bans
     if (action === "ban") {
@@ -256,7 +252,7 @@ function mapClickEvent(event) {
             }
 
             currentPicker = team
-            setCurrentPicker()
+            setCurrentPicker(currentPicker)
 
             break
         }
@@ -278,6 +274,9 @@ let currentStarBestOf, currentLeftStars, currentRightStars
 /* Chat */
 const chatDisplayContainerEl = document.getElementById("chat-display-container")
 let chatLen
+
+// Now Playing Information
+let currentId, currentChecksum, currentMappoolBeatmap, currentPickedTile
 
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
@@ -338,9 +337,36 @@ socket.onmessage = async event => {
     }
 
     // Chat
-
     if (chatLen !== chatData.length) {
         chatLen = updateChat(chatLen, chatData, chatDisplayContainerEl)
+    }
+
+        // Mappool map
+    if (currentId !== data.beatmap.id || currentChecksum !== data.beatmap.checksum) {
+        currentId = data.beatmap.id
+        currentChecksum = data.beatmap.checksum
+        currentMappoolBeatmap = findBeatmap(currentId)
+
+        // Find element
+        const element = document.getElementById(currentId)
+        
+        // Click event
+        if (isAutopickToggled && element && (!element.hasAttribute("data-is-autopicked") || element.getAttribute("data-is-autopicked") !== "true")) {
+            // Check if autopicked already
+            const event = new MouseEvent('mousedown', {
+                bubbles: true,
+                cancelable: true,
+                view: window,
+                button: (currentNextPicker === "left")? 0 : 2
+            })
+            element.dispatchEvent(event)
+            element.setAttribute("data-is-autopicked", "true")
+
+            setCurrentPicker(currentNextPicker)
+            if (currentNextPicker === "left") setNextPicker("right")
+            else if (currentNextPicker === "right") setNextPicker("left")
+            waitingForPickEl.style.display = "none"
+        }
     }
 }
 
@@ -352,8 +378,9 @@ function setNextPicker(pickerTeam) {
     currentNextPicker = pickerTeam
     nextPickerEl.textContent = pickerTeam === "left" ? "ORAGNE" : pickerTeam === "right" ? "PURPLE" : "NONE"
     if (currentNextPicker === "none") {
-        waitingForPickEl.textContent = ""
+        waitingForPickEl.style.display = "none"
     } else {
+        waitingForPickEl.style.display = "block"
         waitingForPickEl.textContent = `waiting for ${pickerTeam === "left"? "orange": "purple"}'s pick...`
         waitingForPickEl.classList.remove("wait-for-pick-left")
         waitingForPickEl.classList.remove("wait-for-pick-right")
@@ -382,6 +409,12 @@ let currentPicker = "none"
 function setCurrentPicker(pickerTeam) {
     currentPicker = pickerTeam
     currentPickerEl.textContent = pickerTeam === "left" ? "ORAGNE" : pickerTeam === "right" ? "PURPLE" : "NONE"
+    if (currentPicker === "left" || currentPicker === "right") {
+        nowPlayingPickEl.style.display = "block"
+        nowPlayingPickEl.setAttribute("src", `static/picks/${pickerTeam}-pick.png`)
+    } else {
+        nowPlayingPickEl.style.display = "none"
+    }
 }
 
 const setCurrentPickerLeftEl = document.getElementById("set-current-picker-left")
