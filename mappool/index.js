@@ -1,5 +1,6 @@
 import { updateChat } from "../_shared/core/chat.js"
 import { getBeatmaps, findBeatmap, getPlayers, findPlayer, initialiseApi, getApi } from "../_shared/core/load-data.js"
+import { delay } from "../_shared/core/utils.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
 // Banned Maps
@@ -137,7 +138,7 @@ const nowPlayingPickEl = document.getElementById("now-playing-pick")
 const nowPlayingPickTbEl = document.getElementById("now-playing-pick-tb")
 
 // Map click Event
-let currentTile
+let hasPickedYet = false
 function mapClickEvent(event) {
     // Figure out whether it is a pick or ban
     const currentMapId = this.dataset.id
@@ -194,7 +195,6 @@ function mapClickEvent(event) {
 
             // Set pick info
             if (child.dataset.id !== undefined) continue
-            currentTile = child
             nowPlayingAreaEl.dataset.id = currentMapId
             child.dataset.id = currentMapId
             child.style.display = "flex"
@@ -247,6 +247,7 @@ function mapClickEvent(event) {
 
             // Bottom area
             nowPlayingModIdEl.setAttribute("src", `static/mods/${currentMap.mod.toUpperCase()}${currentMap.order}.png`)
+            nowPlayingModIdEl.style.display = "block"
 
             if (currentMap.mod === "TB") {
                 nowPlayingPickEl.setAttribute("src", `static/picks/tb-pick.png`)
@@ -258,6 +259,8 @@ function mapClickEvent(event) {
 
             currentPicker = team
             setCurrentPicker(currentPicker)
+            hasPickedYet = true
+
             break
         }
     }
@@ -280,7 +283,7 @@ const chatDisplayContainerEl = document.getElementById("chat-display-container")
 let chatLen
 
 // Now Playing Information
-let currentId, currentChecksum, currentMappoolBeatmap, currentPickedTile
+let currentId, currentChecksum, updateData = false, currentMappoolBeatmap
 
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
@@ -371,6 +374,30 @@ socket.onmessage = async event => {
             else if (currentNextPicker === "right") setNextPicker("left")
             waitingForPickEl.style.display = "none"
         }
+
+        // If map not picked yet, set now playing details
+        if (!hasPickedYet) {
+            updateData = true
+            await delay(250)
+        }
+    }
+
+    if (updateData) {
+        const beatmapData = data.beatmap
+        updateData = false
+        nowPlayingBackgroundEl.style.backgroundImage = `url("${window.location.origin}/Songs/${data.folders.beatmap}/${data.files.background}")`
+        nowPlayingArtistEl.textContent = beatmapData.artist
+        nowPlayingTitleEl.textContent = beatmapData.title
+        nowPlayingMapperEl.textContent = beatmapData.mapper
+        nowPlayingDifficultyEl.textContent = `${beatmapData.version}`
+        nowPlayingStatNumberCsEl.textContent = beatmapData.stats.cs.converted
+        nowPlayingStatNumberArEl.textContent = beatmapData.stats.ar.converted
+        nowPlayingStatNumberOdEl.textContent = beatmapData.stats.od.converted
+        nowPlayingStatNumberSrEl.textContent = beatmapData.stats.stars.total
+        nowPlayingFinalScoreEl.style.display = "none"
+        nowPlayingModIdEl.style.display = "none"
+        nowPlayingPickEl.style.display = "none"
+        nowPlayingPickTbEl.style.display = "none"
     }
 }
 
