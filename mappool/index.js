@@ -115,6 +115,7 @@ getBeatmaps().then((beatmaps) => {
 const mappoolAreaLine1El = document.getElementById("mappool-area-line-1")
 const mappoolAreaLine2El = document.getElementById("mappool-area-line-2")
 
+const nowPlayingAreaEl = document.getElementById("now-playing-area")
 // Now playing metadata
 const nowPlayingBackgroundEl = document.getElementById("now-playing-background")
 const nowPlayingArtistEl = document.getElementById("now-playing-artist")
@@ -128,6 +129,8 @@ const nowPlayingStatNumberOdEl = document.getElementById("now-playing-stat-numbe
 const nowPlayingStatNumberSrEl = document.getElementById("now-playing-stat-number-sr")
 // Now playing final score
 const nowPlayingFinalScoreEl = document.getElementById("now-playing-final-score")
+const nowPlayingLeftFinalScoreEl = document.getElementById("now-playing-left-final-score")
+const nowPlayingRightFinalScoreEl = document.getElementById("now-playing-right-final-score")
 // Now playing bottom
 const nowPlayingModIdEl = document.getElementById("now-playing-mod-id")
 const nowPlayingPickEl = document.getElementById("now-playing-pick")
@@ -192,6 +195,7 @@ function mapClickEvent(event) {
             // Set pick info
             if (child.dataset.id !== undefined) continue
             currentTile = child
+            nowPlayingAreaEl.dataset.id = currentMapId
             child.dataset.id = currentMapId
             child.style.display = "flex"
             child.children[0].children[1].setAttribute("src", `static/mods/${currentMap.mod.toUpperCase()}${currentMap.order}.png`)
@@ -254,7 +258,6 @@ function mapClickEvent(event) {
 
             currentPicker = team
             setCurrentPicker(currentPicker)
-
             break
         }
     }
@@ -288,18 +291,25 @@ socket.onmessage = async event => {
     const clients = data.tourney.clients
     const chatData = data.tourney.chat
 
+    // Testing purposes only
+    clients[0].user.id = 7477458
+    clients[0].user.name = "Jordan The Bear"
+    clients[1].user.id = 11865105
+    clients[1].user.name = "Sentha"
+
     if (player1Id !== clients[0].user.id) {
         player1Id = clients[0].user.id
         playerLeftProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player1Id}")`
         playerLeftNameEl.innerText = clients[0].user.name
-        const player = findPlayer(player1Id)
+        console.log(findPlayer("Jordan The Bear"))
+        const player = findPlayer(clients[0].user.name)
         if (player) playerLeftSeedEl.innerText = `#${player.player_seed}`
     }
     if (player2Id !== clients[1].user.id) {
         player2Id = clients[1].user.id
         playerRightProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player2Id}")`
         playerRightNameEl.innerText = clients[1].user.name
-        const player = findPlayer(player2Id)
+        const player = findPlayer(clients[1].user.name)
         if (player) playerRightSeedEl.innerText = `#${player.player_seed}`
     }
 
@@ -444,6 +454,7 @@ async function setMatchHistoryDetails() {
     const response = await axios.get(`https://osu.ppy.sh/api/get_match?k=${getApi()}&mp=${mpIdEl.value}`)
     const games = response.data.games
     console.log(response.data)
+    let setNowPlayingFinalScore = false
 
     // Team History Left Area
     for (let i = 0; i < games.length; i++) {
@@ -452,42 +463,90 @@ async function setMatchHistoryDetails() {
         if (!currentMap) continue
 
         // Set scores for each side
-        const scoreLeft = games[i].scores[0].user_id == player1Id? games[i].scores[0].score : games[i].scores[1].score
-        const scoreRight = games[i].scores[0].user_id == player2Id? games[i].scores[0].score : games[i].scores[1].score
+        const scoreLeft = games[i].scores[0].user_id == player1Id? Number(games[i].scores[0].score) : Number(games[i].scores[1].score)
+        const scoreRight = games[i].scores[0].user_id == player2Id? Number(games[i].scores[0].score) : Number(games[i].scores[1].score)
 
         // Find map in now playing or picked areas
         // Left Area
         const teamHistoryLeftEl = teamHistoryLeftAreaEl.querySelector(`[data-id="${games[i].beatmap_id}"]`)
         if (teamHistoryLeftEl) {
-            // Set scores in correct location for this element
-            const scoresEl = teamHistoryLeftEl.children[0].children[2]
-            const scoresLeftEl = scoresEl.children[0]
-            const scoresRightEl = scoresEl.children[1]
-            scoresLeftEl.textContent = scoreLeft
-            scoresRightEl.textContent = scoreRight
+            setTeamHistoryScore(teamHistoryLeftEl, scoreLeft, scoreRight)
+            console.log("team history set")
+        }
 
-            // Set crown
-            const crownEl = teamHistoryLeftEl.children[1]
+        // Right Area
+        const teamHistoryRightEl = teamHistoryRightAreaEl.querySelector(`[data-id="${games[i].beatmap_id}"]`)
+        if (teamHistoryRightEl) {
+            setTeamHistoryScore(teamHistoryRightEl, scoreLeft, scoreRight)
+        }
 
-            // Scores
+        // Now Playing Area
+        if (nowPlayingAreaEl.dataset.id == games[i].beatmap_id) {
+            setNowPlayingFinalScore = true
+            nowPlayingFinalScoreEl.style.display = "flex"
+            nowPlayingLeftFinalScoreEl.textContent = scoreLeft.toLocaleString()
+            nowPlayingRightFinalScoreEl.textContent = scoreRight.toLocaleString()
+
             if (scoreLeft > scoreRight) {
-                scoresLeftEl.classList.remove(".team-history-scores-lose")
-                scoresRightEl.classList.add(".team-history-scores-win")
-
-                crownEl.setAttribute("src", `static/match-history/crown-orange.png`)
+                nowPlayingLeftFinalScoreEl.classList.add("now-playing-win-final-score")
+                nowPlayingLeftFinalScoreEl.classList.remove("now-playing-lose-final-score")
+                nowPlayingRightFinalScoreEl.classList.remove("now-playing-win-final-score")
+                nowPlayingRightFinalScoreEl.classList.add("now-playing-lose-final-score")
             } else if (scoreLeft < scoreRight) {
-                scoresLeftEl.classList.add(".team-history-scores-lose")
-                scoresRightEl.classList.remove(".team-history-scores-win")
-
-                crownEl.setAttribute("src", `static/match-history/crown-none.png`)
+                nowPlayingLeftFinalScoreEl.classList.remove("now-playing-win-final-score")
+                nowPlayingLeftFinalScoreEl.classList.add("now-playing-lose-final-score")
+                nowPlayingRightFinalScoreEl.classList.add("now-playing-win-final-score")
+                nowPlayingRightFinalScoreEl.classList.remove("now-playing-lose-final-score") 
             } else {
-                scoresLeftEl.classList.add(".team-history-scores-lose")
-                scoresLeftEl.classList.remove(".team-history-scores-win")
-                scoresRightEl.classList.add(".team-history-scores-lose")
-                scoresRightEl.classList.remove(".team-history-scores-win")
-
-                crownEl.setAttribute("src", `static/match-history/crown-purple.png`)
+                nowPlayingLeftFinalScoreEl.classList.remove("now-playing-win-final-score")
+                nowPlayingLeftFinalScoreEl.classList.add("now-playing-lose-final-score")
+                nowPlayingRightFinalScoreEl.classList.remove("now-playing-win-final-score")
+                nowPlayingRightFinalScoreEl.classList.add("now-playing-lose-final-score") 
             }
         }
+
+        if (!setNowPlayingFinalScore) {
+            nowPlayingFinalScoreEl.style.display = "none"
+            
+        }
+    }
+}
+
+function setTeamHistoryScore(element, scoreLeft, scoreRight) {
+    // Set scores in correct location for this element
+    const scoresEl = element.children[0].children[2]
+    const scoresLeftEl = scoresEl.children[0]
+    const scoresRightEl = scoresEl.children[1]
+    scoresEl.style.display = "flex"
+    scoresLeftEl.textContent = scoreLeft.toLocaleString()
+    scoresRightEl.textContent = scoreRight.toLocaleString()
+
+    // Set crown
+    const crownEl = element.children[1]
+
+    // Scores
+    if (scoreLeft > scoreRight) {
+        scoresLeftEl.classList.remove("team-history-scores-lose")
+        scoresLeftEl.classList.add("team-history-scores-win")
+        scoresRightEl.classList.add("team-history-scores-lose")
+        scoresRightEl.classList.remove("team-history-scores-win")
+
+        crownEl.setAttribute("src", `static/match-history/crown-orange.png`)
+    } else if (scoreLeft < scoreRight) {
+        scoresLeftEl.classList.add("team-history-scores-lose")
+        scoresLeftEl.classList.remove("team-history-scores-win")
+        scoresRightEl.classList.remove("team-history-scores-lose")
+        scoresRightEl.classList.add("team-history-scores-win")
+
+        crownEl.setAttribute("src", `static/match-history/crown-purple.png`)
+
+        console.log("hello 2")
+    } else {
+        scoresLeftEl.classList.add("team-history-scores-lose")
+        scoresLeftEl.classList.remove("team-history-scores-win")
+        scoresRightEl.classList.add("team-history-scores-lose")
+        scoresRightEl.classList.remove("team-history-scores-win")
+
+        crownEl.setAttribute("src", `static/match-history/crown-none.png`)
     }
 }

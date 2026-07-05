@@ -14,12 +14,12 @@ export function findBeatmap(beatmap_id) {
 
 export async function getPlayers() {
     const response = await axios.get("../_data/players.json")
-    allBeatmaps = response.data
-    return allBeatmaps
+    allPlayers = response.data
+    return allPlayers
 }
 
-export function findPlayer(player_id) {
-    return allPlayers.find(player => Number(player.player_id) === Number(player_id))
+export function findPlayer(player_name) {
+    return allPlayers.find(player => player.player_name === player_name)
 }
 
 export async function initialiseApi() {

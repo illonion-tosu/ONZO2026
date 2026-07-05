@@ -59,6 +59,7 @@
     font-family: "Vinque Antique", sans-serif;
     font-size: 1.75rem;
     padding: 0 2px;
+    width: max-content;
     height: var(--height);
     line-height: var(--height);
 }

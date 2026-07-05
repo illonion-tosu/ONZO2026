@@ -311,12 +311,14 @@
 
 .team-history-scores {
     position: absolute;
-    top: 50%;
+    top: 52%;
     transform: translateY(-50%);
     font-size: 24px;
     font-family: Caldstone;
     color: white;
     display: none;
+    gap: 5px;
+    align-items: center;
 }
 .team-history-right-area .team-history-map .team-history-scores { right: var(--team-history-scores-x); }
 .team-history-left-area .team-history-map .team-history-scores { left: var(--team-history-scores-x); }
