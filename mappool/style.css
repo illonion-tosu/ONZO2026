@@ -24,15 +24,15 @@
     color: transparent;
     -webkit-text-fill-color: transparent;
     background: linear-gradient( to bottom, white 0%, white 55%, #DEDEDE 55%, #DEDEDE 100% );
-    -webkit-background-clip: text;
     background-clip: text;
-    font-family: "Alan Sans";
+    -webkit-background-clip: text;
+    font-family: "Alan Sans", sans-serif;
     font-weight: 600;
     font-size: 20px;
     filter:
-        drop-shadow(0 0 4px rgb(var(--text-shadow-color) / 1))
-        drop-shadow(0 0 12px rgb(var(--text-shadow-color) / .8))
-        drop-shadow(0 0 24px rgb(var(--text-shadow-color) / .5));
+        drop-shadow(0 0 4px rgb(var(--text-shadow-color) / 100%))
+        drop-shadow(0 0 12px rgb(var(--text-shadow-color) / 80%))
+        drop-shadow(0 0 24px rgb(var(--text-shadow-color) / 50%));
 }
 .wait-for-pick-left { --text-shadow-color: 255 154 61; }
 .wait-for-pick-right { --text-shadow-color: 149 24 255; }
@@ -72,26 +72,24 @@
     font-family: "Vinque Antique", sans-serif;
 }
 
+.now-playing-artist-title {
+    text-shadow:
+        0 0 2px rgb(255 255 255 / 35%),
+        0 0 8px rgb(255 255 255 / 30%),
+        0 0 16px rgb(255 255 255 / 24%),
+        0 0 24px rgb(255 255 255 / 18%),
+        0 0 33px rgb(255 255 255 / 14%);
+}
+
 .now-playing-artist {
     top: 19px;
     color: #d6d6d6;
-    text-shadow:
-        0 0 2px rgba(255 255 255 / 0.35),
-        0 0 8px rgba(255 255 255 / 0.30),
-        0 0 16px rgba(255 255 255 / 0.24),
-        0 0 24px rgba(255 255 255 / 0.18),
-        0 0 33px rgba(255 255 255 / 0.14);
+
 }
 
 .now-playing-title {
     top: 41px;
     color: white;
-    text-shadow:
-        0 0 2px rgba(255 255 255 / 0.35),
-        0 0 8px rgba(255 255 255 / 0.30),
-        0 0 16px rgba(255 255 255 / 0.24),
-        0 0 24px rgba(255 255 255 / 0.18),
-        0 0 33px rgba(255 255 255 / 0.14);
 }
 
 .now-playing-mapper-difficulty {
@@ -118,28 +116,23 @@
     gap: 20px;
     color: white;
     line-height: 60px;
-    font-family: Caldstone;
+    font-family: Caldstone, serif;
 }
-.now-playing-left-final-score, .now-playing-right-final-score { width: 304px; }
-.now-playing-left-final-score { text-align: right; }
 
-.now-playing-win-final-score, .now-playing-final-score-dash {
-    font-size: 32px;
+.now-playing-left-final-score, .now-playing-right-final-score {
+    width: 304px;
     text-shadow:
-        0 0 1px rgb(255 255 255 / 0.60),
-        0 0 2px rgb(255 255 255 / 0.45),
-        0 0 5px rgb(255 255 255 / 0.25),
-        0 0 8px rgb(255 255 255 / 0.10);
+        0 0 1px rgb(255 255 255 / 60%),
+        0 0 2px rgb(255 255 255 / 45%),
+        0 0 5px rgb(255 255 255 / 25%),
+        0 0 8px rgb(255 255 255 / 10%);
 }
+.now-playing-left-final-score { text-align: right; }
+.now-playing-win-final-score, .now-playing-final-score-dash { font-size: 32px; }
 
 .now-playing-lose-final-score {
     font-size: 24px;
     color: #c3c3c3;
-    text-shadow:
-        0 0 1px rgb(255 255 255 / 0.60),
-        0 0 2px rgb(255 255 255 / 0.45),
-        0 0 5px rgb(255 255 255 / 0.25),
-        0 0 8px rgb(255 255 255 / 0.10);
 }
 
 /* Now Playing Mod ID */
@@ -232,7 +225,7 @@
     color: white;
     font-weight: 800;
     font-family: "Alan Sans", sans-serif;
-    filter: drop-shadow(0px 2px 0.5px rgb(0 0 0 / 0.75));
+    filter: drop-shadow(0 2px 0.5px rgb(0 0 0 /75%));
     margin-right: 24px;
 }
 
@@ -240,8 +233,7 @@
     font-size: 15px;
     font-weight: 800;
     font-family: "Alan Sans", sans-serif;
-    filter: drop-shadow(0px 2px 0.5px rgb(0 0 0 / 0.75));
-    /* width: 170px; */
+    filter: drop-shadow(0 2px 0.5px rgb(0 0 0 / 75%));
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -310,7 +302,7 @@
     top: 52%;
     transform: translateY(-50%);
     font-size: 24px;
-    font-family: Caldstone;
+    font-family: Caldstone, serif;
     color: white;
     display: none;
     gap: 5px;
@@ -477,7 +469,7 @@ button {
 /* ===========================
     Input
 =========================== */
-input[type=number] {
+input[type="number"] {
     width: 200px;
     margin-left: 25px;
     border: none;
@@ -492,6 +484,7 @@ input[type=number] {
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
+  appearance: none;
   margin: 0;
 }
 
