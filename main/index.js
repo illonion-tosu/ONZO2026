@@ -104,14 +104,14 @@ socket.onmessage = async event => {
         player1Id = clients[0].user.id
         playerLeftProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player1Id}")`
         playerLeftNameEl.innerText = clients[0].user.name
-        const player = findPlayer(player1Id)
+        const player = findPlayer(clients[0].user.name)
         if (player) playerLeftSeedEl.innerText = `#${player.player_seed}`
     }
     if (player2Id !== clients[1].user.id) {
         player2Id = clients[1].user.id
         playerRightProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player2Id}")`
         playerRightNameEl.innerText = clients[1].user.name
-        const player = findPlayer(player2Id)
+        const player = findPlayer(clients[1].user.name)
         if (player) playerRightSeedEl.innerText = `#${player.player_seed}`
     }
 

@@ -291,17 +291,10 @@ socket.onmessage = async event => {
     const clients = data.tourney.clients
     const chatData = data.tourney.chat
 
-    // Testing purposes only
-    clients[0].user.id = 7477458
-    clients[0].user.name = "Jordan The Bear"
-    clients[1].user.id = 11865105
-    clients[1].user.name = "Sentha"
-
     if (player1Id !== clients[0].user.id) {
         player1Id = clients[0].user.id
         playerLeftProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player1Id}")`
         playerLeftNameEl.innerText = clients[0].user.name
-        console.log(findPlayer("Jordan The Bear"))
         const player = findPlayer(clients[0].user.name)
         if (player) playerLeftSeedEl.innerText = `#${player.player_seed}`
     }
@@ -453,7 +446,6 @@ const matchHistorySetDetailsEl = document.getElementById("match-history-set-deta
 async function setMatchHistoryDetails() {
     const response = await axios.get(`https://osu.ppy.sh/api/get_match?k=${getApi()}&mp=${mpIdEl.value}`)
     const games = response.data.games
-    console.log(response.data)
     let setNowPlayingFinalScore = false
 
     // Team History Left Area
