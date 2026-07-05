@@ -6,9 +6,6 @@
     --sidebar-background-colour: black;
 }
 
-/* ----- Whole Page ----- */
-.main { background-image: url("static/background.png"); }
-
 /* ----- Mappool Text ----- */
 .mappool-text {
     position: absolute;
@@ -25,18 +22,17 @@
     left: 50%;
     transform: translateX(-50%);
     color: transparent;
-    background: linear-gradient( to bottom, white 0%, white 50%, #DEDEDE 50%, #DEDEDE 100% );
+    -webkit-text-fill-color: transparent;
+    background: linear-gradient( to bottom, white 0%, white 55%, #DEDEDE 55%, #DEDEDE 100% );
     -webkit-background-clip: text;
     background-clip: text;
     font-family: "Alan Sans";
     font-weight: 600;
     font-size: 20px;
-    text-shadow:
-        0 0 1px rgb(var(--text-shadow-color) / 0.18),
-        0 0 3px rgb(var(--text-shadow-color) / 0.16),
-        0 0 8px rgb(var(--text-shadow-color) / 0.14),
-        0 0 16px rgb(var(--text-shadow-color) / 0.11),
-        0 0 27px rgb(var(--text-shadow-color) / 0.09);
+    filter:
+        drop-shadow(0 0 4px rgb(var(--text-shadow-color) / 1))
+        drop-shadow(0 0 12px rgb(var(--text-shadow-color) / .8))
+        drop-shadow(0 0 24px rgb(var(--text-shadow-color) / .5));
 }
 .wait-for-pick-left { --text-shadow-color: 255 154 61; }
 .wait-for-pick-right { --text-shadow-color: 149 24 255; }
