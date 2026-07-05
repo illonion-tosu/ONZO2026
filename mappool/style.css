@@ -25,6 +25,7 @@
     -webkit-text-fill-color: transparent;
     background: linear-gradient( to bottom, white 0%, white 55%, #DEDEDE 55%, #DEDEDE 100% );
     background-clip: text;
+    /* stylelint-disable property-no-vendor-prefix */
     -webkit-background-clip: text;
     font-family: "Alan Sans", sans-serif;
     font-weight: 600;
