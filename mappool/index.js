@@ -283,7 +283,7 @@ const chatDisplayContainerEl = document.getElementById("chat-display-container")
 let chatLen
 
 // Now Playing Information
-let currentId, currentChecksum, updateData = false, currentMappoolBeatmap
+let currentId, currentChecksum, updateData = false
 
 // IPC State
 let ipcState
@@ -354,7 +354,6 @@ socket.onmessage = async event => {
     if (currentId !== data.beatmap.id || currentChecksum !== data.beatmap.checksum) {
         currentId = data.beatmap.id
         currentChecksum = data.beatmap.checksum
-        currentMappoolBeatmap = findBeatmap(currentId)
 
         // Find element
         const element = document.getElementById(currentId)
