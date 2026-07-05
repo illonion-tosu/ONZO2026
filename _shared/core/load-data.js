@@ -1,5 +1,6 @@
 let allBeatmaps = []
 let allPlayers = []
+let api
 
 export async function getBeatmaps() {
     const response = await axios.get("../_data/beatmaps.json")
@@ -19,4 +20,13 @@ export async function getPlayers() {
 
 export function findPlayer(player_id) {
     return allPlayers.find(player => Number(player.player_id) === Number(player_id))
+}
+
+export async function initialiseApi() {
+    const response = await axios.get("../_data/osu-api.json")
+    api = response.data.api
+}
+
+export function getApi() {
+    return api
 }

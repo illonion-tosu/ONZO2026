@@ -1,5 +1,5 @@
 import { updateChat } from "../_shared/core/chat.js"
-import { getBeatmaps, findBeatmap, getPlayers, findPlayer } from "../_shared/core/load-data.js"
+import { getBeatmaps, findBeatmap, getPlayers, findPlayer, initialiseApi, getApi } from "../_shared/core/load-data.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
 // Banned Maps
@@ -14,6 +14,7 @@ const mappoolManagementMapsEl = document.getElementById("mappool-management-maps
 let roundName, allBeatmaps
 let currentBestOf, currentBanCount, currentFirstTo
 getPlayers()
+initialiseApi()
 getBeatmaps().then((beatmaps) => {
     roundName = beatmaps.roundName
     allBeatmaps = beatmaps.beatmaps
@@ -424,7 +425,7 @@ const setNextPickerLeftEl = document.getElementById("set-next-picker-left")
 const setNextPickerRightEl = document.getElementById("set-next-picker-right")
 const nextPickerNoneEl = document.getElementById("next-picker-none")
 
-// Loading buttons\
+// Loading buttons
 window.onload = () => {
     setNextPickerLeftEl.addEventListener("click", () => setNextPicker("left"))
     setNextPickerRightEl.addEventListener("click", () => setNextPicker("right"))
@@ -433,4 +434,60 @@ window.onload = () => {
     setCurrentPickerLeftEl.addEventListener("click", () => setCurrentPicker("left"))
     setCurrentPickerRightEl.addEventListener("click", () => setCurrentPicker("right"))
     currentPickerNoneEl.addEventListener("click", () => setCurrentPicker("none"))
+    matchHistorySetDetailsEl.addEventListener("click", () => setMatchHistoryDetails())
+}
+
+// Match history
+const mpIdEl = document.getElementById("mp-id")
+const matchHistorySetDetailsEl = document.getElementById("match-history-set-details")
+async function setMatchHistoryDetails() {
+    const response = await axios.get(`https://osu.ppy.sh/api/get_match?k=${getApi()}&mp=${mpIdEl.value}`)
+    const games = response.data.games
+    console.log(response.data)
+
+    // Team History Left Area
+    for (let i = 0; i < games.length; i++) {
+        // Find map in mappool
+        const currentMap = findBeatmap(games[i].beatmap_id)
+        if (!currentMap) continue
+
+        // Set scores for each side
+        const scoreLeft = games[i].scores[0].user_id == player1Id? games[i].scores[0].score : games[i].scores[1].score
+        const scoreRight = games[i].scores[0].user_id == player2Id? games[i].scores[0].score : games[i].scores[1].score
+
+        // Find map in now playing or picked areas
+        // Left Area
+        const teamHistoryLeftEl = teamHistoryLeftAreaEl.querySelector(`[data-id="${games[i].beatmap_id}"]`)
+        if (teamHistoryLeftEl) {
+            // Set scores in correct location for this element
+            const scoresEl = teamHistoryLeftEl.children[0].children[2]
+            const scoresLeftEl = scoresEl.children[0]
+            const scoresRightEl = scoresEl.children[1]
+            scoresLeftEl.textContent = scoreLeft
+            scoresRightEl.textContent = scoreRight
+
+            // Set crown
+            const crownEl = teamHistoryLeftEl.children[1]
+
+            // Scores
+            if (scoreLeft > scoreRight) {
+                scoresLeftEl.classList.remove(".team-history-scores-lose")
+                scoresRightEl.classList.add(".team-history-scores-win")
+
+                crownEl.setAttribute("src", `static/match-history/crown-orange.png`)
+            } else if (scoreLeft < scoreRight) {
+                scoresLeftEl.classList.add(".team-history-scores-lose")
+                scoresRightEl.classList.remove(".team-history-scores-win")
+
+                crownEl.setAttribute("src", `static/match-history/crown-none.png`)
+            } else {
+                scoresLeftEl.classList.add(".team-history-scores-lose")
+                scoresLeftEl.classList.remove(".team-history-scores-win")
+                scoresRightEl.classList.add(".team-history-scores-lose")
+                scoresRightEl.classList.remove(".team-history-scores-win")
+
+                crownEl.setAttribute("src", `static/match-history/crown-purple.png`)
+            }
+        }
+    }
 }
