@@ -285,6 +285,9 @@ let chatLen
 // Now Playing Information
 let currentId, currentChecksum, updateData = false, currentMappoolBeatmap
 
+// IPC State
+let ipcState
+
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
     const data = JSON.parse(event.data)
@@ -382,6 +385,7 @@ socket.onmessage = async event => {
         }
     }
 
+    // Update now playing information
     if (updateData) {
         const beatmapData = data.beatmap
         updateData = false
@@ -398,6 +402,16 @@ socket.onmessage = async event => {
         nowPlayingModIdEl.style.display = "none"
         nowPlayingPickEl.style.display = "none"
         nowPlayingPickTbEl.style.display = "none"
+    }
+
+    // IPC State
+    if (ipcState !== data.tourney.ipcState) {
+        ipcState = data.tourney.ipcState
+        if (ipcState === 4) {
+            await delay(5000)
+            setNextPicker(currentNextPicker)
+            setTeamHistoryScore()
+        }
     }
 }
 
