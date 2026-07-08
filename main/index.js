@@ -12,8 +12,17 @@ getBeatmaps().then(async beatmaps => {
     allBeatmaps = beatmaps
 
     // Set round images
-    roundAreaEl.setAttribute("src", `static/bracket-title/${beatmaps.roundName}-border.png`)
-    roundNameEl.setAttribute("src", `static/bracket-title/${beatmaps.roundName}.png`)
+    let roundName
+    switch(beatmaps.roundName) {
+        case "ROUND OF 32": roundName = "ro32"; break;
+        case "ROUND OF 16": roundName = "ro16"; break;
+        case "QUARTERFINALS": roundName = "qf"; break;
+        case "SEMIFINALS": roundName = "sf"; break;
+        case "FINALS": roundName = "f"; break;
+        case "GRAND FINALS": roundName = "gf"; break;
+    }
+    roundAreaEl.setAttribute("src", `static/bracket-title/${roundName}-border.png`)
+    roundNameEl.setAttribute("src", `static/bracket-title/${roundName}.png`)
 
     // Get details for round area
     await delay(250)
@@ -324,6 +333,7 @@ socket.onmessage = async event => {
     }
 
     // Chat
+    const chatData = data.tourney.chat
     if (chatLen !== chatData.length) {
         chatLen = updateChat(chatLen, chatData, chatDisplayContainerEl)
     }
