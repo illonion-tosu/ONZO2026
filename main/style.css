@@ -12,9 +12,6 @@
     transition: 500ms ease-in-out;
 }
 
-/* ----- Whole Page ----- */
-.main { background-image: url("static/background.png"); }
-
 /* ----- Top Area ----- */
 .logo {
     position: absolute;
