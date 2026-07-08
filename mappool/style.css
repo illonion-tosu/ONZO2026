@@ -502,3 +502,54 @@ input::-webkit-inner-spin-button {
     font-size: 0.8em;
     line-height: 15px;
 }
+
+/* Winner Area */
+.winner-area {
+    background-color: rgb( 0 0 0 / 0.8 );
+}
+
+.winner-area > * {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.winner-text { top: 175px; }
+
+.winner-name {
+    top: 482px;
+    font-family: "Vinque Antique", sans-serif;
+    font-size: 50px;
+    background-color: white;
+    height: 44px;
+    line-height: 32px;
+    padding: 0 22px;
+    display: block;
+    opacity: 1;
+}
+
+.fade-on { animation: fadeOn linear 500ms forwards; }
+.fade-off { animation: fadeOff linear 500ms forwards; }
+
+@keyframes fadeOn {
+    0% {
+        display: block;
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOff {
+    0% {
+        display: block;
+        opacity: 1;
+    }
+    99% {
+        opacity: 0;
+    }
+    100% {
+        display: none;
+    }
+}
