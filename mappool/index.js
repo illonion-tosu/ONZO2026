@@ -195,16 +195,8 @@ function mapClickEvent(event) {
 
             // Set pick info
             if (child.dataset.id !== undefined) continue
-            nowPlayingAreaEl.dataset.id = currentMapId
-            child.dataset.id = currentMapId
-            child.style.display = "flex"
-            child.children[0].children[1].setAttribute("src", `static/mods/${currentMap.mod.toUpperCase()}${currentMap.order}.png`)
-            child.children[0].style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
+            setPick(child, currentMapId, currentMap)
 
-            // Mark as picked
-            const modId = document.getElementById(`${currentMap.mod.toLowerCase()}${currentMap.order}`)
-            modId.firstElementChild.setAttribute("src", modId.firstElementChild.getAttribute("src").replace("unpicked", "picked"))
-            
             // Set now playing information
             nowPlayingBackgroundEl.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
             nowPlayingArtistEl.textContent = currentMap.artist
@@ -236,18 +228,11 @@ function mapClickEvent(event) {
                     currentAr /= 2
                     currentOd /= 2
             }
-
+        
             nowPlayingStatNumberCsEl.textContent = currentCs.toFixed(1)
             nowPlayingStatNumberArEl.textContent = currentAr.toFixed(1)
             nowPlayingStatNumberOdEl.textContent = currentOd.toFixed(1)
             nowPlayingStatNumberSrEl.textContent = currentSr.toFixed(2)
-
-            // Final score
-            nowPlayingFinalScoreEl.style.display = "none"
-
-            // Bottom area
-            nowPlayingModIdEl.setAttribute("src", `static/mods/${currentMap.mod.toUpperCase()}${currentMap.order}.png`)
-            nowPlayingModIdEl.style.display = "block"
 
             currentPicker = team
             setCurrentPicker(currentPicker)
@@ -264,6 +249,18 @@ function mapClickEvent(event) {
             break
         }
     }
+}
+
+function setPick(child, currentMapId, currentMap) {
+    nowPlayingAreaEl.dataset.id = currentMapId
+    child.dataset.id = currentMapId
+    child.style.display = "flex"
+    child.children[0].children[1].setAttribute("src", `static/mods/${currentMap.mod.toUpperCase()}${currentMap.order}.png`)
+    child.children[0].style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
+
+    // Mark as picked
+    const modId = document.getElementById(`${currentMap.mod.toLowerCase()}${currentMap.order}`)
+    modId.firstElementChild.setAttribute("src", modId.firstElementChild.getAttribute("src").replace("unpicked", "picked"))
 }
 
 /* Player Details */
@@ -487,18 +484,6 @@ const setNextPickerLeftEl = document.getElementById("set-next-picker-left")
 const setNextPickerRightEl = document.getElementById("set-next-picker-right")
 const nextPickerNoneEl = document.getElementById("next-picker-none")
 
-// Loading buttons
-window.onload = () => {
-    setNextPickerLeftEl.addEventListener("click", () => setNextPicker("left"))
-    setNextPickerRightEl.addEventListener("click", () => setNextPicker("right"))
-    nextPickerNoneEl.addEventListener("click", () => setNextPicker("none"))
-    toggleAutopickEl.addEventListener("click", () => toggleAutopick())
-    setCurrentPickerLeftEl.addEventListener("click", () => setCurrentPicker("left"))
-    setCurrentPickerRightEl.addEventListener("click", () => setCurrentPicker("right"))
-    currentPickerNoneEl.addEventListener("click", () => setCurrentPicker("none"))
-    matchHistorySetDetailsEl.addEventListener("click", () => setMatchHistoryDetails())
-}
-
 // Match history
 const mpIdEl = document.getElementById("mp-id")
 const matchHistorySetDetailsEl = document.getElementById("match-history-set-details")
@@ -597,4 +582,215 @@ function setTeamHistoryScore(element, scoreLeft, scoreRight) {
 
         crownEl.setAttribute("src", `static/match-history/crown-none.png`)
     }
+}
+
+// Mappool override section
+const mappoolOverrideColumnEl = document.getElementById("mappool-override-column")
+const mappoolOverrideActionSelectEl = document.getElementById("mappool-override-action-select")
+function mappoolOverrideChangeAction() {
+    let mappoolOverrideAction = mappoolOverrideActionSelectEl.value
+
+    // Remove last elements
+    while (mappoolOverrideColumnEl.childElementCount > 3) {
+        mappoolOverrideColumnEl.lastChild.remove()
+    }
+
+    const action = (mappoolOverrideAction === "setBan" || mappoolOverrideAction === "removeBan") ? "Ban" : "Pick"
+
+    // Create h2 for which action or pick
+    mappoolOverrideColumnEl.append(createH2Title(`Which ${action}?`))
+
+    // Create select
+    const actionsPerTeam = action === "Ban" ? currentBanCount : teamHistoryLeftAreaEl.childElementCount
+    const whichActionSelect = document.createElement("select")
+    whichActionSelect.classList.add("mappool-override-select")
+    whichActionSelect.addEventListener("change", setMappoolOverrideInformation)
+    whichActionSelect.setAttribute("id", "which-action-select")
+    whichActionSelect.setAttribute("size", `${actionsPerTeam * 2}`)
+    
+    // Create options
+    for (let i = 0; i < actionsPerTeam; i++) {
+        // Create red option
+        const redOption = document.createElement("option")
+        redOption.setAttribute("value", `left|${i}`)
+        redOption.textContent = `Red ${action} ${i + 1}`
+
+        // Create blue option
+        const blueOption = document.createElement("option")
+        blueOption.setAttribute("value", `right|${i}`)
+        blueOption.textContent = `Blue ${action} ${i + 1}`
+
+        whichActionSelect.append(redOption, blueOption)
+    }
+
+    // Append select
+    mappoolOverrideColumnEl.append(whichActionSelect)
+
+    // Setting map
+    if (mappoolOverrideAction === "setBan" || mappoolOverrideAction === "setPick") {
+        // Which Map
+        mappoolOverrideColumnEl.append(createH2Title("Which Map?"))
+
+        // Select all maps
+        const mappoolOverrideBeatmapsContainer = document.createElement("div")
+        mappoolOverrideBeatmapsContainer.classList.add("mappool-override-beatmaps-container")
+
+        for (let i = 0; i < allBeatmaps.length; i++) {
+            const mappoolOverrideBeatmaps = document.createElement("div")
+            mappoolOverrideBeatmaps.classList.add("mappool-override-beatmaps")
+            mappoolOverrideBeatmaps.textContent = `${allBeatmaps[i].mod}${allBeatmaps[i].order}`
+            mappoolOverrideBeatmaps.setAttribute("id", allBeatmaps[i].beatmap_id)
+            mappoolOverrideBeatmaps.addEventListener("click", mappoolOverrideSelectMap)
+            mappoolOverrideBeatmapsContainer.append(mappoolOverrideBeatmaps)
+            mappoolOverrideColumnEl.append(mappoolOverrideBeatmapsContainer)
+        }
+    }
+
+
+    // Apply Changes Button
+    const sidebarButtonContainer = document.createElement("div")
+    sidebarButtonContainer.classList.add("sidebar-button-container")
+    mappoolOverrideColumnEl.append(sidebarButtonContainer)
+
+    const applyChangesButton = document.createElement("button")
+    applyChangesButton.setAttribute("id", "apply-changes")
+    applyChangesButton.textContent = `APPLY CHANGES`
+    applyChangesButton.style.fontSize = "1rem"
+    sidebarButtonContainer.append(applyChangesButton)
+    
+    let currentApplyChangesHandler = null
+
+    switch (mappoolOverrideAction) {
+        case "setBan":
+            currentApplyChangesHandler = mappoolOverrideSetBan
+            break
+        case "removeBan":
+            currentApplyChangesHandler = mappoolOverrideRemoveBan
+            break
+        case "setPick":
+            currentApplyChangesHandler = mappoolOverrideSetPick
+            break
+        case "removePick":
+            currentApplyChangesHandler = mappoolOverrideRemovePick
+            break
+    }
+
+    if (currentApplyChangesHandler) {
+        applyChangesButton.removeEventListener("click", currentApplyChangesHandler)
+        applyChangesButton.addEventListener("click", currentApplyChangesHandler)
+    }
+}
+
+// Set Mappool Override Information
+let mappoolOverrideTeam, mappoolOverrideTileNumber
+function setMappoolOverrideInformation() {
+    [mappoolOverrideTeam, mappoolOverrideTileNumber] = document.getElementById("which-action-select").value.split("|")
+}
+
+// Mappool Override Select Map
+let mappoolOverrideMap
+function mappoolOverrideSelectMap() {
+    mappoolOverrideMap = this.id
+    const mappoolOverrideBeatmaps = document.getElementsByClassName("mappool-override-beatmaps")
+    for (let i = 0; i < mappoolOverrideBeatmaps.length; i++) {
+        mappoolOverrideBeatmaps[i].style.backgroundColor = "transparent"
+        mappoolOverrideBeatmaps[i].style.color = "white"
+    }
+    this.style.backgroundColor = "#C2C2C2"
+    this.style.color = "#26272B"
+}
+
+// Mappool Override Set Ban
+function mappoolOverrideSetBan() {
+    if (!mappoolOverrideTeam || !mappoolOverrideTileNumber || !mappoolOverrideMap) return
+
+    // Get current map
+    const currentMap = findBeatmap(mappoolOverrideMap)
+    if (!currentMap) return
+
+    // Get Containers
+    const currentBanContainer = mappoolOverrideTeam === "left" ? bannedLeftMapsEl : bannedRightMapsEl
+
+    // Set information
+    const image = currentBanContainer[mappoolOverrideTileNumber]
+    image.dataset.id = mappoolOverrideMap
+    image.setAttribute("src", `static/banned-mods/${currentMap.mod.toUpperCase()}${currentMap.order}.png`)
+
+    // Mark as picked
+    const modId = document.getElementById(`${currentMap.mod.toUpperCase()}${currentMap.order}`)
+    modId.firstElementChild.setAttribute("src", modId.firstElementChild.getAttribute("src").replace("unpicked", "picked"))
+}
+
+// Mappool Override Remove Ban
+function mappoolOverrideRemoveBan() {
+    if (!mappoolOverrideTeam || !mappoolOverrideTileNumber) return
+
+    // Get Containers
+    const currentBanContainer = mappoolOverrideTeam === "left" ? bannedLeftMapsEl : bannedRightMapsEl
+
+    // Remove information
+    const image = currentBanContainer.children[mappoolOverrideTileNumber]
+    const currentMap = findBeatmap(image.dataset.id)
+    if (!currentMap) return
+    image.removeAttribute("src")
+    image.removeAttribute("data-id")
+
+    // Mark as picked
+    const modId = document.getElementById(`${currentMap.mod.toLowerCase()}${currentMap.order}`)
+    const firstChild = modId.firstElementChild
+    firstChild.src = firstChild.src.replace("/picked/", "/unpicked/")
+}
+
+// Mappool Override Set Pick
+function mappoolOverrideSetPick() {
+    if (!mappoolOverrideTeam || !mappoolOverrideTileNumber || !mappoolOverrideMap) return
+
+    // Get current map
+    const currentMap = findBeatmap(mappoolOverrideMap)
+    if (!currentMap) return
+
+    // Set map information
+    const currentMapooolContainer = mappoolOverrideTeam === "left" ? teamHistoryLeftAreaEl : teamHistoryRightAreaEl
+    const currentTile = currentMapooolContainer.children[mappoolOverrideTileNumber]
+
+    setPick(currentTile, mappoolOverrideMap, currentMap,mappoolOverrideTeam)
+}
+
+// Mappool Override Remove Pick
+function mappoolOverrideRemovePick() {
+    if (!mappoolOverrideTeam || !mappoolOverrideTileNumber) return
+
+    // Set map information
+    const currentMapooolContainer = mappoolOverrideTeam === "left" ? teamHistoryLeftAreaEl : teamHistoryRightAreaEl
+    const currentTile = currentMapooolContainer.children[mappoolOverrideTileNumber]
+
+    // Remove map information
+    const currentMap = findBeatmap(currentTile.dataset.id)
+    currentTile.removeAttribute("data-id")
+    currentTile.style.display = "none"
+    
+    // Mark as picked
+    const modId = document.getElementById(`${currentMap.mod.toLowerCase()}${currentMap.order}`)
+    const firstChild = modId.firstElementChild
+    firstChild.src = firstChild.src.replace("/picked/", "/unpicked/")
+}
+
+// Create h2 title
+function createH2Title(text) {
+    const h2 = document.createElement("h2")
+    h2.textContent = text
+    return h2
+}
+
+// Loading buttons
+window.onload = () => {
+    setNextPickerLeftEl.addEventListener("click", () => setNextPicker("left"))
+    setNextPickerRightEl.addEventListener("click", () => setNextPicker("right"))
+    nextPickerNoneEl.addEventListener("click", () => setNextPicker("none"))
+    toggleAutopickEl.addEventListener("click", () => toggleAutopick())
+    setCurrentPickerLeftEl.addEventListener("click", () => setCurrentPicker("left"))
+    setCurrentPickerRightEl.addEventListener("click", () => setCurrentPicker("right"))
+    currentPickerNoneEl.addEventListener("click", () => setCurrentPicker("none"))
+    matchHistorySetDetailsEl.addEventListener("click", () => setMatchHistoryDetails())
+    mappoolOverrideActionSelectEl.addEventListener("click", () => mappoolOverrideChangeAction())
 }
