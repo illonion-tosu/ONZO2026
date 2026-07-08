@@ -477,6 +477,7 @@ function setCurrentPicker(pickerTeam) {
     } else {
         nowPlayingPickEl.style.display = "none"
     }
+    document.cookie = `currentPicker=${pickerTeam}; path=/`
 }
 
 const setCurrentPickerLeftEl = document.getElementById("set-current-picker-left")

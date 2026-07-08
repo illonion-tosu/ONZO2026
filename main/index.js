@@ -1,6 +1,6 @@
 import { updateChat } from "../_shared/core/chat.js"
 import { getBeatmaps, findBeatmap, getPlayers, findPlayer } from "../_shared/core/load-data.js"
-import { delay, setLengthDisplay } from "../_shared/core/utils.js"
+import { delay, getCookie, setLengthDisplay } from "../_shared/core/utils.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
 const roundAreaEl = document.getElementById("round-area")
@@ -343,3 +343,21 @@ async function setBottomStatsElWidth() {
     await delay(50)
     nowPlayingBottomStatsEl.style.width = `${nowPlayingStatsEl.getBoundingClientRect().width}px`
 }
+
+let currentPicker, previousPicker
+setInterval(() => {
+    currentPicker = getCookie("currentPicker")
+    if (currentPicker !== previousPicker) {
+        previousPicker = currentPicker
+        if (currentPicker === "left") {
+            nowPlayingPanelEl.classList.remove("now-playing-panel-right-pick")
+            nowPlayingPanelEl.classList.add("now-playing-panel-left-pick")
+        } else if (currentPicker === "right") {
+            nowPlayingPanelEl.classList.add("now-playing-panel-right-pick")
+            nowPlayingPanelEl.classList.remove("now-playing-panel-left-pick")
+        } else {
+            nowPlayingPanelEl.classList.remove("now-playing-panel-right-pick")
+            nowPlayingPanelEl.classList.remove("now-playing-panel-left-pick")
+        }
+    }
+}, 200)
