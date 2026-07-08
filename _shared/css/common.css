@@ -139,3 +139,64 @@
     --color: #fdff65;
     --text-shadow-color: #faff69;
 }
+
+/* ----- Chat Area ----- */
+.chat-display {
+    position: absolute;
+    top: 772px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 794px;
+    height: 223px;
+}
+
+.chat-display-container {
+    --x-margin: 27px;
+    --y-margin: 22px;
+
+    position: absolute;
+    top: var(--y-margin);
+    left: var(--x-margin);
+    width: calc(100% - var(--x-margin) * 2);
+    height: calc(100% - var(--y-margin) * 2);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.message-wrapper {
+    margin: -0.5px 0;
+    display: flex;
+}
+
+.message-time {
+    opacity: 0.341;
+    font-size: 15px;
+    color: white;
+    font-weight: 800;
+    font-family: "Alan Sans", sans-serif;
+    filter: drop-shadow(0 2px 0.5px rgb(0 0 0 /75%));
+    margin-right: 24px;
+}
+
+.message-name {
+    font-size: 15px;
+    font-weight: 800;
+    font-family: "Alan Sans", sans-serif;
+    filter: drop-shadow(0 2px 0.5px rgb(0 0 0 / 75%));
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+}
+.left { color: #FFC468; }
+.right { color: #AF8AE0; }
+.bot { color: #E44444; }
+.unknown { color: #6DE06A; }
+
+.message-content {
+    font-size: 15px;
+    font-weight: 800;
+    font-family: "Alan Sans", sans-serif;
+}

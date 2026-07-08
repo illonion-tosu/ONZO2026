@@ -333,3 +333,6 @@
     text-align: center;
     padding: 0 3px;
 }
+
+/* ----- Score Bar ----- */
+.chat-display { top: 853px; }
