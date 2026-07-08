@@ -92,6 +92,7 @@ const nowPlayingStatsEl = document.getElementById("now-playing-stats")
 const nowPlayingBottomStatsEl = document.getElementById("now-playing-bottom-stats")
 
 /* Chat */
+const chatDisplayEl = document.getElementById("chat-display")
 const chatDisplayContainerEl = document.getElementById("chat-display-container")
 let chatLen
 
@@ -177,12 +178,16 @@ socket.onmessage = async event => {
             scoreLeftDifferenceEl.style.opacity = 1
             scoreRightDifferenceEl.style.opacity = 1
             scoreRightNumberEl.style.opacity = 1
+            nowPlayingPanelEl.style.opacity = 1
+            chatDisplayEl.style.opacity = 0
         } else {
             scoreLeftNumberEl.style.opacity = 0
             scoreBarEl.style.opacity = 0
             scoreLeftDifferenceEl.style.opacity = 0
             scoreRightDifferenceEl.style.opacity = 0
             scoreRightNumberEl.style.opacity = 0
+            nowPlayingPanelEl.style.opacity = 0
+            chatDisplayEl.style.opacity = 1
         }
     }
 

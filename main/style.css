@@ -6,6 +6,12 @@
     --score-bar-width: 705px;
 }
 
+/* ----- Helper Class ----- */
+.ipc-transition {
+    opacity: 1;
+    transition: 500ms ease-in-out;
+}
+
 /* ----- Whole Page ----- */
 .main { background-image: url("static/background.png"); }
 
@@ -109,8 +115,6 @@
     position: absolute;
     top: 834px;
     transform: translateX(-50%);
-    opacity: 1;
-    transition: 500ms ease-in-out;
 }
 
 .score-left-number {
@@ -133,8 +137,6 @@
     transform: translateX(-50%);
     width: var(--score-bar-width);
     height: 8px;
-    opacity: 1;
-    transition: 500ms ease-in-out;
 }
 
 .score-bar-background {
@@ -202,8 +204,6 @@
         0 0 2px rgb(var(--text-shadow-color) / 100%),
         0 0 4px rgb(var(--text-shadow-color) / 95%),
         0 0 8px rgb(var(--text-shadow-color) / 80%);
-    opacity: 1;
-    transition: 500ms ease-in-out;
 }
 
 .score-left-difference {
@@ -335,4 +335,6 @@
 }
 
 /* ----- Score Bar ----- */
-.chat-display { top: 853px; }
+.chat-display {
+    top: 853px;
+}
