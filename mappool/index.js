@@ -288,6 +288,11 @@ let currentId, currentChecksum, updateData = false
 // IPC State
 let ipcState
 
+// Winner Area
+const winnerAreaEl = document.getElementById("winner-area")
+const winnerNameEl = document.getElementById("winner-name")
+let winner = false
+
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
     const data = JSON.parse(event.data)
@@ -342,6 +347,20 @@ socket.onmessage = async event => {
 
             playerStar.append(pointImg)
             return playerStar
+        }
+
+        // Setinng winner area / turning it on and off
+        if (!winner && (currentLeftStars >= currentFirstTo || currentRightStars >= currentFirstTo)) {
+            winner = true
+            winnerAreaEl.classList.remove("fade-on", "fade-off")
+            await delay(100)
+            winnerAreaEl.classList.add("fade-on")
+            winnerNameEl.textContent = currentLeftStars >= currentFirstTo ? playerLeftNameEl.textContent : playerRightNameEl.textContent
+        } else if (winner && currentLeftStars < currentChecksum && currentRightStars < currentFirstTo) {
+            winner = false
+            winnerAreaEl.classList.remove("fade-on", "fade-off")
+            await delay(100)
+            winnerAreaEl.classList.add("fade-off")
         }
     }
 
