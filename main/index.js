@@ -1,3 +1,4 @@
+import { updateChat } from "../_shared/core/chat.js"
 import { getBeatmaps, findBeatmap, getPlayers, findPlayer } from "../_shared/core/load-data.js"
 import { delay, setLengthDisplay } from "../_shared/core/utils.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
@@ -89,6 +90,10 @@ const nowPlayingBottomTimeCurrentEl = document.getElementById("now-playing-botto
 const nowPlayingBottomTimeEndEl = document.getElementById("now-playing-bottom-time-end")
 const nowPlayingStatsEl = document.getElementById("now-playing-stats")
 const nowPlayingBottomStatsEl = document.getElementById("now-playing-bottom-stats")
+
+/* Chat */
+const chatDisplayContainerEl = document.getElementById("chat-display-container")
+let chatLen
 
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
@@ -311,6 +316,11 @@ socket.onmessage = async event => {
     } else {
         nowPlayingBottomTimeCurrentEl.textContent = setLengthDisplay(Math.round(liveTime / 1000))
         nowPlayingBottomTimeEndEl.textContent = setLengthDisplay(Math.round(lastObjectTime / 1000))
+    }
+
+    // Chat
+    if (chatLen !== chatData.length) {
+        chatLen = updateChat(chatLen, chatData, chatDisplayContainerEl)
     }
 }
 
