@@ -249,6 +249,10 @@ function mapClickEvent(event) {
             nowPlayingModIdEl.setAttribute("src", `static/mods/${currentMap.mod.toUpperCase()}${currentMap.order}.png`)
             nowPlayingModIdEl.style.display = "block"
 
+            currentPicker = team
+            setCurrentPicker(currentPicker)
+            hasPickedYet = true
+
             if (currentMap.mod === "TB") {
                 nowPlayingPickEl.setAttribute("src", `static/picks/tb-pick.png`)
                 nowPlayingPickTbEl.style.display = "block"
@@ -256,10 +260,6 @@ function mapClickEvent(event) {
                 nowPlayingPickEl.setAttribute("src", `static/picks/${team}-pick.png`)
                 nowPlayingPickTbEl.style.display = "none"
             }
-
-            currentPicker = team
-            setCurrentPicker(currentPicker)
-            hasPickedYet = true
 
             break
         }
