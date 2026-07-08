@@ -712,12 +712,12 @@ function mappoolOverrideSetBan() {
     const currentBanContainer = mappoolOverrideTeam === "left" ? bannedLeftMapsEl : bannedRightMapsEl
 
     // Set information
-    const image = currentBanContainer[mappoolOverrideTileNumber]
+    const image = currentBanContainer.children[mappoolOverrideTileNumber]
     image.dataset.id = mappoolOverrideMap
     image.setAttribute("src", `static/banned-mods/${currentMap.mod.toUpperCase()}${currentMap.order}.png`)
 
     // Mark as picked
-    const modId = document.getElementById(`${currentMap.mod.toUpperCase()}${currentMap.order}`)
+    const modId = document.getElementById(`${currentMap.mod.toLowerCase()}${currentMap.order}`)
     modId.firstElementChild.setAttribute("src", modId.firstElementChild.getAttribute("src").replace("unpicked", "picked"))
 }
 
