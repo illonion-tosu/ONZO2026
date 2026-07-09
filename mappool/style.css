@@ -471,28 +471,22 @@ input::-webkit-inner-spin-button {
     opacity: 0;
 }
 
-.fade-on { animation: fadeOn linear 500ms forwards; }
-.fade-off { animation: fadeOff linear 500ms forwards; }
+.fade-on { animation: fade-on linear 500ms forwards; }
+.fade-off { animation: fade-off linear 500ms forwards; }
 
-@keyframes fadeOn {
+@keyframes fade-on {
     0% {
         display: block;
         opacity: 0;
     }
-    100% {
-        opacity: 1;
-    }
+    100% { opacity: 1; }
 }
 
-@keyframes fadeOff {
+@keyframes fade-off {
     0% {
         display: block;
         opacity: 1;
     }
-    99% {
-        opacity: 0;
-    }
-    100% {
-        display: none;
-    }
+    99% { opacity: 0; }
+    100% { display: none; }
 }
