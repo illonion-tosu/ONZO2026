@@ -6,6 +6,10 @@
     --score-bar-width: 705px;
 }
 
+.main {
+    background-color: black;
+}
+
 /* ----- Helper Class ----- */
 .ipc-transition {
     opacity: 1;
@@ -234,7 +238,7 @@
         0 0 18px rgb(var(--box-shadow-color) / 50%),
         0 0 24px rgb(var(--box-shadow-color) / 30%);
 }
-.now-playing-panel-left-pick { --box-shadow-color: 197 84 34; }
+.now-playing-panel-left-pick { --box-shadow-color: 255 100 32; }
 .now-playing-panel-right-pick { --box-shadow-color: 153 34 197; }
 
 .now-playing-panel-overlay {
@@ -334,4 +338,32 @@
 /* ----- Score Bar ----- */
 .chat-display {
     top: 853px;
+}
+
+/* --- Strain Graph --- */
+#strain-graph {
+    position: absolute;
+    top: 98px;
+    left: 105px;
+    width: 275px;
+    height: 126px;
+}
+
+.strain-graph-detail {
+    position: absolute;
+    top: 20px;
+}
+
+#progress {
+    --linear-gradient: linear-gradient(90deg, black 0%, black 49.95%, transparent 50%);
+
+	position: absolute;
+    bottom: 0;
+    left: 0;
+	width: calc(var(--strain-graph-width) * 2);
+    height: 126px;
+	padding: 0;
+	overflow: hidden;
+	transition: 100ms linear;
+	mask-image: var(--linear-gradient);
 }

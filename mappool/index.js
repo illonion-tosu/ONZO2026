@@ -197,6 +197,10 @@ function mapClickEvent(event) {
             if (child.dataset.id !== undefined) continue
             setPick(child, currentMapId, currentMap)
 
+            // Mod ID
+            nowPlayingModIdEl.style.display = "block"
+            nowPlayingModIdEl.setAttribute("src", `static/mods/${currentMap.mod.toUpperCase()}${currentMap.order}.png`)
+
             // Set now playing information
             nowPlayingBackgroundEl.style.backgroundImage = `url("https://assets.ppy.sh/beatmaps/${currentMap.beatmapset_id}/covers/cover.jpg")`
             nowPlayingArtistEl.textContent = currentMap.artist
@@ -353,11 +357,13 @@ socket.onmessage = async event => {
             await delay(100)
             winnerAreaEl.classList.add("fade-on")
             winnerNameEl.textContent = currentLeftStars >= currentFirstTo ? playerLeftNameEl.textContent : playerRightNameEl.textContent
+            nowPlayingPickEl.style.display = "none"
         } else if (winner && currentLeftStars < currentChecksum && currentRightStars < currentFirstTo) {
             winner = false
             winnerAreaEl.classList.remove("fade-on", "fade-off")
             await delay(100)
             winnerAreaEl.classList.add("fade-off")
+            setNextPicker(currentNextPicker)
         }
     }
 
@@ -424,7 +430,7 @@ socket.onmessage = async event => {
         if (ipcState === 4) {
             await delay(5000)
             setNextPicker(currentNextPicker)
-            setTeamHistoryScore()
+            setMatchHistoryDetails()
         }
     }
 }

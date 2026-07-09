@@ -67,6 +67,10 @@
     background-image: url("https://assets.ppy.sh/beatmaps/1088336/covers/cover.jpg")
 }
 
+.now-playing-panel {
+    position: absolute;
+}
+
 .now-playing-metadata {
     position: absolute;
     left: 39px;
@@ -86,7 +90,6 @@
 .now-playing-artist {
     top: 19px;
     color: #d6d6d6;
-
 }
 
 .now-playing-title {
@@ -252,9 +255,11 @@
 .team-history-right-area .team-history-map .team-history-scores { right: var(--team-history-scores-x); }
 .team-history-left-area .team-history-map .team-history-scores { left: var(--team-history-scores-x); }
 
+.team-history-scores-win { text-shadow: 0 0 5px rgb(255 255 255 / 70%); }
+
 .team-history-scores-lose {
     font-size: 19px;
-    color: #c3c3c3;
+    color: white;
 }
 
 .team-history-crown {
@@ -443,7 +448,7 @@ input::-webkit-inner-spin-button {
 
 /* Winner Area */
 .winner-area {
-    background-color: rgb( 0 0 0 / 0.8 );
+    background-color: rgb( 0 0 0 / 80% );
 }
 
 .winner-area > * {
@@ -463,7 +468,7 @@ input::-webkit-inner-spin-button {
     line-height: 32px;
     padding: 0 22px;
     display: block;
-    opacity: 1;
+    opacity: 0;
 }
 
 .fade-on { animation: fadeOn linear 500ms forwards; }
