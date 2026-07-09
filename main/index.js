@@ -111,17 +111,93 @@ let tempStrains, seek, fullTime
 let onepart
 let last_strain_update = 0
 
-window.onload = function () {
-	let ctx = document.getElementById('strain').getContext('2d')
-	window.strainGraph = new Chart(ctx, config)
+// Canvases
+const ctx = document.getElementById('strain').getContext('2d')
+const strianProgress = document.getElementById('strain-progress')
+const ctxProgress = strianProgress.getContext('2d')
+let gradient
 
-	let ctxProgress = document.getElementById('strain-progress').getContext('2d')
+window.onload = function () {
+	window.strainGraph = new Chart(ctx, config)
 	window.strainGraphProgress = new Chart(ctxProgress, configProgress)
 }
 
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
     const data = JSON.parse(event.data)
+
+    // Calculate strain
+    console.log(data)
+    const series = data.performance.graph.series
+    const maxLength = Math.max( series[0].data.length, series[1].data.length, series[2].data.length, series[3].data.length )
+    const fullStrains = series[0].data.map((num, index) => {
+        const val0 = (series[0].data.length === maxLength) ? num : 0
+        const val1 = (series[1].data.length === maxLength) ? series[1].data[index] : 0
+        const val2 = (series[2].data.length === maxLength) ? series[2].data[index] : 0
+        const val3 = (series[3].data.length === maxLength) ? series[3].data[index] : 0
+
+        return val0 + val1 + val2 + val3
+    })
+
+    if (tempStrains != JSON.stringify(fullStrains) && window.strainGraph) {
+        tempStrains = JSON.stringify(fullStrains)
+        if (fullStrains) {
+            let temp_strains = smooth(fullStrains, 5)
+			let new_strains = []
+			for (let i = 0; i < 60; i++) {
+				new_strains.push(temp_strains[Math.floor(i * (temp_strains.length / 60))])
+			}
+			new_strains = [0, ...new_strains, 0]
+
+			config.data.datasets[0].data = new_strains
+			config.data.labels = new_strains
+			config.options.scales.y.max = Math.max(...new_strains)
+			configProgress.data.datasets[0].data = new_strains
+			configProgress.data.labels = new_strains
+			configProgress.options.scales.y.max = Math.max(...new_strains)
+			window.strainGraph.update()
+			window.strainGraphProgress.update()
+        } else {
+			config.data.datasets[0].data = []
+			config.data.labels = []
+			configProgress.data.datasets[0].data = []
+			configProgress.data.labels = []
+			window.strainGraph.update()
+			window.strainGraphProgress.update()
+		}
+    }
+
+    let now = Date.now()
+	if (fullTime !== data.beatmap.time.lastObject) {
+        fullTime = data.beatmap.time.lastObject
+        onepart = 760 / fullTime
+    }
+
+	if (seek !== data.beatmap.time.live && fullTime && now - last_strain_update > 300) {
+		last_strain_update = now
+		seek = data.beatmap.time.live
+
+        let maskPosition = `-760px 0px`
+        const maskPositionFormula = -760 + onepart * seek
+		if (data.state.number !== 2) {
+			progressChart.style.maskPosition = '-760px 0px'
+			progressChart.style.webkitMaskPosition = '-760px 0px'
+		}
+		else {
+			maskPosition = `${maskPositionFormula}px 0px`
+			progressChart.style.maskPosition = maskPosition
+			progressChart.style.webkitMaskPosition = maskPosition
+		}
+
+        gradient = ctx.createLinearGradient(0, 0, 760 - Math.abs(maskPositionFormula), 0);
+        gradient.addColorStop(1, "#f6bf75")
+        gradient.addColorStop(0.67, "#d77185")
+        gradient.addColorStop(0.33, "#8766ac")
+        gradient.addColorStop(0, "#4150b1")
+
+        configProgress.data.datasets[0].backgroundColor = gradient
+        window.strainGraphProgress.update()
+	}
 
     // Save data
     const clients = data.tourney.clients
@@ -351,67 +427,6 @@ socket.onmessage = async event => {
     if (chatLen !== chatData.length) {
         chatLen = updateChat(chatLen, chatData, chatDisplayContainerEl)
     }
-
-    // Calculate strain
-    const series = data.performance.graph.series
-    const maxLength = Math.max( series[0].data.length, series[1].data.length, series[2].data.length, series[3].data.length )
-    const fullStrains = series[0].data.map((num, index) => {
-        const val0 = (series[0].data.length === maxLength) ? num : 0
-        const val1 = (series[1].data.length === maxLength) ? series[1].data[index] : 0
-        const val2 = (series[2].data.length === maxLength) ? series[2].data[index] : 0
-        const val3 = (series[3].data.length === maxLength) ? series[3].data[index] : 0
-
-        return val0 + val1 + val2 + val3
-    })
-
-    if (tempStrains != JSON.stringify(fullStrains) && window.strainGraph) {
-        tempStrains = JSON.stringify(fullStrains)
-        if (fullStrains) {
-            let temp_strains = smooth(fullStrains, 5)
-			let new_strains = []
-			for (let i = 0; i < 60; i++) {
-				new_strains.push(temp_strains[Math.floor(i * (temp_strains.length / 60))])
-			}
-			new_strains = [0, ...new_strains, 0]
-
-			config.data.datasets[0].data = new_strains
-			config.data.labels = new_strains
-			config.options.scales.y.max = Math.max(...new_strains)
-			configProgress.data.datasets[0].data = new_strains
-			configProgress.data.labels = new_strains
-			configProgress.options.scales.y.max = Math.max(...new_strains)
-			window.strainGraph.update()
-			window.strainGraphProgress.update()
-        } else {
-			config.data.datasets[0].data = []
-			config.data.labels = []
-			configProgress.data.datasets[0].data = []
-			configProgress.data.labels = []
-			window.strainGraph.update()
-			window.strainGraphProgress.update()
-		}
-    }
-
-    let now = Date.now()
-	if (fullTime !== data.beatmap.time.lastObject) {
-        fullTime = data.beatmap.time.lastObject
-        onepart = 275 / fullTime
-    }
-
-	if (seek !== data.beatmap.time.live && fullTime && now - last_strain_update > 300) {
-		last_strain_update = now
-		seek = data.beatmap.time.live
-
-		if (data.state.number !== 2) {
-			progressChart.style.maskPosition = '-275px 0px'
-			progressChart.style.webkitMaskPosition = '-275px 0px'
-		}
-		else {
-			let maskPosition = `${-275 + onepart * seek}px 0px`
-			progressChart.style.maskPosition = maskPosition
-			progressChart.style.webkitMaskPosition = maskPosition
-		}
-	}
 }
 
 async function setBottomStatsElWidth() {
@@ -444,8 +459,7 @@ let config = {
 		labels: [],
 		datasets: [{
             borderWidth: 2,
-			borderColor: 'rgba(255, 255, 255, 1)',
-			backgroundColor: 'rgba(0, 0, 0, 0)',
+			backgroundColor: 'rgba(0, 0, 0, 0.3)',
 			data: [],
 			fill: true,
 			stepped: false,
@@ -473,10 +487,10 @@ let configProgress = {
 	data: {
 		labels: [],
 		datasets: [{
-			backgroundColor: 'white',
 			data: [],
 			fill: true,
 			stepped: false,
+            backgroundColor: gradient
 		}]
 	},
 	options: {

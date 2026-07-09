@@ -4,10 +4,12 @@
     --score-difference-x: 981px;
     --score-difference-span-margin: 10px;
     --score-bar-width: 705px;
+    --strain-graph-width: 760px;
+    --strain-graph-height: 78px;
 }
 
 .main {
-    background-color: black;
+    background-color: grey;
 }
 
 /* ----- Helper Class ----- */
@@ -229,7 +231,7 @@
     left: 50%;
     bottom: 0;
     transform: translateX(-50%);
-    width: 760px;
+    width: var(--strain-graph-width);
     height: 103px;
     border: 2px solid rgb(255 255 255 / 50%);
     box-shadow:
@@ -343,10 +345,11 @@
 /* --- Strain Graph --- */
 #strain-graph {
     position: absolute;
-    top: 98px;
-    left: 105px;
-    width: 275px;
-    height: 126px;
+    bottom: 114px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: var(--strain-graph-width);
+    height: var(--strain-graph-height);
 }
 
 .strain-graph-detail {
@@ -361,7 +364,7 @@
     bottom: 0;
     left: 0;
 	width: calc(var(--strain-graph-width) * 2);
-    height: 126px;
+    height: var(--strain-graph-height);
 	padding: 0;
 	overflow: hidden;
 	transition: 100ms linear;

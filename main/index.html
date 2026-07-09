@@ -12,6 +12,8 @@
     <script src="../_shared/deps/reconnecting-websocket.min.js"></script>
     <script src="../_shared/deps/countUp.js"></script>
     <script src="../_shared/deps/countUpImage.js"></script>
+    <script src="../_shared/deps/Chart.min.js"></script>
+    <script src="../_shared/deps/smooth.js"></script>
 </head>
 <body>
     <div class="main">
@@ -65,6 +67,14 @@
 
         <!-- Score Number Right -->
         <div class="score-number score-right-number ipc-transition" id="score-right-number"></div>
+
+        <!-- Strain Graph -->
+        <div id="strain-graph">
+            <canvas class="strain-graph-detail" id="strain" width="760" height="58"></canvas>
+            <div id="progress">
+                <canvas class="strain-graph-detail" id="strain-progress" width="760" height="58"></canvas>
+            </div>
+        </div>
 
         <!-- Now Playing Panel -->
         <div class="now-playing-panel now-playing-panel-left-pick ipc-transition" id="now-playing-panel">
