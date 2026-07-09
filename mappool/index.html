@@ -109,26 +109,6 @@
         <div class="chat-display">
             <img src="static/chatbox.png">
             <div class="chat-display-container" id="chat-display-container">
-                <div class="message-wrapper">
-                    <div class="message-time">13:44:00</div>
-                    <div class="message-name right">rumii</div>
-                    <div class="message-content">!roll</div>
-                </div>
-                <div class="message-wrapper">
-                    <div class="message-time">13:44:00</div>
-                    <div class="message-name bot">Banchobot</div>
-                    <div class="message-content">rumii rolls 36 point(s)</div>
-                </div>
-                <div class="message-wrapper">
-                    <div class="message-time">13:44:00</div>
-                    <div class="message-name unknown">AAAAAAAAAAAAAAA</div>
-                    <div class="message-content">picks please</div>
-                </div>
-                <div class="message-wrapper">
-                    <div class="message-time">13:44:00</div>
-                    <div class="message-name left">she gon pay me</div>
-                    <div class="message-content">nm2</div>
-                </div>
             </div>
         </div>
 
@@ -139,6 +119,12 @@
         <!-- Match History -->
         <div class="team-history-area team-history-left-area" id="team-history-left-area"></div>
         <div class="team-history-area team-history-right-area" id="team-history-right-area"></div>
+    </div>
+
+    <!-- Winner Scene -->
+    <div class="main winner-area fade-off" id="winner-area">
+        <img class="winner-text" src="static/winner-text.png">
+        <div class="winner-name" id="winner-name">username</div>
     </div>
 
     <!-- Sidebar -->
@@ -189,13 +175,11 @@
             <section class="sidebar-section" id="mappool-override-column">
                 <h1 class="sidebar-section-text">Mappool Override Management</h1>
                 <h2 class="sidebar-section-text">Which Action?</h2>
-                <select class="mappool-override-select" id="mappool-override-action-select" size="6">
+                <select class="mappool-override-select" id="mappool-override-action-select" size="4">
                     <option value="setBan">Set Ban</option>
                     <option value="removeBan">Remove Ban</option>
                     <option value="setPick">Set Pick</option>
                     <option value="removePick">Remove Pick</option>
-                    <option value="setWinner">Set Winner</option>
-                    <option value="removeWinner">Remove Winner</option>
                 </select>
             </section>
         </div>

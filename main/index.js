@@ -1,5 +1,6 @@
+import { updateChat } from "../_shared/core/chat.js"
 import { getBeatmaps, findBeatmap, getPlayers, findPlayer } from "../_shared/core/load-data.js"
-import { delay, setLengthDisplay } from "../_shared/core/utils.js"
+import { delay, getCookie, setLengthDisplay } from "../_shared/core/utils.js"
 import { createTosuWsSocket } from "../_shared/core/websocket.js"
 
 const roundAreaEl = document.getElementById("round-area")
@@ -11,8 +12,17 @@ getBeatmaps().then(async beatmaps => {
     allBeatmaps = beatmaps
 
     // Set round images
-    roundAreaEl.setAttribute("src", `static/bracket-title/${beatmaps.roundName}-border.png`)
-    roundNameEl.setAttribute("src", `static/bracket-title/${beatmaps.roundName}.png`)
+    let roundName
+    switch(beatmaps.roundName) {
+        case "ROUND OF 32": roundName = "ro32"; break;
+        case "ROUND OF 16": roundName = "ro16"; break;
+        case "QUARTERFINALS": roundName = "qf"; break;
+        case "SEMIFINALS": roundName = "sf"; break;
+        case "FINALS": roundName = "f"; break;
+        case "GRAND FINALS": roundName = "gf"; break;
+    }
+    roundAreaEl.setAttribute("src", `static/bracket-title/${roundName}-border.png`)
+    roundNameEl.setAttribute("src", `static/bracket-title/${roundName}.png`)
 
     // Get details for round area
     await delay(250)
@@ -90,9 +100,104 @@ const nowPlayingBottomTimeEndEl = document.getElementById("now-playing-bottom-ti
 const nowPlayingStatsEl = document.getElementById("now-playing-stats")
 const nowPlayingBottomStatsEl = document.getElementById("now-playing-bottom-stats")
 
+/* Chat */
+const chatDisplayEl = document.getElementById("chat-display")
+const chatDisplayContainerEl = document.getElementById("chat-display-container")
+let chatLen
+
+// Strains
+const progressChart = document.getElementById("progress")
+let tempStrains, seek, fullTime
+let onepart
+let last_strain_update = 0
+
+// Canvases
+const ctx = document.getElementById('strain').getContext('2d')
+const strianProgress = document.getElementById('strain-progress')
+const ctxProgress = strianProgress.getContext('2d')
+let gradient
+
+window.onload = function () {
+	window.strainGraph = new Chart(ctx, config)
+	window.strainGraphProgress = new Chart(ctxProgress, configProgress)
+}
+
 const socket = createTosuWsSocket()
 socket.onmessage = async event => {
     const data = JSON.parse(event.data)
+
+    // Calculate strain
+    console.log(data)
+    const series = data.performance.graph.series
+    const maxLength = Math.max( series[0].data.length, series[1].data.length, series[2].data.length, series[3].data.length )
+    const fullStrains = series[0].data.map((num, index) => {
+        const val0 = (series[0].data.length === maxLength) ? num : 0
+        const val1 = (series[1].data.length === maxLength) ? series[1].data[index] : 0
+        const val2 = (series[2].data.length === maxLength) ? series[2].data[index] : 0
+        const val3 = (series[3].data.length === maxLength) ? series[3].data[index] : 0
+
+        return val0 + val1 + val2 + val3
+    })
+
+    if (tempStrains != JSON.stringify(fullStrains) && window.strainGraph) {
+        tempStrains = JSON.stringify(fullStrains)
+        if (fullStrains) {
+            let temp_strains = smooth(fullStrains, 5)
+			let new_strains = []
+			for (let i = 0; i < 60; i++) {
+				new_strains.push(temp_strains[Math.floor(i * (temp_strains.length / 60))])
+			}
+			new_strains = [0, ...new_strains, 0]
+
+			config.data.datasets[0].data = new_strains
+			config.data.labels = new_strains
+			config.options.scales.y.max = Math.max(...new_strains)
+			configProgress.data.datasets[0].data = new_strains
+			configProgress.data.labels = new_strains
+			configProgress.options.scales.y.max = Math.max(...new_strains)
+			window.strainGraph.update()
+			window.strainGraphProgress.update()
+        } else {
+			config.data.datasets[0].data = []
+			config.data.labels = []
+			configProgress.data.datasets[0].data = []
+			configProgress.data.labels = []
+			window.strainGraph.update()
+			window.strainGraphProgress.update()
+		}
+    }
+
+    let now = Date.now()
+	if (fullTime !== data.beatmap.time.lastObject) {
+        fullTime = data.beatmap.time.lastObject
+        onepart = 760 / fullTime
+    }
+
+	if (seek !== data.beatmap.time.live && fullTime && now - last_strain_update > 300) {
+		last_strain_update = now
+		seek = data.beatmap.time.live
+
+        let maskPosition = `-760px 0px`
+        const maskPositionFormula = -760 + onepart * seek
+		if (data.state.number !== 2) {
+			progressChart.style.maskPosition = '-760px 0px'
+			progressChart.style.webkitMaskPosition = '-760px 0px'
+		}
+		else {
+			maskPosition = `${maskPositionFormula}px 0px`
+			progressChart.style.maskPosition = maskPosition
+			progressChart.style.webkitMaskPosition = maskPosition
+		}
+
+        gradient = ctx.createLinearGradient(0, 0, 760 - Math.abs(maskPositionFormula), 0);
+        gradient.addColorStop(1, "#f6bf75")
+        gradient.addColorStop(0.67, "#d77185")
+        gradient.addColorStop(0.33, "#8766ac")
+        gradient.addColorStop(0, "#4150b1")
+
+        configProgress.data.datasets[0].backgroundColor = gradient
+        window.strainGraphProgress.update()
+	}
 
     // Save data
     const clients = data.tourney.clients
@@ -172,12 +277,16 @@ socket.onmessage = async event => {
             scoreLeftDifferenceEl.style.opacity = 1
             scoreRightDifferenceEl.style.opacity = 1
             scoreRightNumberEl.style.opacity = 1
+            nowPlayingPanelEl.style.opacity = 1
+            chatDisplayEl.style.opacity = 0
         } else {
             scoreLeftNumberEl.style.opacity = 0
             scoreBarEl.style.opacity = 0
             scoreLeftDifferenceEl.style.opacity = 0
             scoreRightDifferenceEl.style.opacity = 0
             scoreRightNumberEl.style.opacity = 0
+            nowPlayingPanelEl.style.opacity = 0
+            chatDisplayEl.style.opacity = 1
         }
     }
 
@@ -312,9 +421,91 @@ socket.onmessage = async event => {
         nowPlayingBottomTimeCurrentEl.textContent = setLengthDisplay(Math.round(liveTime / 1000))
         nowPlayingBottomTimeEndEl.textContent = setLengthDisplay(Math.round(lastObjectTime / 1000))
     }
+
+    // Chat
+    const chatData = data.tourney.chat
+    if (chatLen !== chatData.length) {
+        chatLen = updateChat(chatLen, chatData, chatDisplayContainerEl)
+    }
 }
 
 async function setBottomStatsElWidth() {
     await delay(50)
     nowPlayingBottomStatsEl.style.width = `${nowPlayingStatsEl.getBoundingClientRect().width}px`
+}
+
+let currentPicker, previousPicker
+setInterval(() => {
+    currentPicker = getCookie("currentPicker")
+    if (currentPicker !== previousPicker) {
+        previousPicker = currentPicker
+        if (currentPicker === "left") {
+            nowPlayingPanelEl.classList.remove("now-playing-panel-right-pick")
+            nowPlayingPanelEl.classList.add("now-playing-panel-left-pick")
+        } else if (currentPicker === "right") {
+            nowPlayingPanelEl.classList.add("now-playing-panel-right-pick")
+            nowPlayingPanelEl.classList.remove("now-playing-panel-left-pick")
+        } else {
+            nowPlayingPanelEl.classList.remove("now-playing-panel-right-pick")
+            nowPlayingPanelEl.classList.remove("now-playing-panel-left-pick")
+        }
+    }
+}, 200)
+
+// Configs are for strain graphs
+let config = {
+	type: 'line',
+	data: {
+		labels: [],
+		datasets: [{
+            borderWidth: 2,
+			backgroundColor: 'rgba(0, 0, 0, 0.3)',
+			data: [],
+			fill: true,
+			stepped: false,
+		}]
+	},
+	options: {
+		tooltips: { enabled: false },
+		legend: { display: false, },
+		elements: { point: { radius: 0 } },
+		responsive: false,
+		scales: {
+			x: { display: false, },
+			y: {
+				display: false,
+				min: 0,
+				max: 100
+			}
+		},
+		animation: { duration: 0 }
+	}
+}
+
+let configProgress = {
+	type: 'line',
+	data: {
+		labels: [],
+		datasets: [{
+			data: [],
+			fill: true,
+			stepped: false,
+            backgroundColor: gradient
+		}]
+	},
+	options: {
+		tooltips: { enabled: false },
+		legend: { display: false, },
+		elements: { point: { radius: 0 } },
+		responsive: false,
+		scales: {
+			x: { display: false, },
+			y: {
+				display: false,
+				min: 0,
+				max: 100
+			}
+		},
+		animation: { duration: 0 }
+	}
 }
