@@ -128,7 +128,6 @@ socket.onmessage = async event => {
     const data = JSON.parse(event.data)
 
     // Calculate strain
-    console.log(data)
     const series = data.performance.graph.series
     const maxLength = Math.max( series[0].data.length, series[1].data.length, series[2].data.length, series[3].data.length )
     const fullStrains = series[0].data.map((num, index) => {

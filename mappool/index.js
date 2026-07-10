@@ -304,8 +304,6 @@ socket.onmessage = async event => {
     const clients = data.tourney.clients
     const chatData = data.tourney.chat
 
-    clients[0].user.id = 11971304
-    clients[0].user.name = "JeadIng"
     if (player1Id !== clients[0].user.id) {
         player1Id = clients[0].user.id
         playerLeftProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player1Id}")`
