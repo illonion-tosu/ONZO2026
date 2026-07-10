@@ -18,8 +18,8 @@ export async function getPlayers() {
     return allPlayers
 }
 
-export function findPlayer(player_name) {
-    return allPlayers.find(player => player.player_name === player_name)
+export function findPlayer(player_id) {
+    return allPlayers.find(player => player.player_id === player_id)
 }
 
 export async function initialiseApi() {

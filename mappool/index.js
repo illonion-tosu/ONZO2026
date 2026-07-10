@@ -250,6 +250,8 @@ function mapClickEvent(event) {
                 nowPlayingPickTbEl.style.display = "none"
             }
 
+            nowPlayingFinalScoreEl.style.display = "none"
+
             break
         }
     }
@@ -302,18 +304,20 @@ socket.onmessage = async event => {
     const clients = data.tourney.clients
     const chatData = data.tourney.chat
 
+    clients[0].user.id = 11971304
+    clients[0].user.name = "JeadIng"
     if (player1Id !== clients[0].user.id) {
         player1Id = clients[0].user.id
         playerLeftProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player1Id}")`
         playerLeftNameEl.innerText = clients[0].user.name
-        const player = findPlayer(clients[0].user.name)
+        const player = findPlayer(clients[0].user.id)
         if (player) playerLeftSeedEl.innerText = `#${player.player_seed}`
     }
     if (player2Id !== clients[1].user.id) {
         player2Id = clients[1].user.id
         playerRightProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player2Id}")`
         playerRightNameEl.innerText = clients[1].user.name
-        const player = findPlayer(clients[1].user.name)
+        const player = findPlayer(clients[1].user.id)
         if (player) playerRightSeedEl.innerText = `#${player.player_seed}`
     }
 
@@ -353,15 +357,13 @@ socket.onmessage = async event => {
         // Setinng winner area / turning it on and off
         if (!winner && (currentLeftStars >= currentFirstTo || currentRightStars >= currentFirstTo)) {
             winner = true
-            winnerAreaEl.classList.remove("fade-on", "fade-off")
-            await delay(100)
+            winnerAreaEl.classList.remove("fade-off")
             winnerAreaEl.classList.add("fade-on")
             winnerNameEl.textContent = currentLeftStars >= currentFirstTo ? playerLeftNameEl.textContent : playerRightNameEl.textContent
             nowPlayingPickEl.style.display = "none"
-        } else if (winner && currentLeftStars < currentChecksum && currentRightStars < currentFirstTo) {
+        } else if (winner && currentLeftStars < currentFirstTo && currentRightStars < currentFirstTo) {
             winner = false
-            winnerAreaEl.classList.remove("fade-on", "fade-off")
-            await delay(100)
+            winnerAreaEl.classList.remove("fade-on")
             winnerAreaEl.classList.add("fade-off")
             setNextPicker(currentNextPicker)
         }
