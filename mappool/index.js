@@ -135,7 +135,6 @@ const nowPlayingRightFinalScoreEl = document.getElementById("now-playing-right-f
 // Now playing bottom
 const nowPlayingModIdEl = document.getElementById("now-playing-mod-id")
 const nowPlayingPickEl = document.getElementById("now-playing-pick")
-const nowPlayingPickTbEl = document.getElementById("now-playing-pick-tb")
 
 // Map click Event
 let hasPickedYet = false
@@ -242,14 +241,8 @@ function mapClickEvent(event) {
             setCurrentPicker(currentPicker)
             hasPickedYet = true
 
-            if (currentMap.mod === "TB") {
-                nowPlayingPickEl.setAttribute("src", `static/picks/tb-pick.png`)
-                nowPlayingPickTbEl.style.display = "block"
-            } else {
-                nowPlayingPickEl.setAttribute("src", `static/picks/${team}-pick.png`)
-                nowPlayingPickTbEl.style.display = "none"
-            }
-
+            if (currentMap.mod === "TB") nowPlayingPickEl.setAttribute("src", `static/picks/tb-pick.png`)
+            else nowPlayingPickEl.setAttribute("src", `static/picks/${team}-pick.png`)
             nowPlayingFinalScoreEl.style.display = "none"
 
             break
@@ -421,7 +414,6 @@ socket.onmessage = async event => {
         nowPlayingFinalScoreEl.style.display = "none"
         nowPlayingModIdEl.style.display = "none"
         nowPlayingPickEl.style.display = "none"
-        nowPlayingPickTbEl.style.display = "none"
     }
 
     // IPC State
