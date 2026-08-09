@@ -8,10 +8,6 @@
     --strain-graph-height: 78px;
 }
 
-.main {
-    background-color: grey;
-}
-
 /* ----- Helper Class ----- */
 .ipc-transition {
     opacity: 1;
@@ -350,6 +346,8 @@
     transform: translateX(-50%);
     width: var(--strain-graph-width);
     height: var(--strain-graph-height);
+    opacity: 1;
+    transition: 500ms ease-in-out;
 }
 
 .strain-graph-detail {

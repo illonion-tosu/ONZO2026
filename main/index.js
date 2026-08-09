@@ -112,6 +112,7 @@ let onepart
 let last_strain_update = 0
 
 // Canvases
+const strainGraph = document.getElementById("strain-graph")
 const ctx = document.getElementById('strain').getContext('2d')
 const strianProgress = document.getElementById('strain-progress')
 const ctxProgress = strianProgress.getContext('2d')
@@ -127,7 +128,6 @@ socket.onmessage = async event => {
     const data = JSON.parse(event.data)
 
     // Calculate strain
-    console.log(data)
     const series = data.performance.graph.series
     const maxLength = Math.max( series[0].data.length, series[1].data.length, series[2].data.length, series[3].data.length )
     const fullStrains = series[0].data.map((num, index) => {
@@ -179,7 +179,7 @@ socket.onmessage = async event => {
 
         let maskPosition = `-760px 0px`
         const maskPositionFormula = -760 + onepart * seek
-		if (data.state.number !== 2) {
+		if (data.state.number !== 22) {
 			progressChart.style.maskPosition = '-760px 0px'
 			progressChart.style.webkitMaskPosition = '-760px 0px'
 		}
@@ -202,20 +202,20 @@ socket.onmessage = async event => {
     // Save data
     const clients = data.tourney.clients
     const client0Hits = clients[0].play.hits
-    const client1Hits = clients[0].play.hits
-
+    const client1Hits = clients[1].play.hits
+    
     if (player1Id !== clients[0].user.id) {
         player1Id = clients[0].user.id
         playerLeftProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player1Id}")`
         playerLeftNameEl.innerText = clients[0].user.name
-        const player = findPlayer(clients[0].user.name)
+        const player = findPlayer(clients[0].user.id)
         if (player) playerLeftSeedEl.innerText = `#${player.player_seed}`
     }
     if (player2Id !== clients[1].user.id) {
         player2Id = clients[1].user.id
         playerRightProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player2Id}")`
         playerRightNameEl.innerText = clients[1].user.name
-        const player = findPlayer(clients[1].user.name)
+        const player = findPlayer(clients[1].user.id)
         if (player) playerRightSeedEl.innerText = `#${player.player_seed}`
     }
 
@@ -278,6 +278,7 @@ socket.onmessage = async event => {
             scoreRightDifferenceEl.style.opacity = 1
             scoreRightNumberEl.style.opacity = 1
             nowPlayingPanelEl.style.opacity = 1
+            strainGraph.style.opacity = 1
             chatDisplayEl.style.opacity = 0
         } else {
             scoreLeftNumberEl.style.opacity = 0
@@ -286,6 +287,7 @@ socket.onmessage = async event => {
             scoreRightDifferenceEl.style.opacity = 0
             scoreRightNumberEl.style.opacity = 0
             nowPlayingPanelEl.style.opacity = 0
+            strainGraph.style.opacity = 0
             chatDisplayEl.style.opacity = 1
         }
     }
@@ -328,8 +330,8 @@ socket.onmessage = async event => {
             scoreRightBarEl.style.width = "0px"
 
             scoreLeftPointEndEl.style.display = "none"
-            scoreRightPointEndEl.style.display = "block"
-            scoreMiddlePointEndEl.style.display = "none"
+            scoreRightPointEndEl.style.display = "none"
+            scoreMiddlePointEndEl.style.display = "block"
 
             scoreLeftPointEndEl.style.right = `${scoreBarMaxWidth}px`
             scoreMiddlePointEndEl.style.left = `${scoreBarMaxWidth}px`
@@ -342,7 +344,7 @@ socket.onmessage = async event => {
             scoreRightBarEl.style.width = `${scoreBarRectangleWidth}px`
 
             scoreLeftPointEndEl.style.display = "none"
-            scoreRightPointEndEl.style.display = "none"
+            scoreRightPointEndEl.style.display = "block"
             scoreMiddlePointEndEl.style.display = "none"
 
             scoreLeftPointEndEl.style.right = `${scoreBarMaxWidth}px`
@@ -394,7 +396,7 @@ socket.onmessage = async event => {
             nowPlayingStatNumberArEl.textContent = currentAr
             nowPlayingStatNumberOdEl.textContent = currentOd
             nowPlayingStatNumberSrEl.textContent = currentSr
-            nowPlayingBottomBpmNumberEl.textCotnent = currentBpm
+            nowPlayingBottomBpmNumberEl.textContent = currentBpm
             setBottomStatsElWidth()
         }
 

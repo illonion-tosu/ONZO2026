@@ -135,7 +135,6 @@ const nowPlayingRightFinalScoreEl = document.getElementById("now-playing-right-f
 // Now playing bottom
 const nowPlayingModIdEl = document.getElementById("now-playing-mod-id")
 const nowPlayingPickEl = document.getElementById("now-playing-pick")
-const nowPlayingPickTbEl = document.getElementById("now-playing-pick-tb")
 
 // Map click Event
 let hasPickedYet = false
@@ -242,13 +241,9 @@ function mapClickEvent(event) {
             setCurrentPicker(currentPicker)
             hasPickedYet = true
 
-            if (currentMap.mod === "TB") {
-                nowPlayingPickEl.setAttribute("src", `static/picks/tb-pick.png`)
-                nowPlayingPickTbEl.style.display = "block"
-            } else {
-                nowPlayingPickEl.setAttribute("src", `static/picks/${team}-pick.png`)
-                nowPlayingPickTbEl.style.display = "none"
-            }
+            if (currentMap.mod === "TB") nowPlayingPickEl.setAttribute("src", `static/picks/tb-pick.png`)
+            else nowPlayingPickEl.setAttribute("src", `static/picks/${team}-pick.png`)
+            nowPlayingFinalScoreEl.style.display = "none"
 
             break
         }
@@ -306,14 +301,14 @@ socket.onmessage = async event => {
         player1Id = clients[0].user.id
         playerLeftProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player1Id}")`
         playerLeftNameEl.innerText = clients[0].user.name
-        const player = findPlayer(clients[0].user.name)
+        const player = findPlayer(clients[0].user.id)
         if (player) playerLeftSeedEl.innerText = `#${player.player_seed}`
     }
     if (player2Id !== clients[1].user.id) {
         player2Id = clients[1].user.id
         playerRightProfilePictureEl.style.backgroundImage = `url("https://a.ppy.sh/${player2Id}")`
         playerRightNameEl.innerText = clients[1].user.name
-        const player = findPlayer(clients[1].user.name)
+        const player = findPlayer(clients[1].user.id)
         if (player) playerRightSeedEl.innerText = `#${player.player_seed}`
     }
 
@@ -353,15 +348,13 @@ socket.onmessage = async event => {
         // Setinng winner area / turning it on and off
         if (!winner && (currentLeftStars >= currentFirstTo || currentRightStars >= currentFirstTo)) {
             winner = true
-            winnerAreaEl.classList.remove("fade-on", "fade-off")
-            await delay(100)
+            winnerAreaEl.classList.remove("fade-off")
             winnerAreaEl.classList.add("fade-on")
             winnerNameEl.textContent = currentLeftStars >= currentFirstTo ? playerLeftNameEl.textContent : playerRightNameEl.textContent
             nowPlayingPickEl.style.display = "none"
-        } else if (winner && currentLeftStars < currentChecksum && currentRightStars < currentFirstTo) {
+        } else if (winner && currentLeftStars < currentFirstTo && currentRightStars < currentFirstTo) {
             winner = false
-            winnerAreaEl.classList.remove("fade-on", "fade-off")
-            await delay(100)
+            winnerAreaEl.classList.remove("fade-on")
             winnerAreaEl.classList.add("fade-off")
             setNextPicker(currentNextPicker)
         }
@@ -421,7 +414,6 @@ socket.onmessage = async event => {
         nowPlayingFinalScoreEl.style.display = "none"
         nowPlayingModIdEl.style.display = "none"
         nowPlayingPickEl.style.display = "none"
-        nowPlayingPickTbEl.style.display = "none"
     }
 
     // IPC State
